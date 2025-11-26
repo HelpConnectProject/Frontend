@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif;
+}
+
+body {
+  background-color: #f5f6fa;
+  color: #222;
+  overflow-x: hidden;
+}
+
+/* --- NYITÓ SZEKCIÓ --- */
+.opening-section {
+  position: relative;
+  width: 60%;
+  aspect-ratio: 1536 / 1024;
+  margin: 0 auto;
+  background: url("/openingimage.png") center/cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  transition: transform 0.5s ease;
+}
+
+.opening-section:hover {
+  transform: scale(1.02);
+}
+
+.openingH1 {
+  color: white;
+  font-size: clamp(2rem, 6vw, 4rem);
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 10px 20px;
+  border-radius: 10px;
+  backdrop-filter: blur(3px);
+}
+
+.arrow {
+  position: absolute;
+  bottom: 30px;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+  animation: bounce 2s infinite;
+  transition: transform 0.3s ease;
+}
+
+.arrow:hover {
+  transform: scale(1.2);
+}
+
+.arrow.up {
+  transform: rotate(180deg);
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+}
+
+/* --- ABOUT SZEKCIÓ --- */
+.about-section {
+  max-width: 800px;
+  margin: 50px auto;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.6s ease;
+  display: none;
+}
+
+.about-section.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.about-section p {
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  color: #444;
+}
+
+/* --- GOMB --- */
+.search-btn {
+  background: #7660ca;
+  color: black;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(118, 96, 202, 0.3);
+  margin-top: 20px;
+}
+
+.search-btn:hover {
+  transform: translateY(-3px);
+  background: #5d4da3;
+  box-shadow: 0 6px 14px rgba(118, 96, 202, 0.4);
+}
+
+/* --- MOBIL NÉZET --- */
+@media (max-width: 768px) {
+  .opening-section {
+    width: 100%;
+    aspect-ratio: 1536 / 1024;
+    background-size: contain; /* ne vágja le, inkább igazítsa be */
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px 10px;
+  }
+
+  .openingH1 {
+    font-size: clamp(1.5rem, 8vw, 2.5rem);
+    padding: 8px 15px;
+  }
+
+  .arrow {
+    bottom: 20px;
+    font-size: 1.8rem;
+  }
+
+  .about-section {
+    margin: 30px 20px;
+  }
+
+  .about-section p {
+    font-size: 1rem;
+  }
+}

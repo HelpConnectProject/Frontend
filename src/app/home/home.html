@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+</head>
+<body>
+
+ <section class="opening-section">
+  <h1 class="openingH1">Összeköt a segítség.</h1>
+  <div class="arrow" (click)="toggleAbout()" [class.up]="isAboutVisible">&#x25BC;</div>
+</section>
+
+<section class="about-section" [class.show]="isAboutVisible" id="about">
+  <p>A HelpConnect célja, hogy hidat képezzen a civil szervezetek és az önkéntesek között, támogatva a közösségi összefogást és a társadalmi felelősségvállalást. Platformunk lehetőséget nyújt mindenki számára, hogy könnyedén megtalálja a számára megfelelő jótékonysági vagy önkéntes programot, részt vegyen eseményeken, és aktívan hozzájáruljon a közösség fejlődéséhez. Szervezetek részletes profiljai, eseménylistái és értékelési rendszereink biztosítják, hogy mindenki pontosan azt találja, amire szüksége van. Emellett a felhasználók tevékenységét jelvényekkel ismerjük el, így az önkéntes munka motiváló és látható lesz. Csatlakozz te is, és legyél részese egy olyan közösségnek, ahol minden apró segítség számít, és együtt tehetünk a változásért!</p>
+  <button class="search-btn">Esemény keresése</button>
+</section>
+
+    
+</body>
+</html>

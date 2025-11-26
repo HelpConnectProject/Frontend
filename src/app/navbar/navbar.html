@@ -1,0 +1,25 @@
+<nav class="navbar">
+  
+  
+  <div class="logo">
+    <img src="logo.png" alt="Logo" class="logo-img">
+    Help<span class="highlight">Connect</span>
+    
+  </div>
+
+  
+  <div class="hamburger" (click)="toggleMenu()">
+    <span [class.active]="isMenuOpen"></span>
+    <span [class.active]="isMenuOpen"></span>
+    <span [class.active]="isMenuOpen"></span>
+  </div>
+
+  <ul class="nav-links" [class.active]="isMenuOpen">
+    <li><a routerLink="/login">Belépés/Regisztráció</a></li>
+    <li><a routerLink="/events">Események</a></li>
+    <li><a routerLink="/organizations">Szervezetek</a></li>
+    <li><a routerLink="/contact">Kapcsolat</a></li>
+    <li><a routerLink="/forum">Fórum</a></li>
+  </ul>
+</nav>
+
