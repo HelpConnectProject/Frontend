@@ -7,16 +7,32 @@
 </head>
 <body>
 
- <section class="opening-section">
-  <h1 class="openingH1">Összeköt a segítség.</h1>
-  <div class="arrow" (click)="toggleAbout()" [class.up]="isAboutVisible">&#x25BC;</div>
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="hero-title">Összeköt a segítség.</h1>
+    <p class="hero-subtitle">Csatlakozz egy olyan közösséghez, ahol a segítség valódi értékkel bír</p>
+    <div class="cta-buttons">
+      <button class="btn btn-primary">Fedezd fel az eseményeket</button>
+      <button class="btn btn-secondary">Tudj meg többet</button>
+    </div>
+  </div>
+  <div class="scroll-indicator" (click)="scrollToAbout()">
+    <span></span>
+  </div>
 </section>
 
-<section class="about-section" [class.show]="isAboutVisible" id="about">
-  <p>A HelpConnect célja, hogy hidat képezzen a civil szervezetek és az önkéntesek között, támogatva a közösségi összefogást és a társadalmi felelősségvállalást. Platformunk lehetőséget nyújt mindenki számára, hogy könnyedén megtalálja a számára megfelelő jótékonysági vagy önkéntes programot, részt vegyen eseményeken, és aktívan hozzájáruljon a közösség fejlődéséhez. Szervezetek részletes profiljai, eseménylistái és értékelési rendszereink biztosítják, hogy mindenki pontosan azt találja, amire szüksége van. Emellett a felhasználók tevékenységét jelvényekkel ismerjük el, így az önkéntes munka motiváló és látható lesz. Csatlakozz te is, és legyél részese egy olyan közösségnek, ahol minden apró segítség számít, és együtt tehetünk a változásért!</p>
-  <button class="search-btn">Esemény keresése</button>
+<section class="about" #aboutSection>
+  <div class="about-container">
+    <div class="about-content">
+      <h2>A HelpConnect Világáról</h2>
+      <p>A HelpConnect célja, hogy hidat képezzen a civil szervezetek és az önkéntesek között, támogatva a közösségi összefogást és a társadalmi felelősségvállalást. Platformunk lehetőséget nyújt mindenki számára, hogy könnyedén megtalálja a számára megfelelő jótékonysági vagy önkéntes programot, részt vegyen eseményeken, és aktívan hozzájáruljon a közösség fejlődéséhez.</p>
+      <p>Szervezetek részletes profiljai, eseménylistái és értékelési rendszereink biztosítják, hogy mindenki pontosan azt találja, amire szüksége van. Emellett a felhasználók tevékenységét jelvényekkel ismerjük el, így az önkéntes munka motiváló és látható lesz.</p>
+      <p class="highlight-text">Csatlakozz te is, és legyél részese egy olyan közösségnek, ahol minden apró segítség számít, és együtt tehetünk a változásért!</p>
+    </div>
+  </div>
 </section>
 
-    
 </body>
 </html>
+

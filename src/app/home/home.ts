@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -7,16 +7,11 @@ import { Component } from '@angular/core';
   styleUrl: './home.css',
 })
 export class Home {
-  isAboutVisible = false;
+  @ViewChild('aboutSection') aboutSection!: ElementRef;
 
-  toggleAbout() {
-    this.isAboutVisible = !this.isAboutVisible;
-
-    if (this.isAboutVisible) {
-      setTimeout(() => {
-        const section = document.getElementById('about');
-        section?.scrollIntoView({ behavior: 'smooth' });
-      }, 200);
+  scrollToAbout() {
+    if (this.aboutSection) {
+      this.aboutSection.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
   }
 }
