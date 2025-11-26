@@ -1,0 +1,93 @@
+<div class="organizations-container">
+  <h1 class="page-title">Szervezetek</h1>
+  
+  <div class="cards-grid">
+    @for (org of organizations?.data; track org.id) {
+      <div class="org-card" [class.expanded]="expandedOrgId === org.id">
+        <!-- Card Header -->
+        <div class="card-header" (click)="toggleExpanded(org.id)">
+          <div class="card-logo-section">
+            <div class="card-logo">
+              @if (org.logo) {
+                <img [src]="org.logo" [alt]="org.name" />
+              } @else {
+                <span class="logo-placeholder">{{ org.name.substring(0, 2).toUpperCase() }}</span>
+              }
+            </div>
+          </div>
+          <div class="card-info-summary">
+            <h3 class="card-title">{{ org.name }}</h3>
+            @if (org.category) {
+              <p class="card-category">{{ org.category }}</p>
+            }
+            <div class="card-stats">
+              @if (org.active_members >= 0) {
+                <span class="stat">
+                  <strong>{{ org.active_members }}</strong> tag
+                </span>
+              }
+              @if (org.avg_rating >= 0) {
+                <span class="stat">
+                  <strong>{{ org.avg_rating | number:'1.1-1' }}</strong> ⭐
+                </span>
+              }
+            </div>
+          </div>
+          <button class="expand-btn" (click)="toggleExpanded(org.id); $event.stopPropagation()">
+            <span class="expand-icon">{{ expandedOrgId === org.id ? '−' : '+' }}</span>
+          </button>
+        </div>
+
+        <!-- Card Content -->
+        @if (expandedOrgId === org.id) {
+          <div class="card-content">
+            <div class="content-section">
+              <h4>Email</h4>
+              <p>{{ org.email }}</p>
+            </div>
+            
+            @if (org.description) {
+              <div class="content-section">
+                <h4>Leírás</h4>
+                <p>{{ org.description }}</p>
+              </div>
+            }
+            
+            @if (org.phone) {
+              <div class="content-section">
+                <h4>Telefonszám</h4>
+                <p>{{ org.phone }}</p>
+              </div>
+            }
+            
+            @if (org.address) {
+              <div class="content-section">
+                <h4>Cím</h4>
+                <p>{{ org.address }}</p>
+              </div>
+            }
+            
+            @if (org.bank_account) {
+              <div class="content-section">
+                <h4>Bankszámla</h4>
+                <p class="bank-account">{{ org.bank_account }}</p>
+              </div>
+            }
+            
+            <div class="content-status">
+              <span class="status-badge" [class.active]="org.active">
+                {{ org.active ? 'Aktív' : 'Inaktív' }}
+              </span>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  @if (!organizations?.data || organizations.data.length === 0) {
+    <div class="empty-state">
+      <p>Nincs megjeleníthető szervezet.</p>
+    </div>
+  }
+</div>
