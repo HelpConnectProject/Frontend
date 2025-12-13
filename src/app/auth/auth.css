@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&display=swap');
+
+.auth-page {
+	min-height: 70vh;
+	padding: 60px 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: linear-gradient(135deg, rgba(118, 96, 202, 0.07), rgba(93, 77, 163, 0.15));
+    height: 100vh;
+}
+
+.auth-card {
+	width: 100%;
+	max-width: 420px;
+	background: #ffffff;
+	padding: 32px;
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-soft);
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.auth-card h2 {
+	font-family: var(--font-heading);
+	font-size: 1.9rem;
+	letter-spacing: -0.5px;
+	color: var(--color-text-main);
+}
+
+.auth-description {
+	color: var(--color-text-muted);
+	line-height: 1.6;
+	font-size: 0.95rem;
+}
+
+.auth-error {
+	background: rgba(211, 47, 47, 0.1);
+	border: 1px solid rgba(211, 47, 47, 0.4);
+	color: #a31919;
+	padding: 0.75rem 1rem;
+	border-radius: var(--radius-md);
+	font-weight: 600;
+}
+
+.auth-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.form-field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+
+.form-field label {
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: var(--color-text-main);
+}
+
+.form-field input {
+	border: 1px solid #e0e0e6;
+	border-radius: var(--radius-md);
+	padding: 0.85rem 1rem;
+	font-size: 0.95rem;
+	transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-field input:focus {
+	outline: none;
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 3px rgba(118, 96, 202, 0.2);
+}
+
+.auth-button {
+	width: 100%;
+	border: none;
+	padding: 0.95rem 1rem;
+	border-radius: 999px;
+	background: linear-gradient(135deg, var(--color-primary), var(--color-primary-alt));
+	color: #fff;
+	font-weight: 700;
+	letter-spacing: 0.3px;
+	cursor: pointer;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-button[disabled] {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+.auth-button:not([disabled]):hover {
+	transform: translateY(-2px);
+	box-shadow: 0 10px 20px rgba(118, 96, 202, 0.25);
+}
+
+.auth-link {
+	text-align: center;
+	font-size: 0.9rem;
+	color: var(--color-text-muted);
+}
+
+.auth-link a {
+	color: var(--color-primary);
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.auth-card--logged-in {
+	text-align: center;
+}
+
+.auth-card--logged-in .auth-button {
+	max-width: 240px;
+	margin: 0 auto;
+}
+
+@media (max-width: 480px) {
+	.auth-card {
+		padding: 24px;
+	}
+}

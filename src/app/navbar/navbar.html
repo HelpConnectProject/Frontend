@@ -1,10 +1,8 @@
 <nav class="navbar">
   
-  
   <div class="logo">
     <img src="logo.png" alt="Logo" class="logo-img">
-    Help<span class="highlight">Connect</span>
-    
+    <span class="logo-text">Help<span class="highlight">Connect</span></span>
   </div>
 
   
@@ -15,9 +13,10 @@
   </div>
 
   <ul class="nav-links" [class.active]="isMenuOpen">
-    <li><a routerLink="">Belépés/Regisztráció</a></li>
+    <li><a routerLink="home">Főoldal</a></li>
+    <li><a routerLink="auth">Belépés/Regisztráció</a></li>
     <li><a routerLink="">Események</a></li>
-    <li><a routerLink="/organizations">Szervezetek</a></li>
+    <li><a routerLink="organizations">Szervezetek</a></li>
     <li><a routerLink="">Kapcsolat</a></li>
     <li><a routerLink="">Fórum</a></li>
   </ul>

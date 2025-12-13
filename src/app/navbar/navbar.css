@@ -4,7 +4,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.2rem 2.5rem;
-  background: linear-gradient(135deg, #7660ca 0%, #9e9b9b96 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #9e9b9b96 100%);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -21,6 +21,8 @@
   font-size: 1.7rem;
   font-weight: 700;
   color: #fff;
+  font-family: var(--font-heading);
+  letter-spacing: 0.5px;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   cursor: pointer;
 }
@@ -45,8 +47,14 @@
   border-color: white;
 }
 
+.logo-text {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
 .logo .highlight { 
-  color: #111; 
+  color: #f5f5f5; 
   font-weight: 700;
 }
 
@@ -100,6 +108,11 @@
   flex-direction: column;
   cursor: pointer;
   gap: 6px;
+  padding: 6px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .hamburger span {
@@ -109,6 +122,11 @@
   background: #fff;
   border-radius: 3px;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hamburger:hover {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 .hamburger span.active:nth-child(1) {
@@ -136,11 +154,12 @@
     right: 0;
     flex-direction: column;
     background: linear-gradient(135deg, #7660ca, #9e9b9b96);
-    border-radius: 0 0 12px 0;
+    border-radius: 0 0 12px 12px;
     padding: 0;
     overflow: hidden;
     max-height: 0;
     border-left: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
   }
 
   .nav-links.active {

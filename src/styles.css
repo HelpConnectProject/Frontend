@@ -1,4 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
+:root {
+  --font-main: 'Inter', sans-serif;
+  --font-heading: 'Oswald', sans-serif;
+
+  --color-bg: #f5f6fa;
+  --color-bg-alt: #f0f0f5;
+  --color-primary: #7660ca;
+  --color-primary-alt: #5d4da3;
+  --color-text-main: #222222;
+  --color-text-muted: #555555;
+  --color-text-soft: #888888;
+  --shadow-soft: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.15);
+  --shadow-strong: 0 12px 36px rgba(0, 0, 0, 0.3);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+}
 
 * {
   margin: 0;
@@ -10,9 +30,29 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #f5f6fa 0%, #f0f0f5 100%);
-  color: #222;
+  font-family: var(--font-main);
+  background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+  color: var(--color-text-main);
   scroll-behavior: smooth;
   overflow-x: hidden;
+}
+
+@keyframes expandWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: 60px;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

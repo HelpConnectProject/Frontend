@@ -1,0 +1,39 @@
+<div class="auth-page">
+    @if (authService.isLoggedIn$ | async) {
+        <section class="auth-card auth-card--logged-in">
+            <h2>Üdv újra!</h2>
+            <p class="auth-description">
+                Már be vagy jelentkezve, folytathatod a böngészést vagy kiléphetsz.
+            </p>
+            <button class="auth-button" (click)="logout()">Kijelentkezés</button>
+        </section>
+    } @else {
+        <section class="auth-card">
+            <h2>Belépés</h2>
+            <p class="auth-description">Jelentkezz be, hogy elérd az eseményeket és a szervezeteket.</p>
+
+            @if (errorMessage) {
+                <div class="auth-error">{{ errorMessage }}</div>
+            }
+
+            <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="login()">
+                <div class="form-field">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" formControlName="email" placeholder="pelda@helpconnect.hu">
+                </div>
+
+                <div class="form-field">
+                    <label for="password">Jelszó</label>
+                    <input id="password" type="password" formControlName="password" placeholder="••••••••">
+                </div>
+
+                <button class="auth-button" type="submit" [disabled]="loading">
+                    @if(!loading){Belépés} @else{<span>Betöltés...</span>}
+                </button>
+            </form>
+
+            <p class="auth-link">Nincs még fiókod? <a routerLink="/registration">Regisztrálj most</a></p>
+        </section>
+    }
+</div>
+

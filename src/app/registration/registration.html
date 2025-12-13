@@ -1,0 +1,57 @@
+<div class="registration-page">
+	<section class="registration-card">
+		<header class="registration-header">
+			<h2>Csatlakozz a HelpConnecthez</h2>
+			<p>Hozz létre fiókot, és találd meg a hozzád illő önkéntes lehetőségeket.</p>
+		</header>
+
+		<form class="registration-form" [formGroup]="registerForm" (ngSubmit)="register()">
+			<div class="form-grid">
+				<div class="form-field">
+					<label for="name">Név</label>
+					<input id="name" type="text" placeholder="Teszt Elek" formControlName="name">
+				</div>
+				<div class="form-field">
+					<label for="email">Email</label>
+					<input id="email" type="email" placeholder="teszt@example.com" formControlName="email">
+				</div>
+				<div class="form-field">
+					<label for="password">Jelszó</label>
+					<input id="password" type="password" placeholder="••••••••" formControlName="password">
+				</div>
+				<div class="form-field">
+					<label for="password_confirmation">Jelszó megerősítése</label>
+					<input id="password_confirmation" type="password" placeholder="••••••••" formControlName="password_confirmation">
+				</div>
+				<div class="form-field">
+					<label for="phone">Telefonszám</label>
+					<input id="phone" type="text" placeholder="+36 30 123 4567" formControlName="phone">
+				</div>
+				<div class="form-field">
+					<label for="city">Város</label>
+					<input id="city" type="text" placeholder="Budapest" formControlName="city">
+				</div>
+				<div class="form-field form-field--full">
+					<label for="about">Bemutatkozás</label>
+					<textarea id="about" rows="3" placeholder="Mesélj magadról..." formControlName="about"></textarea>
+				</div>
+				<div class="form-field form-field--full">
+					<label for="interest">Érdeklődési körök</label>
+					<input id="interest" type="text" placeholder="környezetvédelem, futás" formControlName="interest">
+				</div>
+				<div class="form-field">
+					<label for="qualification">Végzettség</label>
+					<input id="qualification" type="text" placeholder="Egyetemi diploma" formControlName="qualification">
+				</div>
+				<div class="form-field">
+					<label for="experience">Tapasztalat</label>
+					<textarea id="experience" rows="3" placeholder="Önkéntes tapasztalatok..." formControlName="experience"></textarea>
+				</div>
+			</div>
+
+			<button class="registration-button" type="submit">Regisztráció</button>
+		</form>
+
+		<p class="registration-link">Van már fiókod? <a routerLink="/auth">Jelentkezz be</a></p>
+	</section>
+</div>
