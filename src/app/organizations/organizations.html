@@ -1,8 +1,10 @@
 <div class="organizations-container">
   <h1 class="page-title">Szervezetek</h1>
-  
+  <div style="width:100%; display:flex;">
+    <a routerLink="/ownorganizations" class="ownorg-btn" style="margin-top: 1rem; margin-bottom: 2rem;">Saját szervezetek</a>
+  </div>
   <div class="cards-grid">
-    @for (org of organizations?.data; track org.id) {
+    @for (org of organizations; track org.id) {
       <div class="org-card" [class.expanded]="expandedOrgId === org.id">
         <!-- Card Header -->
         <div class="card-header" (click)="toggleExpanded(org.id)">
@@ -20,18 +22,6 @@
             @if (org.category) {
               <p class="card-category">{{ org.category }}</p>
             }
-            <div class="card-stats">
-              @if (org.active_members >= 0) {
-                <span class="stat">
-                  <strong>{{ org.active_members }}</strong> tag
-                </span>
-              }
-              @if (org.avg_rating >= 0) {
-                <span class="stat">
-                  <strong>{{ org.avg_rating | number:'1.1-1' }}</strong> ⭐
-                </span>
-              }
-            </div>
           </div>
           <button class="expand-btn" (click)="toggleExpanded(org.id); $event.stopPropagation()">
             <span class="expand-icon">{{ expandedOrgId === org.id ? '−' : '+' }}</span>
@@ -73,19 +63,24 @@
                 <p class="bank-account">{{ org.bank_account }}</p>
               </div>
             }
-            
-            <div class="content-status">
-              <span class="status-badge" [class.active]="org.active">
-                {{ org.active ? 'Aktív' : 'Inaktív' }}
-              </span>
-            </div>
+
+            @if (org.website) {
+              <div class="content-section">
+                <h4>Weboldal</h4>
+                <p>
+                  <a [href]="org.website" target="_blank" rel="noopener noreferrer">
+                    {{ org.website }}
+                  </a>
+                </p>
+              </div>
+            }
           </div>
         }
       </div>
     }
   </div>
 
-  @if (!organizations?.data || organizations.data.length === 0) {
+  @if (!organizations || organizations.length === 0) {
     <div class="empty-state">
       <p>Nincs megjeleníthető szervezet.</p>
     </div>

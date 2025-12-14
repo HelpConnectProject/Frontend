@@ -19,12 +19,12 @@
             <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="login()">
                 <div class="form-field">
                     <label for="email">Email</label>
-                    <input id="email" type="email" formControlName="email" placeholder="pelda@helpconnect.hu">
+                    <input id="email" type="email" formControlName="email">
                 </div>
 
                 <div class="form-field">
                     <label for="password">Jelszó</label>
-                    <input id="password" type="password" formControlName="password" placeholder="••••••••">
+                    <input id="password" type="password" formControlName="password">
                 </div>
 
                 <button class="auth-button" type="submit" [disabled]="loading">

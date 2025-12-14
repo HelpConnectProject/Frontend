@@ -3,6 +3,7 @@ import { Home } from './home/home';
 import { Organizations } from './organizations/organizations';
 import { Auth } from './auth/auth';
 import { Registration } from './registration/registration';
+import { Ownorganizations } from './ownorganizations/ownorganizations';
 
 export const routes: Routes = [
     { path: 'home', component: Home },
@@ -10,4 +11,5 @@ export const routes: Routes = [
     { path: 'organizations', component: Organizations },
     {path: "auth", component: Auth},
     {path:"registration", component: Registration},
+    {path: "ownorganizations", component: Ownorganizations}
 ];

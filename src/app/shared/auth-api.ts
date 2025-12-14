@@ -19,6 +19,11 @@ export class AuthApi {
   }
 
   logout$(data : any) {
-    return this.http.post(this.host + "logout", data);
+    const url = this.host + "logout";
+    return this.http.post(url, data,{
+      headers:{
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
   }
 }

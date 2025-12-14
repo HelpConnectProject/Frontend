@@ -1,0 +1,146 @@
+<div class="organizations-container">
+    <div class="page-header">
+        <h1 class="page-title">Saját szervezetek</h1>
+        <div class="header-actions">
+            <a class="link-btn" routerLink="/organizations">Összes szervezet</a>
+            @if (!showForm) {
+                <button class="primary-btn create-btn" type="button" (click)="startCreate()">
+                    Új szervezet hozzáadása
+                </button>
+            }
+        </div>
+    </div>
+
+    @if (showForm) {
+    <section class="form-wrapper">
+        <div class="form-header">
+            <h2>{{ isEditing ? 'Szervezet szerkesztése' : 'Új szervezet létrehozása' }}</h2>
+            <button class="ghost-btn" type="button" (click)="cancelForm()">Mégse</button>
+        </div>
+        <div class="form-error">{{ formError }}</div>
+        <form class="organization-form" [formGroup]="organizationForm" (ngSubmit)="submitForm()">
+            <div class="form-grid">
+                <label>
+                    Név
+                    <input formControlName="name" />
+                </label>
+                <label>
+                    Kategória
+                    <input formControlName="category" />
+                </label>
+                <label>
+                    Telefonszám
+                    <input formControlName="phone" />
+                </label>
+                <label>
+                    Email
+                    <input formControlName="email" />
+                    <span *ngIf="organizationForm.get('email')?.invalid && organizationForm.get('email')?.touched" class="input-error">Hibás email formátum</span>
+                </label>
+                <label>
+                    Cím
+                    <input formControlName="address" />
+                </label>
+                <label>
+                    Weboldal
+                    <input formControlName="website" />
+                    <span *ngIf="organizationForm.get('website')?.invalid && organizationForm.get('website')?.touched" class="input-error">Hibás weboldal formátum</span>
+                </label>
+                <label>
+                    Bankszámla
+                    <input formControlName="bank_account" />
+                </label>
+            </div>
+            <label class="full-width">
+                Leírás
+                <textarea formControlName="description" rows="3"></textarea>
+            </label>
+            <div class="form-actions">
+                <button class="primary-btn" type="submit" [disabled]="submitting">
+                    {{ isEditing ? 'Mentés' : 'Szervezet létrehozása' }}
+                </button>
+                <button class="ghost-btn" type="button" (click)="clearFormFields()">Űrlap törlése</button>
+            </div>
+        </form>
+    </section>
+    }
+
+    <div class="cards-grid">
+        @for (org of organizations; track org.id) {
+            <div class="org-card" [class.expanded]="expandedOrgId === org.id">
+                <div class="card-header">
+                    <div class="card-main" (click)="toggleExpanded(org.id)">
+
+                        <div class="card-info-summary">
+                            <h3 class="card-title">{{ org.name }}</h3>
+                            @if (org.category) {
+                                <p class="card-category">{{ org.category }}</p>
+                            }
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn edit" type="button" (click)="startEdit(org); $event.stopPropagation()">Szerkesztés</button>
+                        <button class="action-btn delete" type="button" (click)="deleteOrganization(org.id); $event.stopPropagation()">Törlés</button>
+                        <button class="expand-btn" type="button" (click)="toggleExpanded(org.id); $event.stopPropagation()">
+                            <span class="expand-icon">{{ expandedOrgId === org.id ? '−' : '+' }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                @if (expandedOrgId === org.id) {
+                    <div class="card-content">
+                        <div class="content-section">
+                            <h4>Email</h4>
+                            <p>{{ org.email }}</p>
+                        </div>
+
+                        @if (org.description) {
+                            <div class="content-section">
+                                <h4>Leírás</h4>
+                                <p>{{ org.description }}</p>
+                            </div>
+                        }
+
+                        @if (org.phone) {
+                            <div class="content-section">
+                                <h4>Telefonszám</h4>
+                                <p>{{ org.phone }}</p>
+                            </div>
+                        }
+
+                        @if (org.address) {
+                            <div class="content-section">
+                                <h4>Cím</h4>
+                                <p>{{ org.address }}</p>
+                            </div>
+                        }
+
+                        @if (org.bank_account) {
+                            <div class="content-section">
+                                <h4>Bankszámla</h4>
+                                <p class="bank-account">{{ org.bank_account }}</p>
+                            </div>
+                        }
+
+                        @if (org.website) {
+                            <div class="content-section">
+                                <h4>Weboldal</h4>
+                                <p>
+                                    <a [href]="org.website" target="_blank" rel="noopener noreferrer">
+                                        {{ org.website }}
+                                    </a>
+                                </p>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    @if (!organizations || organizations.length === 0) {
+        <div class="empty-state">
+            <p>Még nincs saját szervezet.</p>
+        </div>
+    }
+</div>
