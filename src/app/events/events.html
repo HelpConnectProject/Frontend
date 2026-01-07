@@ -1,0 +1,81 @@
+<div class="events-container">
+  <h1 class="page-title">Események</h1>
+  <div class="cards-grid">
+    @for (event of events; track event.id) {
+      <div class="event-card" [class.expanded]="expandedEventId === event.id">
+        <div class="card-header" (click)="toggleExpanded(event.id)">
+          <div class="card-logo-section">
+            <div class="card-logo">
+              @if (event.image) {
+                <img [src]="event.image" [alt]="event.title || 'Event'" />
+              } @else {
+                <span class="logo-placeholder">{{ (event.title || 'E').substring(0, 2).toUpperCase() }}</span>
+              }
+            </div>
+          </div>
+          <div class="card-info-summary">
+            <h3 class="card-title">{{ event.title || 'Esemény' }}</h3>
+            @if (event.date) {
+              <p class="card-date">{{ event.date | date:'yyyy.MM.dd.' }}</p>
+            }
+          </div>
+          <button class="expand-btn" (click)="toggleExpanded(event.id); $event.stopPropagation()">
+            <span class="expand-icon">{{ expandedEventId === event.id ? '−' : '+' }}</span>
+          </button>
+        </div>
+
+        @if (expandedEventId === event.id) {
+          <div class="card-content">
+            @if (event.description) {
+              <div class="content-section">
+                <h4>Leírás</h4>
+                <p>{{ event.description }}</p>
+              </div>
+            }
+            
+            @if (event.location) {
+              <div class="content-section">
+                <h4>Helyszín</h4>
+                <p>{{ event.location }}</p>
+              </div>
+            }
+            
+            @if (event.start_time) {
+              <div class="content-section">
+                <h4>Kezdés</h4>
+                <p>{{ event.start_time | date:'HH:mm' }}</p>
+              </div>
+            }
+            
+            @if (event.end_time) {
+              <div class="content-section">
+                <h4>Befejezés</h4>
+                <p>{{ event.end_time | date:'HH:mm' }}</p>
+              </div>
+            }
+
+            @if (event.category) {
+              <div class="content-section">
+                <h4>Kategória</h4>
+                <p>{{ event.category }}</p>
+              </div>
+            }
+
+            @if (event.organization) {
+              <div class="content-section">
+                <h4>Szervezet</h4>
+                <p>{{ event.organization }}</p>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  @if (!events || events.length === 0) {
+    <div class="empty-state">
+      <p>Nincs megjeleníthető esemény.</p>
+    </div>
+  }
+</div>
