@@ -5,6 +5,7 @@ import { Auth } from './auth/auth';
 import { Registration } from './registration/registration';
 import { Ownorganizations } from './ownorganizations/ownorganizations';
 import { Events } from './events/events';
+import { Ownevents } from './ownevents/ownevents';
 
 export const routes: Routes = [
     { path: 'home', component: Home },
@@ -13,5 +14,7 @@ export const routes: Routes = [
     {path: "auth", component: Auth},
     {path:"registration", component: Registration},
     {path: "ownorganizations", component: Ownorganizations},
-    {path: "events", component: Events}
+    {path: "events", component: Events},
+    {path: "ownevents", component: Ownevents},
+    
 ];

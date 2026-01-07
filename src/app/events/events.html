@@ -1,5 +1,8 @@
 <div class="events-container">
   <h1 class="page-title">Események</h1>
+  <div class="ownev">
+    <a routerLink="/ownevents" class="ownev-btn">Saját események</a>
+  </div>
   <div class="cards-grid">
     @for (event of events; track event.id) {
       <div class="event-card" [class.expanded]="expandedEventId === event.id">

@@ -22,6 +22,7 @@ export class Events implements OnInit {
   
   ngOnInit() {
     this.getEvents();
+    
   }
 
   getEvents() {
@@ -33,6 +34,9 @@ export class Events implements OnInit {
       error: () => {},
     });
   }
+
+  
+
 
   toggleExpanded(eventId: number) {
     this.expandedEventId = this.expandedEventId === eventId ? null : eventId;

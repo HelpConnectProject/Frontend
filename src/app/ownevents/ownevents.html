@@ -1,0 +1,181 @@
+<div class="ownevents-container">
+  <div class="page-header">
+    <h1 class="page-title">Saját Események</h1>
+    <div class="header-actions">
+      @if (!showForm) {
+        <button class="primary-btn create-btn" type="button" (click)="startCreate()">
+          Új esemény hozzáadása
+        </button>
+      }
+    </div>
+  </div>
+
+  @if (showForm) {
+    <section class="form-wrapper">
+      <div class="form-header">
+        <h2>{{ isEditing ? 'Esemény szerkesztése' : 'Új esemény létrehozása' }}</h2>
+        <button class="ghost-btn" type="button" (click)="cancelForm()">Mégse</button>
+      </div>
+      <div class="form-error">{{ formError }}</div>
+      <form class="event-form" [formGroup]="eventForm" (ngSubmit)="submitForm()">
+        <div class="form-grid">
+          <label>
+            Cím
+            <input formControlName="title" />
+          </label>
+          <label>
+            Dátum és Idő
+            <input type="datetime-local" formControlName="date" />
+          </label>
+          <label>
+            Helyszín
+            <input formControlName="location" />
+          </label>
+          <label>
+            Kapacitás
+            <input type="number" formControlName="capacity" />
+            <span *ngIf="eventForm.get('capacity')?.invalid && eventForm.get('capacity')?.touched" class="input-error">Szükséges és 1-nél nagyobbnak kell lennie</span>
+          </label>
+          <label>
+            Státusz
+            <select formControlName="status">
+              <option value="Aktív">Aktív</option>
+              <option value="Inaktív">Inaktív</option>
+            </select>
+          </label>
+        </div>
+        <label class="full-width">
+          Leírás
+          <textarea formControlName="description" rows="3"></textarea>
+        </label>
+        <div class="form-actions">
+          <button class="primary-btn" type="submit" [disabled]="submitting">
+            {{ isEditing ? 'Mentés' : 'Esemény létrehozása' }}
+          </button>
+          <button class="ghost-btn" type="button" (click)="clearFormFields()">Űrlap törlése</button>
+        </div>
+      </form>
+    </section>
+  }
+ 
+  <div class="dropdown-wrapper" (click)="$event.stopPropagation()">
+    <button class="dropdown-toggle" (click)="toggleDropdown()" [class.open]="isDropdownOpen">
+      <span class="dropdown-text">{{ selectedOrganization?.organization_name || 'Szervezet kiválasztása' }}</span>
+      <span class="dropdown-arrow">{{ isDropdownOpen ? '▲' : '▼' }}</span>
+    </button>
+    
+    @if (isDropdownOpen) {
+      <div class="dropdown-menu">
+        @for (org of organizationEvents; track org.organization_id) {
+          <button 
+            class="dropdown-item" 
+            [class.active]="selectedOrganization?.organization_id === org.organization_id"
+            (click)="selectOrganization(org)"
+          >
+            <span class="org-name">{{ org.organization_name }}</span>
+            <span class="event-count">({{ org.events?.length || 0 }} esemény)</span>
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+ 
+  @if (selectedOrganization) {
+    <div class="search-container">
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Esemény keresése..."
+        [value]="searchTerm"
+        (input)="searchTerm = $any($event.target).value; onSearchChange()"
+      />
+      <span class="search-icon">🔍</span>
+    </div>
+
+    
+    <div class="events-section">
+      <h2 class="org-title">{{ selectedOrganization.organization_name }}</h2>
+      
+      <div class="cards-grid">
+        @if (filteredEvents && filteredEvents.length > 0) {
+          @for (event of filteredEvents; track event.id) {
+            <div class="event-card" [class.expanded]="expandedEventId === event.id">
+              <div class="card-header">
+                <div class="card-main" (click)="toggleExpanded(event.id)">
+                  <div class="card-logo-section">
+                    <div class="card-logo">
+                      <span class="logo-placeholder">{{ (event.title || 'E').substring(0, 2).toUpperCase() }}</span>
+                    </div>
+                  </div>
+                  <div class="card-info-summary">
+                    <h3 class="card-title">{{ event.title || 'Esemény' }}</h3>
+                    @if (event.date) {
+                      <p class="card-date">{{ event.date | date:'yyyy.MM.dd.' }}</p>
+                    }
+                  </div>
+                </div>
+                <div class="card-actions">
+                  <button class="action-btn edit" type="button" (click)="startEdit(event); $event.stopPropagation()">Szerkesztés</button>
+                  <button class="action-btn delete" type="button" (click)="deleteEvent(event.id); $event.stopPropagation()">Törlés</button>
+                  <button class="expand-btn" type="button" (click)="toggleExpanded(event.id); $event.stopPropagation()">
+                    <span class="expand-icon">{{ expandedEventId === event.id ? '−' : '+' }}</span>
+                  </button>
+                </div>
+              </div>
+
+              @if (expandedEventId === event.id) {
+                <div class="card-content">
+                  @if (event.description) {
+                    <div class="content-section">
+                      <h4>Leírás</h4>
+                      <p>{{ event.description }}</p>
+                    </div>
+                  }
+
+                  @if (event.location) {
+                    <div class="content-section">
+                      <h4>Helyszín</h4>
+                      <p>{{ event.location }}</p>
+                    </div>
+                  }
+
+                  @if (event.date) {
+                    <div class="content-section">
+                      <h4>Dátum és Idő</h4>
+                      <p>{{ event.date | date:'yyyy. MMMM dd., HH:mm' }}</p>
+                    </div>
+                  }
+
+                  @if (event.capacity) {
+                    <div class="content-section">
+                      <h4>Kapacitás</h4>
+                      <p>{{ event.capacity }} fő</p>
+                    </div>
+                  }
+
+                  @if (event.status) {
+                    <div class="content-section">
+                      <h4>Státusz</h4>
+                      <span class="status-badge" [class.active]="event.status === 'Aktív'">{{ event.status }}</span>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        } @else {
+          <div class="no-events">
+            <p>{{ searchTerm ? 'Nincs olyan esemény, amely megfelel a keresési feltételeknek.' : 'Nincs esemény ennél a szervezetnél.' }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (!organizationEvents || organizationEvents.length === 0) {
+    <div class="empty-state">
+      <p>Nincs megjeleníthető szervezet.</p>
+    </div>
+  }
+</div>

@@ -1,12 +1,12 @@
 <div class="organizations-container">
   <h1 class="page-title">Szervezetek</h1>
-  <div style="width:100%; display:flex;">
-    <a routerLink="/ownorganizations" class="ownorg-btn" style="margin-top: 1rem; margin-bottom: 2rem;">Saját szervezetek</a>
+  <div class="ownorg">
+    <a routerLink="/ownorganizations" class="ownorg-btn">Saját szervezetek</a>
   </div>
   <div class="cards-grid">
     @for (org of organizations; track org.id) {
       <div class="org-card" [class.expanded]="expandedOrgId === org.id">
-        <!-- Card Header -->
+        
         <div class="card-header" (click)="toggleExpanded(org.id)">
           <div class="card-logo-section">
             <div class="card-logo">
@@ -28,7 +28,7 @@
           </button>
         </div>
 
-        <!-- Card Content -->
+       
         @if (expandedOrgId === org.id) {
           <div class="card-content">
             <div class="content-section">
