@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthApi } from '../shared/auth-api';
 import { AuthService } from '../shared/auth-service';
 import { RouterLink } from "@angular/router";
+import { matchControls, phoneValidator } from '../shared/form-validators';
 
 
 @Component({
@@ -19,24 +20,31 @@ export class Registration {
     private authService: AuthService
   ) {}
 
-  registerForm: any;
+  registerForm!: FormGroup;
 
 ngOnInit() {
-  this.registerForm = this.builder.group({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
-    phone: '',
-    city: '',
-    about: '',
-    interest: '',
-    qualification: '',
-    experience: ''
-  });
+  this.registerForm = this.builder.group(
+    {
+      name: '',
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      password_confirmation: ['', [Validators.required]],
+      phone: ['', [phoneValidator()]],
+      city: '',
+      about: '',
+      interest: '',
+      qualification: '',
+      experience: ''
+    },
+    { validators: matchControls('password', 'password_confirmation') }
+  );
 }
 
   register() {
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
+    }
     this.auth.register$(this.registerForm.value).subscribe({
       next: (res: any) => {
 

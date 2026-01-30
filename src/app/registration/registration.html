@@ -14,18 +14,39 @@
 				<div class="form-field">
 					<label for="email">Email</label>
 					<input id="email" type="email" formControlName="email">
+					@if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']) {
+						<div class="input-error">Email megadása kötelező</div>
+					}
+					@if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']) {
+						<div class="input-error">Hibás email formátum</div>
+					}
 				</div>
 				<div class="form-field">
 					<label for="password">Jelszó</label>
 					<input id="password" type="password" formControlName="password">
+					@if (registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']) {
+						<div class="input-error">Jelszó megadása kötelező</div>
+					}
+					@if (registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['minlength']) {
+						<div class="input-error">A jelszó legalább 6 karakter legyen</div>
+					}
 				</div>
 				<div class="form-field">
 					<label for="password_confirmation">Jelszó megerősítése</label>
 					<input id="password_confirmation" type="password" formControlName="password_confirmation">
+					@if (registerForm.get('password_confirmation')?.touched && registerForm.get('password_confirmation')?.errors?.['required']) {
+						<div class="input-error">Jelszó megerősítése kötelező</div>
+					}
+					@if (registerForm.get('password_confirmation')?.touched && registerForm.errors?.['mismatch']) {
+						<div class="input-error">A két jelszó nem egyezik</div>
+					}
 				</div>
 				<div class="form-field">
 					<label for="phone">Telefonszám</label>
-					<input id="phone" type="text" formControlName="phone">
+					<input id="phone" type="text" formControlName="phone" placeholder="+36 30 111 1111">
+					@if (registerForm.get('phone')?.touched && (registerForm.get('phone')?.errors?.['phoneInvalidChars'] || registerForm.get('phone')?.errors?.['phoneDigits'])) {
+						<div class="input-error">Hibás telefonszám formátum</div>
+					}
 				</div>
 				<div class="form-field">
 					<label for="city">Város</label>
@@ -49,7 +70,7 @@
 				</div>
 			</div>
 
-			<button class="registration-button" type="submit">Regisztráció</button>
+			<button class="registration-button" type="submit" [disabled]="registerForm.invalid">Regisztráció</button>
 		</form>
 
 		<p class="registration-link">Van már fiókod? <a routerLink="/auth">Jelentkezz be</a></p>

@@ -30,7 +30,8 @@
                 </label>
                 <label>
                     Telefonszám
-                    <input formControlName="phone" />
+                    <input type="tel" formControlName="phone" placeholder="+36 30 111 1111" />
+                    <span *ngIf="organizationForm.get('phone')?.invalid && organizationForm.get('phone')?.touched" class="input-error">Hibás telefonszám formátum</span>
                 </label>
                 <label>
                     Email
@@ -48,7 +49,8 @@
                 </label>
                 <label>
                     Bankszámla
-                    <input formControlName="bank_account" />
+                    <input formControlName="bank_account" placeholder="pl:xxxx-xxxx" />
+                    <span *ngIf="organizationForm.get('bank_account')?.touched && organizationForm.get('bank_account')?.errors?.['bankAccount']" class="input-error">Hibás bankszámla formátum</span>
                 </label>
             </div>
             <label class="full-width">

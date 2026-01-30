@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterLink } from '@angular/router';
 import { Organizationapi } from '../shared/organizationapi';
 import { AuthService } from '../shared/auth-service';
+import { bankAccountValidator, phoneValidator } from '../shared/form-validators';
 
 @Component({
   selector: 'app-ownorganizations',
@@ -39,11 +40,11 @@ export class Ownorganizations implements OnInit {
           name: [''],
           description: [''],
           category: [''],
-          phone: [''],
+          phone: ['', [phoneValidator()]],
           address: [''],
           email: ['', [Validators.email]],
           website: ['', [Validators.pattern('^(https?:\\/\\/)?([\\w-]+\\.)+[\\w-]+(\\/\\S*)?$')]],
-          bank_account: ['']
+          bank_account: ['', [bankAccountValidator()]]
         });
   }
 
@@ -108,6 +109,7 @@ export class Ownorganizations implements OnInit {
 
   submitForm() {
     if (this.organizationForm.invalid || this.submitting) {
+      this.organizationForm.markAllAsTouched();
       return;
     }
 
