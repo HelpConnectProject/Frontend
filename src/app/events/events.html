@@ -4,6 +4,7 @@
     <a routerLink="/ownevents" class="ownev-btn">Saját események</a>
   </div>
 
+
   <!-- Keresőmotor -->
   <div class="search-section">
     <div class="search-header">
@@ -41,7 +42,28 @@
             />
             <div class="input-highlight"></div>
           </div>
+
+          <div class="search-input-group">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M3 21h18"></path>
+              <path d="M5 21V7l7-4 7 4v14"></path>
+              <path d="M9 21v-6h6v6"></path>
+            </svg>
+            <input
+              type="text"
+              formControlName="organizationName"
+              placeholder="Szervezet neve..."
+              class="search-input"
+            />
+            <div class="input-highlight"></div>
+          </div>
         </div>
+
+        <label class="only-registered-toggle">
+          <input type="checkbox" formControlName="onlyRegistered" class="only-registered-checkbox" />
+          <span class="toggle-slider" aria-hidden="true"></span>
+          <span class="toggle-text">Csak a jelentkezett események</span>
+        </label>
 
         <button 
           type="button" 
@@ -60,7 +82,7 @@
 
   <div class="cards-grid">
     @for (event of filteredEvents; track event.id) {
-      <div class="event-card" [class.expanded]="expandedEventId === event.id">
+      <div class="event-card" [class.expanded]="expandedEventId === event.id" [class.registered]="isRegistered(event.id)">
         <div class="card-header" (click)="toggleExpanded(event.id)">
           <div class="card-logo-section">
             <div class="card-logo">
@@ -119,14 +141,20 @@
               </div>
             }
 
-            @if (event.organization) {
+            @if (event.organization_id) {
               <div class="content-section">
                 <h4>Szervezet</h4>
-                <p>{{ event.organization }}</p>
+                <p>{{ organizationNameById[event.organization_id]}}</p>
               </div>
             }
           </div>
+          @if (isRegistered(event.id)) {
+            <button class="btn-unregister" (click)="deleteEventRegistration(event.id)">Lemondom a jelentkezést</button>
+          } @else {
+            <button class="btn-register" (click)="registerToEvent(event.id)">Jelentkezem</button>
+          }
         }
+            
       </div>
     }
   </div>

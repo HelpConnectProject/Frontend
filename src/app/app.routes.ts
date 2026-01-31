@@ -7,6 +7,7 @@ import { Ownorganizations } from './ownorganizations/ownorganizations';
 import { Events } from './events/events';
 import { Ownevents } from './ownevents/ownevents';
 
+
 export const routes: Routes = [
     { path: 'home', component: Home },
     { path: '', redirectTo: 'home', pathMatch: 'full' },
