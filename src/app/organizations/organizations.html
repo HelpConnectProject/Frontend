@@ -7,7 +7,7 @@
     @for (org of organizations; track org.id) {
       <div class="org-card" [class.expanded]="expandedOrgId === org.id">
         
-        <div class="card-header" (click)="toggleExpanded(org.id)">
+        <div class="card-header">
           <div class="card-logo-section">
             <div class="card-logo">
               @if (org.logo) {
@@ -18,64 +18,15 @@
             </div>
           </div>
           <div class="card-info-summary">
-            <h3 class="card-title">{{ org.name }}</h3>
+            <h3 class="card-title">
+              <a [routerLink]="['/aboutorganization', org.id]">{{ org.name }}</a>
+            </h3>
             @if (org.category) {
               <p class="card-category">{{ org.category }}</p>
             }
           </div>
-          <button class="expand-btn" (click)="toggleExpanded(org.id); $event.stopPropagation()">
-            <span class="expand-icon">{{ expandedOrgId === org.id ? '−' : '+' }}</span>
-          </button>
         </div>
-
-       
-        @if (expandedOrgId === org.id) {
-          <div class="card-content">
-            <div class="content-section">
-              <h4>Email</h4>
-              <p>{{ org.email }}</p>
-            </div>
-            
-            @if (org.description) {
-              <div class="content-section">
-                <h4>Leírás</h4>
-                <p>{{ org.description }}</p>
-              </div>
-            }
-            
-            @if (org.phone) {
-              <div class="content-section">
-                <h4>Telefonszám</h4>
-                <p>{{ org.phone }}</p>
-              </div>
-            }
-            
-            @if (org.address) {
-              <div class="content-section">
-                <h4>Cím</h4>
-                <p>{{ org.address }}</p>
-              </div>
-            }
-            
-            @if (org.bank_account) {
-              <div class="content-section">
-                <h4>Bankszámla</h4>
-                <p class="bank-account">{{ org.bank_account }}</p>
-              </div>
-            }
-
-            @if (org.website) {
-              <div class="content-section">
-                <h4>Weboldal</h4>
-                <p>
-                  <a [href]="org.website" target="_blank" rel="noopener noreferrer">
-                    {{ org.website }}
-                  </a>
-                </p>
-              </div>
-            }
-          </div>
-        }
+        <!-- Details removed, now handled by aboutorganization component -->
       </div>
     }
   </div>

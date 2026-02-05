@@ -13,6 +13,11 @@ export class Eventapi {
     return this.http.get(url);
   }
 
+  getInactiveEvents$(id : number) {
+    const url = this.host + 'getinactiveevent/'+id;
+    return this.http.get(url);
+  }
+
  getOwnEvents$() {
     const url = this.host + 'ownevents';
     return this.http.get(url,{

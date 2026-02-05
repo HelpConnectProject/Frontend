@@ -1,0 +1,133 @@
+
+/* Modern About Organization Full-page Design */
+.about-org-modern {
+	min-height: 100vh;
+	background: linear-gradient(135deg, #f8f9fb 0%, #ececf6 100%);
+	padding-bottom: 60px;
+}
+.about-org-nav {
+	width: 100%;
+	padding: 32px 0 0 0;
+	display: flex;
+	justify-content: flex-start;
+	max-width: 900px;
+	margin: 0 auto;
+}
+.back-btn {
+	background: #7660ca;
+	color: #fff;
+	font-weight: 600;
+	border: none;
+	border-radius: 8px;
+	padding: 0.7rem 1.6rem;
+	text-decoration: none;
+	font-size: 1rem;
+	box-shadow: 0 2px 8px rgba(118, 96, 202, 0.10);
+	transition: background 0.2s, box-shadow 0.2s;
+}
+.back-btn:hover {
+	background: #5d4da3;
+	box-shadow: 0 4px 16px rgba(118, 96, 202, 0.18);
+}
+.about-org-main {
+	max-width: 900px;
+	margin: 32px auto 0 auto;
+	background: #fff;
+	border-radius: 18px;
+	box-shadow: 0 4px 24px rgba(118, 96, 202, 0.10);
+	padding: 48px 40px 40px 40px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.about-org-logo-modern {
+	width: 110px;
+	height: 110px;
+	border-radius: 16px;
+	background: #ececf6;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: #7660ca;
+	box-shadow: 0 2px 8px rgba(118, 96, 202, 0.10);
+	overflow: hidden;
+	margin-bottom: 18px;
+}
+.about-org-logo-modern img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 16px;
+}
+.logo-placeholder-modern {
+	font-family: 'Oswald', sans-serif;
+	letter-spacing: 1px;
+	font-size: 2.1rem;
+}
+.about-org-info-modern {
+	text-align: center;
+	margin-bottom: 32px;
+}
+.about-org-title-modern {
+	font-size: 2.3rem;
+	font-weight: 700;
+	color: #7660ca;
+	margin-bottom: 0.3rem;
+	font-family: 'Oswald', sans-serif;
+	letter-spacing: -0.5px;
+}
+.about-org-category-modern {
+	font-size: 1.05rem;
+	color: #5d4da3;
+	text-transform: uppercase;
+	letter-spacing: 0.6px;
+	font-weight: 600;
+}
+.about-org-details-modern {
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 1.2rem;
+}
+.about-org-detail-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-start;
+	background: #f8f9fb;
+	border-radius: 8px;
+	padding: 1.1rem 1.3rem;
+	box-shadow: 0 1px 4px rgba(118, 96, 202, 0.06);
+	margin-bottom: 0.2rem;
+}
+.detail-label {
+	font-size: 1rem;
+	font-weight: 600;
+	color: #7660ca;
+	min-width: 120px;
+	margin-right: 18px;
+}
+.detail-value {
+	font-size: 1.05rem;
+	color: var(--color-text-main);
+	word-break: break-word;
+}
+.bank-account-modern {
+	font-family: 'Courier New', monospace;
+	font-weight: 600;
+	color: #5d4da3;
+	background-color: #ececf6;
+	padding: 0.4rem 0.8rem;
+	border-radius: 6px;
+	word-break: break-all;
+}
+.about-org-notfound, .about-org-loading {
+	text-align: center;
+	margin-top: 4rem;
+	color: var(--color-text-soft);
+	font-size: 1.2rem;
+}

@@ -1,0 +1,81 @@
+
+@if (!loading && org) {
+	<div class="about-org-modern">
+		<nav class="about-org-nav">
+                <a (click)="reset()" routerLink="/organizations" class="back-btn">Vissza a szervezetekhez</a>
+           
+		</nav>
+		<section class="about-org-main">
+			<div class="about-org-logo-modern">
+				@if (org.logo) {
+					<img [src]="org.logo" [alt]="org.name" />
+				} @else {
+					<span class="logo-placeholder-modern">{{ org.name.substring(0, 2).toUpperCase() }}</span>
+				}
+			</div>
+			<div class="about-org-info-modern">
+				<h1 class="about-org-title-modern">{{ org.name }}</h1>
+				@if (org.category) {
+					<span class="about-org-category-modern">{{ org.category }}</span>
+				}
+			</div>
+			<div class="about-org-details-modern">
+				<div class="about-org-detail-row">
+					<span class="detail-label">Email:</span>
+					<span class="detail-value">{{ org.email }}</span>
+				</div>
+				@if (org.description) {
+					<div class="about-org-detail-row">
+						<span class="detail-label">Leírás:</span>
+						<span class="detail-value">{{ org.description }}</span>
+					</div>
+				}
+				@if (org.phone) {
+					<div class="about-org-detail-row">
+						<span class="detail-label">Telefonszám:</span>
+						<span class="detail-value">{{ org.phone }}</span>
+					</div>
+				}
+				@if (org.address) {
+					<div class="about-org-detail-row">
+						<span class="detail-label">Cím:</span>
+						<span class="detail-value">{{ org.address }}</span>
+					</div>
+				}
+				@if (org.bank_account) {
+					<div class="about-org-detail-row">
+						<span class="detail-label">Bankszámla:</span>
+						<span class="detail-value bank-account-modern">{{ org.bank_account }}</span>
+					</div>
+				}
+				@if (org.website) {
+					<div class="about-org-detail-row">
+						<span class="detail-label">Weboldal:</span>
+						<span class="detail-value">
+							<a [href]="org.website" target="_blank" rel="noopener noreferrer">{{ org.website }}</a>
+						</span>
+					</div>
+				}
+
+                <div>
+                    <p>Múltbéli események</p>
+                    @for(event of events; track event.id) {
+                        {{event.title}},
+                        {{event.date | date:'yyyy.MM.dd.hh.mm'}},
+                        <br>
+                    }
+                </div>
+			</div>
+		</section>
+	</div>
+}
+@if (!loading && !org) {
+	<div class="about-org-notfound">
+		<p>A szervezet nem található.</p>
+	</div>
+}
+@if (loading) {
+	<div class="about-org-loading">
+		<p>Betöltés...</p>
+	</div>
+}
