@@ -3,6 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Organizationapi } from '../shared/organizationapi';
 import { Eventapi } from '../shared/eventapi';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../shared/auth-service';
 
 
 @Component({
@@ -20,6 +21,35 @@ export class Aboutorganization implements OnInit {
   events: any = null;
   eventfeedbacks: any = null;
   loading = true;
+
+  private getCurrentUserId(): string | null {
+    const id = localStorage.getItem('id');
+    return id ? String(id) : null;
+  }
+
+  private getFeedbackOwnerId(feedback: any): string | null {
+    if (!feedback) return null;
+    const candidates = [
+      feedback.user_id,
+      feedback.userId,
+      feedback.owner_id,
+      feedback.author_id,
+      feedback.created_by,
+      feedback.user?.id,
+      feedback.user?.user_id,
+      feedback.author?.id,
+    ];
+    const found = candidates.find((v) => v !== undefined && v !== null && String(v).length > 0);
+    return found !== undefined ? String(found) : null;
+  }
+
+  canDeleteFeedback(feedback: any): boolean {
+    const currentUserId = this.getCurrentUserId();
+    if (!currentUserId) return false;
+    const ownerId = this.getFeedbackOwnerId(feedback);
+    if (!ownerId) return false;
+    return ownerId === currentUserId;
+  }
 
   addFeedback(eventId: number, formEvent: Event) {
     formEvent.preventDefault();
@@ -48,9 +78,25 @@ export class Aboutorganization implements OnInit {
       }
     });
   }
-  constructor(private route: ActivatedRoute, private organizationapi: Organizationapi, private eventapi: Eventapi) {}
+  constructor(private route: ActivatedRoute, private organizationapi: Organizationapi, private eventapi: Eventapi, public authService: AuthService) {}
 
-
+  deleteFeedback(id:number){
+      this.organizationapi.deleteFeedback$(id).subscribe({
+        next: () => {
+          console.log("Sikeres törlés");
+			if (this.events && Array.isArray(this.events)) {
+				for (const event of this.events) {
+					if (event?.feedbacks && Array.isArray(event.feedbacks)) {
+						event.feedbacks = event.feedbacks.filter((f: any) => f?.id !== id);
+					}
+				}
+			}
+          
+        },error: () => {
+          console.log("Nem sikerült törölni a visszajelzést");
+        }
+      })
+  }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');

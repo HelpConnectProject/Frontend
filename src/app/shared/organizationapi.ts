@@ -37,6 +37,15 @@ export class Organizationapi {
     });
   }
 
+  deleteFeedback$(id: number) {
+    const url = `${this.host}deletefeedback/${id}`;
+    return this.http.delete(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+  }
+
   
 
   addOrganization$(payload: any) {

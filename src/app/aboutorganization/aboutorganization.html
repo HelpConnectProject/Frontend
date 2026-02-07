@@ -57,22 +57,40 @@
 					</div>
 				}
 
-                <div>
-					<p>Múltbéli események</p>
-					@for(event of events; track event.id) {
-						<div class="event-feedback-block">
-							<b>{{event.title}}</b> ({{event.date | date:'yyyy.MM.dd.hh.mm'}})<br>
+				<section class="past-events-section">
+					<h2 class="past-events-title">Múltbéli események</h2>
+					@if (events && events.length > 0) {
+						<div class="past-events-list">
+							@for(event of events; track event.id) {
+								<article class="event-feedback-block">
+									<div class="event-card-header">
+										<div class="event-card-title">{{ event.title }}</div>
+										<div class="event-card-meta">{{ event.date | date:'yyyy.MM.dd. HH:mm' }}</div>
+									</div>
 							@if(event.feedbacks && event.feedbacks.length > 0) {
 								<div class="event-feedback-list">
 									<b>Visszajelzések:</b><br>
 									@for(feedback of event.feedbacks; track feedback.id) {
-										<span>{{feedback.comment}}</span> -
-										<span class="star-rating-static">
-											@for(star of getStars(5); track star) {
-												<span class="star" [class.filled]="star <= feedback.rating">&#9733;</span>
+										<div class="feedback-item">
+											<div class="feedback-left">
+												<div class="feedback-text">
+													<span class="feedback-comment">{{feedback.comment}}</span>
+													@if (feedback.updated_at) {
+														<span class="feedback-date">{{ feedback.updated_at | date:'yyyy.MM.dd. HH:mm' }}</span>
+													}
+												</div>
+												<span class="star-rating-static feedback-stars">
+													@for(star of getStars(5); track star) {
+														<span class="star" [class.filled]="star <= feedback.rating">&#9733;</span>
+													}
+												</span>
+											</div>
+											@if (canDeleteFeedback(feedback)) {
+												<div class="feedback-right">
+													<button type="button" class="action-btn delete" (click)="deleteFeedback(feedback.id)">Törlés</button>
+												</div>
 											}
-										</span>
-										<br>
+										</div>
 									}
 								</div>
 							} @else {
@@ -81,16 +99,20 @@
 							<form (submit)="addFeedback(event.id, $event)" class="event-feedback-form">
 								<input type="text" name="comment" placeholder="Komment" required class="feedback-input">
 								<span class="star-rating">
-									@for(star of [1,2,3,4,5]; track star) {
+									@for(star of [5,4,3,2,1]; track star) {
 										<input type="radio" id="star-{{event.id}}-{{star}}" name="rating" value="{{star}}" required>
 										<label for="star-{{event.id}}-{{star}}" class="star">&#9733;</label>
 									}
 								</span>
 								<button type="submit" class="feedback-submit-btn">Visszajelzés küldése</button>
 							</form>
+							</article>
+							}
 						</div>
+					} @else {
+						<p class="past-events-empty">Nincs még múltbeli esemény.</p>
 					}
-                </div>
+				</section>
 			</div>
 		</section>
 	</div>
