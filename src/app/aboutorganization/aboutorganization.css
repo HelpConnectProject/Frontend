@@ -1,3 +1,87 @@
+/* --- Esemény visszajelzés blokk --- */
+.event-feedback-block {
+	margin-bottom: 2.2em;
+	background: #f8f9fb;
+	border-radius: 12px;
+	box-shadow: 0 1px 6px rgba(118, 96, 202, 0.07);
+	padding: 1.2em 1.5em 1.5em 1.5em;
+	max-width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.event-feedback-list {
+	margin-left: 1.2em;
+	margin-bottom: 0.7em;
+}
+.event-feedback-form {
+	display: flex;
+	align-items: center;
+	gap: 1em;
+	margin-top: 0.7em;
+	flex-wrap: wrap;
+}
+.feedback-input {
+	flex: 1 1 180px;
+	padding: 0.5em 0.9em;
+	border: 1px solid #d1d1e0;
+	border-radius: 6px;
+	font-size: 1rem;
+	background: #fff;
+	transition: border 0.2s;
+}
+.feedback-input:focus {
+	border: 1.5px solid #7660ca;
+	outline: none;
+}
+.feedback-submit-btn {
+	background: #7660ca;
+	color: #fff;
+	border: none;
+	border-radius: 6px;
+	padding: 0.5em 1.2em;
+	font-weight: 600;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: background 0.2s;
+}
+.feedback-submit-btn:hover {
+	background: #5d4da3;
+}
+/* --- Csillagos értékelő rendszer (interaktív) --- */
+.star-rating {
+	display: flex;
+	flex-direction: row-reverse;
+	gap: 0.1em;
+	font-size: 1.5em;
+	cursor: pointer;
+}
+.star-rating input[type="radio"] {
+	display: none;
+}
+.star-rating label.star {
+	color: #d1d1e0;
+	transition: color 0.2s;
+	cursor: pointer;
+	padding: 0 2px;
+}
+.star-rating input[type="radio"]:checked ~ label.star,
+.star-rating label.star:hover,
+.star-rating label.star:hover ~ label.star {
+	color: #ffb400;
+}
+.star-rating input[type="radio"]:focus + label.star {
+	outline: 2px solid #7660ca;
+}
+/* --- Statikus csillagos értékelés (megjelenítéshez) --- */
+.star-rating-static {
+	font-size: 1.2em;
+	color: #d1d1e0;
+	display: inline-block;
+	vertical-align: middle;
+}
+.star-rating-static .star.filled {
+	color: #ffb400;
+}
 
 /* Modern About Organization Full-page Design */
 .about-org-modern {

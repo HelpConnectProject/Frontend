@@ -5,6 +5,7 @@ import { Organizationapi } from '../shared/organizationapi';
 import { RouterLink } from '@angular/router';
 
 
+
 @Component({
   selector: 'app-organizations',
   imports: [ReactiveFormsModule, CommonModule, RouterLink],
@@ -30,11 +31,13 @@ export class Organizations implements OnInit {
     });
   }
 
+
   toggleExpanded(orgId: number) {
     this.expandedOrgId = this.expandedOrgId === orgId ? null : orgId;
   }
 
   ngOnInit() {
     this.getOrganizations();
+
   }
 }

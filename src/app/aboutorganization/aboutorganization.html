@@ -58,12 +58,38 @@
 				}
 
                 <div>
-                    <p>Múltbéli események</p>
-                    @for(event of events; track event.id) {
-                        {{event.title}},
-                        {{event.date | date:'yyyy.MM.dd.hh.mm'}},
-                        <br>
-                    }
+					<p>Múltbéli események</p>
+					@for(event of events; track event.id) {
+						<div class="event-feedback-block">
+							<b>{{event.title}}</b> ({{event.date | date:'yyyy.MM.dd.hh.mm'}})<br>
+							@if(event.feedbacks && event.feedbacks.length > 0) {
+								<div class="event-feedback-list">
+									<b>Visszajelzések:</b><br>
+									@for(feedback of event.feedbacks; track feedback.id) {
+										<span>{{feedback.comment}}</span> -
+										<span class="star-rating-static">
+											@for(star of getStars(5); track star) {
+												<span class="star" [class.filled]="star <= feedback.rating">&#9733;</span>
+											}
+										</span>
+										<br>
+									}
+								</div>
+							} @else {
+								<span>Nincs visszajelzés.</span><br>
+							}
+							<form (submit)="addFeedback(event.id, $event)" class="event-feedback-form">
+								<input type="text" name="comment" placeholder="Komment" required class="feedback-input">
+								<span class="star-rating">
+									@for(star of [1,2,3,4,5]; track star) {
+										<input type="radio" id="star-{{event.id}}-{{star}}" name="rating" value="{{star}}" required>
+										<label for="star-{{event.id}}-{{star}}" class="star">&#9733;</label>
+									}
+								</span>
+								<button type="submit" class="feedback-submit-btn">Visszajelzés küldése</button>
+							</form>
+						</div>
+					}
                 </div>
 			</div>
 		</section>

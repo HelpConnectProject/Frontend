@@ -23,6 +23,22 @@ export class Organizationapi {
     });
   }
 
+  getEventFeedbacks$(id : number) {
+    const url = this.host + 'eventfeedbacks/'+id;
+    return this.http.get(url);
+  }
+
+  addEventFeedback$(id : number, payload : any){
+    const url = this.host + 'createfeedback/' + id;
+    return this.http.post(url, payload, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+  }
+
+  
+
   addOrganization$(payload: any) {
     const url = this.host + 'addorganization';
     return this.http.post(url, payload, {
