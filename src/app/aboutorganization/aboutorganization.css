@@ -1,4 +1,3 @@
-/* --- Esemény visszajelzés blokk --- */
 .event-feedback-block {
 	margin-bottom: 2.2em;
 	background: #f8f9fb;
@@ -131,13 +130,16 @@
 	background: #5d4da3;
 }
 
-/* Local action button styling (keeps consistency with other pages) */
 .action-btn {
 	padding: 0.55rem 0.9rem;
 	font-size: 0.85rem;
 	border-radius: 8px;
 	border: none;
 	cursor: pointer;
+}
+.action-btn.edit {
+	background: rgba(118, 96, 202, 0.1);
+	color: var(--color-primary);
 }
 .action-btn.delete {
 	background: rgba(220, 53, 69, 0.1);
@@ -146,7 +148,6 @@
 .action-btn.delete:hover {
 	background: rgba(220, 53, 69, 0.16);
 }
-/* --- Csillagos értékelő rendszer (interaktív) --- */
 .star-rating {
 	display: flex;
 	flex-direction: row-reverse;
@@ -171,7 +172,6 @@
 .star-rating input[type="radio"]:focus + label.star {
 	outline: 2px solid #7660ca;
 }
-/* --- Statikus csillagos értékelés (megjelenítéshez) --- */
 .star-rating-static {
 	font-size: 1.2em;
 	color: #d1d1e0;
@@ -182,7 +182,6 @@
 	color: #ffb400;
 }
 
-/* Modern About Organization Full-page Design */
 .about-org-modern {
 	min-height: 100vh;
 	background: linear-gradient(135deg, #f8f9fb 0%, #ececf6 100%);
@@ -253,6 +252,18 @@
 	text-align: center;
 	margin-bottom: 32px;
 }
+.about-org-header-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+.about-org-actions {
+	display: flex;
+	gap: 0.6rem;
+	align-items: center;
+}
 .about-org-title-modern {
 	font-size: 2.3rem;
 	font-weight: 700;
@@ -275,6 +286,47 @@
 	display: flex;
 	flex-direction: column;
 	gap: 1.2rem;
+}
+
+.about-edit-error {
+	width: 100%;
+	background: rgba(220, 53, 69, 0.10);
+	border: 1px solid rgba(220, 53, 69, 0.35);
+	color: #a30015;
+	padding: 0.9rem 1.1rem;
+	border-radius: 10px;
+	font-weight: 600;
+}
+
+.about-edit-input,
+.about-edit-textarea {
+	width: 100%;
+	border: 1px solid #e0e0e0;
+	border-radius: 10px;
+	padding: 0.7rem 0.9rem;
+	font-size: 1rem;
+	color: var(--color-text-main);
+	font-family: inherit;
+}
+
+.about-edit-textarea {
+	resize: vertical;
+}
+
+.about-edit-input:focus,
+.about-edit-textarea:focus {
+	border-color: var(--color-primary);
+	outline: none;
+}
+
+.about-edit-input.title {
+	font-size: 1.8rem;
+	font-weight: 700;
+	color: #7660ca;
+}
+
+.about-edit-input.category {
+	margin-top: 0.5rem;
 }
 .about-org-detail-row {
 	display: flex;

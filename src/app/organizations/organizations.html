@@ -5,8 +5,7 @@
   </div>
   <div class="cards-grid">
     @for (org of organizations; track org.id) {
-      <div class="org-card" [class.expanded]="expandedOrgId === org.id">
-        
+      <div class="org-card">
         <div class="card-header">
           <div class="card-logo-section">
             <div class="card-logo">
@@ -26,7 +25,6 @@
             }
           </div>
         </div>
-        <!-- Details removed, now handled by aboutorganization component -->
       </div>
     }
   </div>

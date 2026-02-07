@@ -23,9 +23,6 @@ export class Ownorganizations implements OnInit {
     }
   organizations: any[] = [];
   organizationForm: FormGroup;
-  expandedOrgId: number | null = null;
-  isEditing = false;
-  editingOrgId: number | null = null;
   submitting = false;
   showForm = false;
   formError: string | null = null;
@@ -33,10 +30,9 @@ export class Ownorganizations implements OnInit {
   constructor(
     private api: Organizationapi,
     private builder: FormBuilder,
-    public authService: AuthService
+    public authService: AuthService,
   ) {
         this.organizationForm = this.builder.group({
-          id: [''],
           name: [''],
           description: [''],
           category: [''],
@@ -71,35 +67,12 @@ export class Ownorganizations implements OnInit {
 
   startCreate() {
     this.resetFormFields();
-    this.isEditing = false;
-    this.editingOrgId = null;
     this.showForm = true;
-    this.scrollToForm();
-  }
-
-  startEdit(org: any) {
-    this.isEditing = true;
-    this.editingOrgId = org.id;
-    this.showForm = true;
-    this.organizationForm.patchValue({
-      id: org.id?.toString() ?? '',
-      name: org.name ?? '',
-      description: org.description ?? '',
-      category: org.category ?? '',
-      phone: org.phone ?? '',
-      address: org.address ?? '',
-      email: org.email ?? '',
-      website: org.website ?? '',
-      bank_account: org.bank_account ?? ''
-    });
-    this.expandedOrgId = org.id;
     this.scrollToForm();
   }
 
   cancelForm() {
     this.showForm = false;
-    this.isEditing = false;
-    this.editingOrgId = null;
     this.resetFormFields();
   }
 
@@ -117,45 +90,15 @@ export class Ownorganizations implements OnInit {
     this.submitting = true;
     this.formError = null;
 
-    if (this.isEditing && this.editingOrgId) {
-      this.api.updateOrganization$(this.editingOrgId, payload).subscribe({
-        next: () => {
-          this.handleSuccess();
-        },
-        error: (err) => {
-          this.handleError(err);
-          this.submitting = false;
-        }
-      });
-    } else {
-      this.api.addOrganization$(payload).subscribe({
-        next: () => {
-          this.handleSuccess();
-        },
-        error: (err) => {
-          this.handleError(err);
-          this.submitting = false;
-        }
-      });
-    }
-  }
-
-  deleteOrganization(id: number) {
-    const confirmed = window.confirm('Biztosan törlöd ezt a szervezetet?');
-    if (!confirmed) {
-      return;
-    }
-
-    this.api.deleteOrganization$(id).subscribe({
-      next: () => {
-        this.handleSuccess(false);
-      },
-      error: () => {}
-    });
-  }
-
-  toggleExpanded(orgId: number) {
-    this.expandedOrgId = this.expandedOrgId === orgId ? null : orgId;
+		this.api.addOrganization$(payload).subscribe({
+			next: () => {
+				this.handleSuccess();
+			},
+			error: (err) => {
+				this.handleError(err);
+				this.submitting = false;
+			}
+		});
   }
 
   private handleSuccess(resetForm: boolean = true) {
@@ -202,18 +145,11 @@ export class Ownorganizations implements OnInit {
       }
     });
 
-    if (this.isEditing && this.editingOrgId) {
-      payload.id = this.editingOrgId;
-    } else {
-      delete payload.id;
-    }
-
     return payload;
   }
 
   private resetFormFields() {
     this.organizationForm.reset({
-      id: '',
       name: '',
       description: '',
       category: '',

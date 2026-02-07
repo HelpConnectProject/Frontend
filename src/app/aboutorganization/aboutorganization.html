@@ -2,8 +2,11 @@
 @if (!loading && org) {
 	<div class="about-org-modern">
 		<nav class="about-org-nav">
-                <a (click)="reset()" routerLink="/organizations" class="back-btn">Vissza a szervezetekhez</a>
-           
+			@if (isOwnView) {
+				<a routerLink="/ownorganizations" class="back-btn">Vissza a saját szervezetekhez</a>
+			} @else {
+				<a (click)="reset()" routerLink="/organizations" class="back-btn">Vissza a szervezetekhez</a>
+			}
 		</nav>
 		<section class="about-org-main">
 			<div class="about-org-logo-modern">
@@ -14,45 +17,102 @@
 				}
 			</div>
 			<div class="about-org-info-modern">
-				<h1 class="about-org-title-modern">{{ org.name }}</h1>
-				@if (org.category) {
-					<span class="about-org-category-modern">{{ org.category }}</span>
-				}
+				<div class="about-org-header-row">
+					<div>
+						@if (!editMode) {
+							<h1 class="about-org-title-modern">{{ org.name }}</h1>
+							@if (org.category) {
+								<span class="about-org-category-modern">{{ org.category }}</span>
+							}
+						} @else {
+							<input class="about-edit-input title" type="text" [formControl]="$any(orgForm.get('name'))" placeholder="Név" />
+							<input class="about-edit-input category" type="text" [formControl]="$any(orgForm.get('category'))" placeholder="Kategória" />
+						}
+					</div>
+					@if (isOwnView) {
+						<div class="about-org-actions">
+							@if (!editMode) {
+								<button type="button" class="action-btn edit" (click)="startEdit()">Szerkesztés</button>
+							} @else {
+								<button type="button" class="action-btn edit" (click)="saveOrganization()" [disabled]="saving">Mentés</button>
+								<button type="button" class="action-btn" (click)="cancelEdit()" [disabled]="saving">Mégse</button>
+							}
+							<button type="button" class="action-btn delete" (click)="deleteOrganization()" [disabled]="saving">Törlés</button>
+						</div>
+					}
+				</div>
 			</div>
 			<div class="about-org-details-modern">
+				@if (editMode && editError) {
+					<div class="about-edit-error">{{ editError }}</div>
+				}
 				<div class="about-org-detail-row">
 					<span class="detail-label">Email:</span>
-					<span class="detail-value">{{ org.email }}</span>
+					<span class="detail-value">
+						@if (!editMode) {
+							{{ org.email }}
+						} @else {
+							<input class="about-edit-input" type="email" [formControl]="$any(orgForm.get('email'))" placeholder="Email" />
+						}
+					</span>
 				</div>
-				@if (org.description) {
+				@if (editMode || org.description) {
 					<div class="about-org-detail-row">
 						<span class="detail-label">Leírás:</span>
-						<span class="detail-value">{{ org.description }}</span>
+						<span class="detail-value">
+							@if (!editMode) {
+								{{ org.description }}
+							} @else {
+								<textarea class="about-edit-textarea" rows="3" [formControl]="$any(orgForm.get('description'))" placeholder="Leírás"></textarea>
+							}
+						</span>
 					</div>
 				}
-				@if (org.phone) {
+				@if (editMode || org.phone) {
 					<div class="about-org-detail-row">
 						<span class="detail-label">Telefonszám:</span>
-						<span class="detail-value">{{ org.phone }}</span>
+						<span class="detail-value">
+							@if (!editMode) {
+								{{ org.phone }}
+							} @else {
+								<input class="about-edit-input" type="tel" [formControl]="$any(orgForm.get('phone'))" placeholder="Telefonszám" />
+							}
+						</span>
 					</div>
 				}
-				@if (org.address) {
+				@if (editMode || org.address) {
 					<div class="about-org-detail-row">
 						<span class="detail-label">Cím:</span>
-						<span class="detail-value">{{ org.address }}</span>
+						<span class="detail-value">
+							@if (!editMode) {
+								{{ org.address }}
+							} @else {
+								<input class="about-edit-input" type="text" [formControl]="$any(orgForm.get('address'))" placeholder="Cím" />
+							}
+						</span>
 					</div>
 				}
-				@if (org.bank_account) {
+				@if (editMode || org.bank_account) {
 					<div class="about-org-detail-row">
 						<span class="detail-label">Bankszámla:</span>
-						<span class="detail-value bank-account-modern">{{ org.bank_account }}</span>
+						<span class="detail-value bank-account-modern">
+							@if (!editMode) {
+								{{ org.bank_account }}
+							} @else {
+								<input class="about-edit-input" type="text" [formControl]="$any(orgForm.get('bank_account'))" placeholder="Bankszámla" />
+							}
+						</span>
 					</div>
 				}
-				@if (org.website) {
+				@if (editMode || org.website) {
 					<div class="about-org-detail-row">
 						<span class="detail-label">Weboldal:</span>
 						<span class="detail-value">
-							<a [href]="org.website" target="_blank" rel="noopener noreferrer">{{ org.website }}</a>
+							@if (!editMode) {
+								<a [href]="org.website" target="_blank" rel="noopener noreferrer">{{ org.website }}</a>
+							} @else {
+								<input class="about-edit-input" type="text" [formControl]="$any(orgForm.get('website'))" placeholder="Weboldal" />
+							}
 						</span>
 					</div>
 				}

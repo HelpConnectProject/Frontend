@@ -19,7 +19,6 @@ export class Events implements OnInit {
   owneventregistrations: any[] = [];
   organizationNameById: Record<number, string> = {};
   filteredEvents: any = null;
-  expandedEventId: number | null = null;
   searchForm: FormGroup;
 
   constructor(
@@ -159,7 +158,4 @@ export class Events implements OnInit {
     this.filteredEvents = this.events;
   }
 
-  toggleExpanded(eventId: number) {
-    this.expandedEventId = this.expandedEventId === eventId ? null : eventId;
-  }
 }

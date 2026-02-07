@@ -19,7 +19,7 @@ export const routes: Routes = [
     {path: "ownorganizations", component: Ownorganizations},
     {path: "events", component: Events},
     {path: "ownevents", component: Ownevents},
-    {path: "aboutevent", component: Aboutevent},
+    {path: "aboutevent/:id", component: Aboutevent},
     {path: "aboutorganization/:id", component: Aboutorganization}
 
 ];

@@ -13,7 +13,7 @@
   @if (showForm) {
     <section class="form-wrapper">
       <div class="form-header">
-        <h2>{{ isEditing ? 'Esemény szerkesztése' : 'Új esemény létrehozása' }}</h2>
+        <h2>Új esemény létrehozása</h2>
         <button class="ghost-btn" type="button" (click)="cancelForm()">Mégse</button>
       </div>
       <div class="form-error">{{ formError }}</div>
@@ -50,7 +50,7 @@
         </label>
         <div class="form-actions">
           <button class="primary-btn" type="submit" [disabled]="submitting">
-            {{ isEditing ? 'Mentés' : 'Esemény létrehozása' }}
+            Esemény létrehozása
           </button>
           <button class="ghost-btn" type="button" (click)="clearFormFields()">Űrlap törlése</button>
         </div>
@@ -100,9 +100,9 @@
       <div class="cards-grid">
         @if (filteredEvents && filteredEvents.length > 0) {
           @for (event of filteredEvents; track event.id) {
-            <div class="event-card" [class.expanded]="expandedEventId === event.id">
+        <div class="event-card">
               <div class="card-header">
-                <div class="card-main" (click)="toggleExpanded(event.id)">
+          <a class="card-main" [routerLink]="['/aboutevent', event.id]" [queryParams]="{ own: 1 }">
                   <div class="card-logo-section">
                     <div class="card-logo">
                       <span class="logo-placeholder">{{ (event.title || 'E').substring(0, 2).toUpperCase() }}</span>
@@ -114,54 +114,8 @@
                       <p class="card-date">{{ event.date | date:'yyyy.MM.dd.' }}</p>
                     }
                   </div>
-                </div>
-                <div class="card-actions">
-                  <button class="action-btn edit" type="button" (click)="startEdit(event); $event.stopPropagation()">Szerkesztés</button>
-                  <button class="action-btn delete" type="button" (click)="deleteEvent(event.id); $event.stopPropagation()">Törlés</button>
-                  <button class="expand-btn" type="button" (click)="toggleExpanded(event.id); $event.stopPropagation()">
-                    <span class="expand-icon">{{ expandedEventId === event.id ? '−' : '+' }}</span>
-                  </button>
-                </div>
+          </a>
               </div>
-
-              @if (expandedEventId === event.id) {
-                <div class="card-content">
-                  @if (event.description) {
-                    <div class="content-section">
-                      <h4>Leírás</h4>
-                      <p>{{ event.description }}</p>
-                    </div>
-                  }
-
-                  @if (event.location) {
-                    <div class="content-section">
-                      <h4>Helyszín</h4>
-                      <p>{{ event.location }}</p>
-                    </div>
-                  }
-
-                  @if (event.date) {
-                    <div class="content-section">
-                      <h4>Dátum és Idő</h4>
-                      <p>{{ event.date | date:'yyyy. MMMM dd., HH:mm' }}</p>
-                    </div>
-                  }
-
-                  @if (event.capacity) {
-                    <div class="content-section">
-                      <h4>Kapacitás</h4>
-                      <p>{{ event.capacity }} fő</p>
-                    </div>
-                  }
-
-                  @if (event.status) {
-                    <div class="content-section">
-                      <h4>Státusz</h4>
-                      <span class="status-badge" [class.active]="event.status === 'Aktív'">{{ event.status }}</span>
-                    </div>
-                  }
-                </div>
-              }
             </div>
           }
         } @else {

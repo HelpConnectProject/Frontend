@@ -1,1 +1,169 @@
-<p>aboutevent works!</p>
+@if (!loading && event) {
+	<div class="about-event-modern">
+		<nav class="about-event-nav">
+			@if (isOwnView) {
+				<a routerLink="/ownevents" class="back-btn">Vissza a saját eseményekhez</a>
+			} @else {
+				<a routerLink="/events" class="back-btn">Vissza az eseményekhez</a>
+			}
+		</nav>
+
+		<section class="about-event-main">
+			<div class="about-event-logo">
+				@if (event.image) {
+					<img [src]="event.image" [alt]="event.title" />
+				} @else {
+					<span class="logo-placeholder-modern">{{ (event.title || 'E').substring(0, 2).toUpperCase() }}</span>
+				}
+			</div>
+
+			<div class="about-event-info">
+				<div class="about-event-header-row">
+					<div>
+						@if (!editMode) {
+							<h1 class="about-event-title">{{ event.title || 'Esemény' }}</h1>
+							@if (event.date) {
+								<div class="about-event-subtitle">{{ event.date | date:'yyyy.MM.dd. HH:mm' }}</div>
+							}
+						} @else {
+							<input class="about-edit-input title" type="text" [formControl]="$any(eventForm.get('title'))" placeholder="Cím" />
+							<input class="about-edit-input" type="datetime-local" [formControl]="$any(eventForm.get('date'))" placeholder="Dátum" />
+						}
+					</div>
+
+					@if (isOwnView) {
+						<div class="about-event-actions">
+							@if (!editMode) {
+								<button type="button" class="action-btn edit" (click)="startEdit()">Szerkesztés</button>
+							} @else {
+								<button type="button" class="action-btn edit" (click)="saveEvent()" [disabled]="saving">Mentés</button>
+								<button type="button" class="action-btn" (click)="cancelEdit()" [disabled]="saving">Mégse</button>
+							}
+							<button type="button" class="action-btn delete" (click)="deleteEvent()" [disabled]="saving">Törlés</button>
+						</div>
+					}
+				</div>
+
+				@if (!isOwnView && event.id) {
+					<div class="about-event-cta">
+						@if (isRegistered(event.id)) {
+							<button type="button" class="btn-unregister" (click)="deleteEventRegistration(event.id)">Lemondom a jelentkezést</button>
+						} @else {
+							<button type="button" class="btn-register" (click)="registerToEvent(event.id)">Jelentkezem</button>
+						}
+					</div>
+				}
+			</div>
+
+			<div class="about-event-details">
+				@if (editMode && editError) {
+					<div class="about-edit-error">{{ editError }}</div>
+				}
+				@if (editMode || event.description) {
+					<div class="about-event-detail-row">
+						<span class="detail-label">Leírás:</span>
+						<span class="detail-value">
+							@if (!editMode) {
+								{{ event.description }}
+							} @else {
+								<textarea class="about-edit-textarea" rows="3" [formControl]="$any(eventForm.get('description'))" placeholder="Leírás"></textarea>
+							}
+						</span>
+					</div>
+				}
+
+				@if (editMode || event.location) {
+					<div class="about-event-detail-row">
+						<span class="detail-label">Helyszín:</span>
+						<span class="detail-value">
+							@if (!editMode) {
+								{{ event.location }}
+							} @else {
+								<input class="about-edit-input" type="text" [formControl]="$any(eventForm.get('location'))" placeholder="Helyszín" />
+							}
+						</span>
+					</div>
+				}
+
+				@if (event.start_time) {
+					<div class="about-event-detail-row">
+						<span class="detail-label">Kezdés:</span>
+						<span class="detail-value">{{ event.start_time | date:'HH:mm' }}</span>
+					</div>
+				}
+
+				@if (event.end_time) {
+					<div class="about-event-detail-row">
+						<span class="detail-label">Befejezés:</span>
+						<span class="detail-value">{{ event.end_time | date:'HH:mm' }}</span>
+					</div>
+				}
+
+				@if (editMode || event.capacity) {
+					<div class="about-event-detail-row">
+						<span class="detail-label">Kapacitás:</span>
+						<span class="detail-value">
+							@if (!editMode) {
+								{{ event.capacity }} fő
+							} @else {
+								<input class="about-edit-input" type="number" [formControl]="$any(eventForm.get('capacity'))" placeholder="Kapacitás" />
+							}
+						</span>
+					</div>
+				}
+
+				@if (editMode || event.status) {
+					<div class="about-event-detail-row">
+						<span class="detail-label">Státusz:</span>
+						<span class="detail-value">
+							@if (!editMode) {
+								{{ event.status }}
+							} @else {
+								<select class="about-edit-input" [formControl]="$any(eventForm.get('status'))">
+									<option value="Aktív">Aktív</option>
+									<option value="Inaktív">Inaktív</option>
+								</select>
+							}
+						</span>
+					</div>
+				}
+
+				@if (editMode || event.category) {
+					<div class="about-event-detail-row">
+						<span class="detail-label">Kategória:</span>
+						<span class="detail-value">
+							@if (!editMode) {
+								{{ event.category }}
+							} @else {
+								<input class="about-edit-input" type="text" [formControl]="$any(eventForm.get('category'))" placeholder="Kategória" />
+							}
+						</span>
+					</div>
+				}
+
+				@if (event.organization_id) {
+					<div class="about-event-detail-row">
+						<span class="detail-label">Szervezet:</span>
+						<span class="detail-value">
+							<a [routerLink]="['/aboutorganization', event.organization_id]">
+								{{ organizationNameById[event.organization_id] || ('#' + event.organization_id) }}
+							</a>
+						</span>
+					</div>
+				}
+			</div>
+		</section>
+	</div>
+}
+
+@if (!loading && !event) {
+	<div class="about-event-notfound">
+		<p>Az esemény nem található.</p>
+	</div>
+}
+
+@if (loading) {
+	<div class="about-event-loading">
+		<p>Betöltés...</p>
+	</div>
+}

@@ -103,6 +103,11 @@ textarea:focus {
   outline: none;
 }
 
+.card-main {
+  text-decoration: none;
+  color: inherit;
+}
+
 textarea {
   resize: vertical;
 }

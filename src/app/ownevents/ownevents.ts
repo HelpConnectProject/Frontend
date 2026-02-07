@@ -4,10 +4,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Eventapi } from '../shared/eventapi';
 import { Organizationapi } from '../shared/organizationapi';
 import { AuthService } from '../shared/auth-service';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-ownevents',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './ownevents.html',
   styleUrl: './ownevents.css',
 })
@@ -17,13 +18,10 @@ export class Ownevents implements OnInit {
   selectedOrgEvents: any[] = [];
   filteredEvents: any[] = [];
   searchTerm: string = '';
-  expandedEventId: number | null = null;
   isDropdownOpen: boolean = false;
+	private pendingOrgId: number | null = null;
   
   eventForm: FormGroup;
-  expandedOrgId: number | null = null;
-  isEditing = false;
-  editingEventId: number | null = null;
   submitting = false;
   showForm = false;
   formError: string | null = null;
@@ -32,10 +30,10 @@ export class Ownevents implements OnInit {
     private eventapi: Eventapi,
     private organizationapi: Organizationapi,
     private builder: FormBuilder,
-    public authService: AuthService
+    public authService: AuthService,
+		private route: ActivatedRoute
   ) {
     this.eventForm = this.builder.group({
-      id: [''],
       title: ['', Validators.required],
       description: [''],
       location: [''],
@@ -46,6 +44,10 @@ export class Ownevents implements OnInit {
   }
 
   ngOnInit() {
+    const orgIdParam = this.route.snapshot.queryParamMap.get('orgId');
+    this.pendingOrgId = orgIdParam ? Number(orgIdParam) : null;
+    if (this.pendingOrgId !== null && Number.isNaN(this.pendingOrgId)) this.pendingOrgId = null;
+
     if (this.authService.isLoggedInSubject.value) {
       this.getOwnEvents();
     } else {
@@ -85,7 +87,10 @@ export class Ownevents implements OnInit {
             });
             
             if (this.organizationEvents.length > 0) {
-              this.selectOrganization(this.organizationEvents[0]);
+					const preselect = this.pendingOrgId
+						? this.organizationEvents.find((o: any) => o?.organization_id === this.pendingOrgId)
+						: null;
+					this.selectOrganization(preselect ?? this.organizationEvents[0]);
             }
           },
           error: () => {},
@@ -110,7 +115,6 @@ export class Ownevents implements OnInit {
     this.searchTerm = '';
     this.closeDropdown();
   }
-
   onSearchChange() {
     if (!this.searchTerm.trim()) {
       this.filteredEvents = [...this.selectedOrgEvents];
@@ -124,39 +128,14 @@ export class Ownevents implements OnInit {
     }
   }
 
-  toggleExpanded(eventId: number) {
-    this.expandedEventId = this.expandedEventId === eventId ? null : eventId;
-  }
-
   startCreate() {
     this.resetFormFields();
-    this.isEditing = false;
-    this.editingEventId = null;
     this.showForm = true;
-    this.scrollToForm();
-  }
-
-  startEdit(event: any) {
-    this.isEditing = true;
-    this.editingEventId = event.id;
-    this.showForm = true;
-    this.eventForm.patchValue({
-      id: event.id?.toString() ?? '',
-      title: event.title ?? '',
-      description: event.description ?? '',
-      location: event.location ?? '',
-      date: event.date ?? '',
-      capacity: event.capacity ?? '',
-      status: event.status ?? 'Aktív'
-    });
-    this.expandedEventId = event.id;
     this.scrollToForm();
   }
 
   cancelForm() {
     this.showForm = false;
-    this.isEditing = false;
-    this.editingEventId = null;
     this.resetFormFields();
   }
 
@@ -172,44 +151,15 @@ export class Ownevents implements OnInit {
     const payload = this.buildPayload();
     this.submitting = true;
     this.formError = null;
-    const organizationId = this.selectedOrganization?.organization_id;
-    if (this.isEditing && this.editingEventId) {
-      this.eventapi.updateEvent$(this.editingEventId, organizationId, payload).subscribe({
-        next: () => {
-          this.handleSuccess();
-        },
-        error: (err) => {
-          this.handleError(err);
-          this.submitting = false;
-        }
-      });
-    } else {
-      this.eventapi.addEvent$(payload, this.selectedOrganization?.organization_id).subscribe({
-        next: () => {
-          this.handleSuccess();
-        },
-        error: (err) => {
-          this.handleError(err);
-          this.submitting = false;
-        }
-      });
-    }
-  }
-
-  deleteEvent(id: number) {
-    const confirmed = window.confirm('Biztosan törlöd ezt az eseményt?');
-    if (!confirmed) {
-      return;
-    }
-
-    this.eventapi.deleteEvent$(id, this.selectedOrganization?.organization_id).subscribe({
-      next: () => {
-        this.handleSuccess(false);
-      },
-      error: (err) => {
-        this.handleError(err);
-      }
-    });
+		this.eventapi.addEvent$(payload, this.selectedOrganization?.organization_id).subscribe({
+			next: () => {
+				this.handleSuccess();
+			},
+			error: (err) => {
+				this.handleError(err);
+				this.submitting = false;
+			}
+		});
   }
 
   private handleSuccess(resetForm: boolean = true) {
@@ -252,18 +202,11 @@ export class Ownevents implements OnInit {
       }
     });
 
-    if (this.isEditing && this.editingEventId) {
-      payload.id = this.editingEventId;
-    } else {
-      delete payload.id;
-    }
-
     return payload;
   }
 
   private resetFormFields() {
     this.eventForm.reset({
-      id: '',
       title: '',
       description: '',
       location: '',

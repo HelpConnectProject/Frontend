@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Organizationapi } from '../shared/organizationapi';
 import { RouterLink } from '@angular/router';
@@ -14,30 +14,21 @@ import { RouterLink } from '@angular/router';
 })
 export class Organizations implements OnInit {
   organizations: any = null;
-  expandedOrgId: number | null = null;
 
   constructor(
-    private organizationapi: Organizationapi,
-    private build: FormBuilder
+    private organizationapi: Organizationapi
   ) {}
 
   getOrganizations() {
     this.organizationapi.getOrganizations$().subscribe({
       next: (result: any) => {
         this.organizations = result.data;
-        console.log(this.organizations.data);
       },
       error: () => {},
     });
   }
 
-
-  toggleExpanded(orgId: number) {
-    this.expandedOrgId = this.expandedOrgId === orgId ? null : orgId;
-  }
-
   ngOnInit() {
     this.getOrganizations();
-
   }
 }

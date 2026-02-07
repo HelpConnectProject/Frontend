@@ -192,6 +192,8 @@ textarea {
   flex: 1;
   min-width: 250px;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 
 .card-logo {
