@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/enviroment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Organizationapi {
-
-  host = 'http://localhost:8000/api/'
+	readonly host = environment.host;
   constructor(private http: HttpClient) {}
 
   getOrganizations$() {

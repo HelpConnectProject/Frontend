@@ -309,6 +309,7 @@
   background: radial-gradient(circle, rgba(118, 96, 202, 0.08) 0%, transparent 70%);
   border-radius: 50%;
   z-index: 0;
+	pointer-events: none;
 }
 
 .events-container::after {
@@ -321,6 +322,7 @@
   background: radial-gradient(circle, rgba(118, 96, 202, 0.06) 0%, transparent 70%);
   border-radius: 50%;
   z-index: 0;
+	pointer-events: none;
 }
 
 /* ========== PAGE TITLE ========== */

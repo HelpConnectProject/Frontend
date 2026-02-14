@@ -1,23 +1,48 @@
-<nav class="navbar">
-  
-  <div class="logo">
-    <img src="logo.png" alt="Logo" class="logo-img">
-    <span class="logo-text">Help<span class="highlight">Connect</span></span>
+<nav class="navbar" [class.navbar--open]="isMenuOpen">
+  <div class="navbar__inner">
+    <a class="navbar__brand" routerLink="/home" (click)="closeMenu()" aria-label="HelpConnect főoldal">
+      <img src="logo.png" alt="" class="navbar__logo">
+      <span class="navbar__title">Help<span class="navbar__title-accent">Connect</span></span>
+    </a>
+
+    <div class="navbar__links" aria-label="Fő navigáció">
+      <a class="navbar__link" routerLink="/home" routerLinkActive="is-active" (click)="closeMenu()">Főoldal</a>
+      <a class="navbar__link" routerLink="/events" routerLinkActive="is-active" (click)="closeMenu()">Események</a>
+      <a class="navbar__link" routerLink="/organizations" routerLinkActive="is-active" (click)="closeMenu()">Szervezetek</a>
+      <a class="navbar__link" routerLink="/auth" routerLinkActive="is-active" (click)="closeMenu()">Belépés</a>
+    </div>
+
+    <button
+      type="button"
+      class="navbar__burger"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="isMenuOpen"
+      aria-controls="mobileMenu"
+      aria-label="Menü">
+      <span class="burger" [class.burger--open]="isMenuOpen" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
   </div>
 
-  
-  <div class="hamburger" (click)="toggleMenu()">
-    <span [class.active]="isMenuOpen"></span>
-    <span [class.active]="isMenuOpen"></span>
-    <span [class.active]="isMenuOpen"></span>
-  </div>
+  @if (isMenuOpen) {
+    <div class="navbar__backdrop" (click)="closeMenu()" aria-hidden="true"></div>
+  }
 
-  <ul class="nav-links" [class.active]="isMenuOpen">
-    <li><a routerLink="home">Főoldal</a></li>
-    <li><a routerLink="auth">Belépés/Regisztráció</a></li>
-    <li><a routerLink="events">Események</a></li>
-    <li><a routerLink="organizations">Szervezetek</a></li>
-    <li><a routerLink="">Kapcsolat</a></li>
-  </ul>
+  <aside id="mobileMenu" class="navbar__drawer" [class.navbar__drawer--open]="isMenuOpen" aria-label="Mobil menü">
+    <div class="drawer__header">
+      <div class="drawer__title">Menü</div>
+      <button type="button" class="drawer__close" (click)="closeMenu()" aria-label="Bezárás">×</button>
+    </div>
+
+    <nav class="drawer__nav">
+      <a class="drawer__link" routerLink="/home" (click)="closeMenu()">Főoldal</a>
+      <a class="drawer__link" routerLink="/events" (click)="closeMenu()">Események</a>
+      <a class="drawer__link" routerLink="/organizations" (click)="closeMenu()">Szervezetek</a>
+      <a class="drawer__link" routerLink="/auth" (click)="closeMenu()">Belépés / Profil</a>
+    </nav>
+  </aside>
 </nav>
 
