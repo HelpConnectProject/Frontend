@@ -5,6 +5,7 @@ import { Eventapi } from '../shared/eventapi';
 import { Organizationapi } from '../shared/organizationapi';
 import { AuthService } from '../shared/auth-service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { scrollToSelector } from '../shared/dom';
 
 @Component({
   selector: 'app-ownevents',
@@ -59,13 +60,8 @@ export class Ownevents implements OnInit {
     }
   }
 
-  scrollToForm() {
-    setTimeout(() => {
-      const formSection = document.querySelector('.form-wrapper');
-      if (formSection) {
-        formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 0);
+  private scrollToForm() {
+    scrollToSelector('.form-wrapper');
   }
 
   getOwnEvents() {

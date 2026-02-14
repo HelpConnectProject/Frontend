@@ -1,3 +1,4 @@
+
 .navbar {
 	position: fixed;
 	top: 0;
@@ -41,7 +42,7 @@
 
 .navbar__title {
 	font-size: 1.4rem;
-	font-weight: 700;
+	font-weight: 800;
 }
 
 .navbar__title-accent {
@@ -57,7 +58,7 @@
 .navbar__link {
 	text-decoration: none;
 	color: rgba(255, 255, 255, 0.92);
-	font-weight: 600;
+	font-weight: 700;
 	font-size: 0.95rem;
 	padding: 10px 12px;
 	border-radius: var(--radius-md);
@@ -149,7 +150,7 @@
 .drawer__title {
 	font-family: var(--font-heading);
 	font-size: 1.2rem;
-	font-weight: 700;
+	font-weight: 800;
 }
 
 .drawer__close {
@@ -177,8 +178,8 @@
 .drawer__link {
 	text-decoration: none;
 	color: var(--color-text-main);
-	font-weight: 700;
-	padding: 14px 14px;
+	font-weight: 800;
+	padding: 14px;
 	border-radius: var(--radius-lg);
 	background: rgba(118, 96, 202, 0.08);
 	border: 1px solid rgba(118, 96, 202, 0.18);

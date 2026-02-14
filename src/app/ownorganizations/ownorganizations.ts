@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { Organizationapi } from '../shared/organizationapi';
 import { AuthService } from '../shared/auth-service';
 import { bankAccountValidator, phoneValidator } from '../shared/form-validators';
+import { scrollToSelector } from '../shared/dom';
 
 @Component({
   selector: 'app-ownorganizations',
@@ -13,14 +14,9 @@ import { bankAccountValidator, phoneValidator } from '../shared/form-validators'
   styleUrl: './ownorganizations.css',
 })
 export class Ownorganizations implements OnInit {
-    scrollToForm() {
-      setTimeout(() => {
-        const formSection = document.querySelector('.form-wrapper');
-        if (formSection) {
-          formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 0);
-    }
+  private scrollToForm() {
+    scrollToSelector('.form-wrapper');
+  }
   organizations: any[] = [];
   organizationForm: FormGroup;
   submitting = false;
