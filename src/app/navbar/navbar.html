@@ -9,7 +9,13 @@
       <a class="navbar__link" routerLink="/home" routerLinkActive="is-active" (click)="closeMenu()">Főoldal</a>
       <a class="navbar__link" routerLink="/events" routerLinkActive="is-active" (click)="closeMenu()">Események</a>
       <a class="navbar__link" routerLink="/organizations" routerLinkActive="is-active" (click)="closeMenu()">Szervezetek</a>
-      <a class="navbar__link" routerLink="/auth" routerLinkActive="is-active" (click)="closeMenu()">Belépés</a>
+      @if(isLoggedIn()) {
+        <a class="navbar__link" routerLink="/auth" routerLinkActive="is-active" (click)="closeMenu()">Profil</a>
+      }@else{
+        <a class="navbar__link" routerLink="/auth" routerLinkActive="is-active" (click)="closeMenu()">Belépés</a>
+      }
+
+
     </div>
 
     <button
@@ -41,7 +47,13 @@
       <a class="drawer__link" routerLink="/home" (click)="closeMenu()">Főoldal</a>
       <a class="drawer__link" routerLink="/events" (click)="closeMenu()">Események</a>
       <a class="drawer__link" routerLink="/organizations" (click)="closeMenu()">Szervezetek</a>
-      <a class="drawer__link" routerLink="/auth" (click)="closeMenu()">Belépés / Profil</a>
+      @if(isLoggedIn()){
+        <a class="drawer__link" routerLink="/auth" (click)="closeMenu()">Profil</a>
+      }@else(){
+        <a class="drawer__link" routerLink="/auth" (click)="closeMenu()">Belépés</a>
+      }
+
+
     </nav>
   </aside>
 </nav>

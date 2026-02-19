@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, Inject, OnDestroy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink, RouterLinkActive],
@@ -12,6 +13,9 @@ export class Navbar implements OnDestroy {
 
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
+ protected isLoggedIn() {
+    return localStorage.getItem('isLoggedIn') === 'true';
+ }
   toggleMenu() {
     this.setMenuOpen(!this.isMenuOpen);
   }

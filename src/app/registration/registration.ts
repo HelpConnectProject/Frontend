@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthApi } from '../shared/auth-api';
 import { AuthService } from '../shared/auth-service';
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { matchControls, phoneValidator } from '../shared/form-validators';
 
 
@@ -17,7 +17,8 @@ export class Registration {
   constructor(
     private auth: AuthApi,
     private builder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router:Router
   ) {}
 
   registerForm!: FormGroup;
@@ -49,9 +50,12 @@ ngOnInit() {
       next: (res: any) => {
 
         this.registerForm.reset();
+        alert('Sikeres regisztráció! Kérem, jelentkezzen be.');
+        this.router.navigate(['/auth']);
       },
       error: () => {
         this.authService.setLoggedIn(false);
+        alert('Regisztráció sikertelen. Kérem, próbálja újra.');
       }
     });
   }
