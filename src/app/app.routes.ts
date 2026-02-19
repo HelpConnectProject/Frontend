@@ -8,6 +8,7 @@ import { Events } from './events/events';
 import { Ownevents } from './ownevents/ownevents';
 import { Aboutevent } from './aboutevent/aboutevent';
 import { Aboutorganization } from './aboutorganization/aboutorganization';
+import { ContactComponent } from './contact/contact.component';
 
 
 export const routes: Routes = [
@@ -20,6 +21,7 @@ export const routes: Routes = [
     {path: "events", component: Events},
     {path: "ownevents", component: Ownevents},
     {path: "aboutevent/:id", component: Aboutevent},
-    {path: "aboutorganization/:id", component: Aboutorganization}
+    {path: "aboutorganization/:id", component: Aboutorganization},
+    {path: "contact", component: ContactComponent}
 
 ];
