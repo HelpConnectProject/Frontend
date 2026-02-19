@@ -43,4 +43,10 @@ export class AuthApi {
     });
   }
 
+  passwordReset$(data: any) {
+  const url = this.host + "change-password";
+  return this.http.post(url, data);
+}
+
+
 }

@@ -68,30 +68,52 @@
         </section>
     } @else {
         <section class="auth-card">
-            <h2>Belépés</h2>
-            <p class="auth-description">Jelentkezz be, hogy elérd az eseményeket és a szervezeteket.</p>
+            @if(!forgotPassword){
+                <h2>Belépés</h2>
+                <p class="auth-description">Jelentkezz be, hogy elérd az eseményeket és a szervezeteket.</p>
+            }@else{
+                <h2>Jelszó visszaállítása</h2>
+                <p class="auth-description">Add meg az email címed, és küldünk egy linket a jelszó visszaállításához.</p>
+            }
 
             @if (errorMessage) {
                 <div class="auth-error">{{ errorMessage }}</div>
             }
 
-            <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="login()">
+            <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="forgotPassword ? sendPasswordReset() : login()">
                 <div class="form-field">
                     <label for="email">Email</label>
                     <input id="email" type="email" formControlName="email">
                 </div>
 
-                <div class="form-field">
-                    <label for="password">Jelszó</label>
-                    <input id="password" type="password" formControlName="password">
-                </div>
+                @if(!forgotPassword){
+                    <div class="form-field">
+                        <label for="password">Jelszó</label>
+                        <input id="password" type="password" formControlName="password">
+                    </div>
+                }
 
-                <button class="auth-button" type="submit" [disabled]="loading">
-                    @if(!loading){Belépés} @else{<span>Betöltés...</span>}
-                </button>
+                @if(forgotPassword){
+                    <button class="auth-button" type="submit" [disabled]="loading || loginForm?.disabled">
+                        @if(!loading){Visszaigazoló email küldése} @else{<span>Küldés...</span>}
+                    </button>
+                }@else{
+                    <button class="auth-button" type="submit" [disabled]="loading || loginForm?.disabled">
+                        @if(!loading){Belépés} @else{<span>Belépés...</span>}
+                    </button>
+                }
             </form>
 
             <p class="auth-link">Nincs még fiókod? <a routerLink="/registration">Regisztrálj most</a></p>
+            
+            @if(!forgotPassword){
+                <p class="auth-link">Elfelejtetted a jelszavad?  <a (click)="forgotPasswordChangeTrue()">Jelszó visszaállítása</a></p>
+            }@else{
+                <p class="auth-link">Emlékszel a jelszavadra?  <a (click)="forgotPasswordChangeFalse()">Belépés</a></p>
+            }
+
+            
+            
         </section>
     }
 </div>

@@ -90,12 +90,14 @@
 	text-align: center;
 	font-size: 0.9rem;
 	color: var(--color-text-muted);
+	
 }
 
 .auth-link a {
 	color: var(--color-primary);
 	font-weight: 700;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 .profile-actions {

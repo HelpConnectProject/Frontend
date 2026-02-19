@@ -20,6 +20,8 @@ export class Auth {
   successMessage = '';
   isEditingProfile = false;
 
+  forgotPassword = false;
+
   user: any;
   constructor(
     private auth: AuthApi,
@@ -226,4 +228,40 @@ export class Auth {
       }
     });
   }
+  forgotPasswordChangeTrue(){
+    this.forgotPassword = true;
+  }
+  forgotPasswordChangeFalse(){
+    this.forgotPassword = false;
+  }
+
+sendPasswordReset() {
+  this.loading = true;
+  this.errorMessage = '';
+  this.successMessage = '';
+
+  const email = this.loginForm?.value?.email;
+
+  if (!email) {
+    this.loading = false;
+    this.errorMessage = 'Add meg az email címet.';
+    return;
+  }
+
+  this.auth.passwordReset$({ email }).subscribe({
+    next: (res: any) => {
+      this.loading = false;
+      this.successMessage =
+        res?.message ?? 'Ha a fiók létezik, elküldtük az emailt.';
+        this.loginForm.reset();
+    },
+    error: (err: any) => {
+      this.loading = false;
+      this.errorMessage =
+        err?.error?.message ?? 'Nem sikerült elküldeni az emailt.';
+    }
+  });
+}
+  
+
 }
