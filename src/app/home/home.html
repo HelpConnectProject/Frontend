@@ -1,38 +1,98 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>home</title>
-</head>
-<body>
-
 <section class="hero">
   <div class="hero-overlay"></div>
-  <div class="hero-content" >
+  <div class="hero-content">
     <h1 class="hero-title">Összeköt a segítség.</h1>
     <p class="hero-subtitle">Csatlakozz egy olyan közösséghez, ahol a segítség valódi értékkel bír</p>
     <div class="cta-buttons">
-      <button class="btn btn-primary">Fedezd fel az eseményeket</button>
-      <button class="btn btn-secondary">Tudj meg többet</button>
+      <a class="btn btn-primary" routerLink="/events">Fedezd fel az eseményeket</a>
+      <button class="btn btn-secondary" type="button" (click)="scrollToAbout()">Tudj meg többet</button>
     </div>
   </div>
-  <div class="scroll-indicator" (click)="scrollToAbout()">
+  <div class="scroll-indicator" role="button" tabindex="0" (click)="scrollToAbout()">
     <span></span>
   </div>
 </section>
 
-<section class="about" #aboutSection>
-  <div class="about-container">
-    <div class="about-content">
-      <h2>A HelpConnect Világáról</h2>
-      <p>A HelpConnect célja, hogy hidat képezzen a civil szervezetek és az önkéntesek között, támogatva a közösségi összefogást és a társadalmi felelősségvállalást. Platformunk lehetőséget nyújt mindenki számára, hogy könnyedén megtalálja a számára megfelelő jótékonysági vagy önkéntes programot, részt vegyen eseményeken, és aktívan hozzájáruljon a közösség fejlődéséhez.</p>
-      <p>Szervezetek részletes profiljai, eseménylistái és értékelési rendszereink biztosítják, hogy mindenki pontosan azt találja, amire szüksége van. Emellett a felhasználók tevékenységét jelvényekkel ismerjük el, így az önkéntes munka motiváló és látható lesz.</p>
-      <p class="highlight-text">Csatlakozz te is, és legyél részese egy olyan közösségnek, ahol minden apró segítség számít, és együtt tehetünk a változásért!</p>
+<section class="home-section about" #aboutSection>
+  <div class="container">
+    <h2 class="section-title">A HelpConnect Világáról</h2>
+    <p>A HelpConnect célja, hogy hidat képezzen a civil szervezetek és az önkéntesek között, támogatva a közösségi összefogást és a társadalmi felelősségvállalást. Platformunk lehetőséget nyújt mindenki számára, hogy könnyedén megtalálja a számára megfelelő jótékonysági vagy önkéntes programot, részt vegyen eseményeken, és aktívan hozzájáruljon a közösség fejlődéséhez.</p>
+    <p>Szervezetek részletes profiljai, eseménylistái és értékelési rendszereink biztosítják, hogy mindenki pontosan azt találja, amire szüksége van. Emellett a felhasználók tevékenységét jelvényekkel ismerjük el, így az önkéntes munka motiváló és látható lesz.</p>
+    <p class="highlight-text">Csatlakozz te is, és legyél részese egy olyan közösségnek, ahol minden apró segítség számít, és együtt tehetünk a változásért!</p>
+  </div>
+</section>
+
+<section class="home-section steps-section">
+  <div class="container">
+    <h2 class="section-title">Hogyan működik a HelpConnect?</h2>
+    <div class="steps-container">
+      <div class="step-card">
+        <span class="step-number">1</span>
+        <h3>Regisztrálj</h3>
+        <p>Hozd létre profilodat önkéntesként vagy civil szervezetként, és töltsd ki az adataidat.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-number">2</span>
+        <h3>Találj eseményt</h3>
+        <p>Böngészd az aktuális eseményeket, és szűrj érdeklődés, helyszín vagy időpont szerint.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-number">3</span>
+        <h3>Vegyél részt</h3>
+        <p>Jelentkezz eseményekre, szerezz tapasztalatot, és járulj hozzá a közösséghez.</p>
+      </div>
     </div>
   </div>
 </section>
 
-</body>
-</html>
+<section class="home-section split-section">
+  <div class="container split-grid">
+    <div class="split-box">
+      <h3>Önkénteseknek</h3>
+      <p>Építs tapasztalatot, szerezz jelvényeket, és vegyél részt értékes közösségi eseményeken.</p>
+      <p>Mutasd meg végzettségedet, érdeklődési köreidet és korábbi részvételeidet.</p>
+    </div>
+
+    <div class="split-box">
+      <h3>Civil szervezeteknek</h3>
+      <p>Hozz létre eseményeket, toborozz önkénteseket, és kezeld közösséged egy helyen.</p>
+      <p>Építs hitelességet értékelések és visszajelzések segítségével.</p>
+    </div>
+  </div>
+</section>
+
+<section class="home-section volunteer-image-section">
+  <div class="container volunteer-image-container">
+    <img src="/volunteer1.jpg" class="volunteer-img" alt="Önkéntes" />
+    <img src="/volunteer2.jpg" class="volunteer-img" alt="Közösség" />
+  </div>
+</section>
+
+<section class="home-section testimonials-section">
+  <div class="container">
+    <h2 class="section-title">Mit mondanak a felhasználók?</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <p>„A HelpConnect segítségével könnyen találtam önkéntes lehetőségeket.”</p>
+        <span>– Önkéntes</span>
+      </div>
+      <div class="testimonial-card">
+        <p>„Szervezetként sokkal gyorsabban tudunk önkénteseket toborozni.”</p>
+        <span>– Civil szervezet</span>
+      </div>
+      <div class="testimonial-card">
+        <p>„Modern, átlátható és közösségépítő platform.”</p>
+        <span>– Felhasználó</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="home-section cta-section">
+  <div class="container">
+    <h2 class="section-title">Csatlakozz most, és légy a változás része!</h2>
+    <p>Legyél önkéntes, vagy regisztráld szervezeted, és építsünk együtt egy jobb jövőt.</p>
+    <a class="btn btn-primary" routerLink="/registration">Regisztráció</a>
+  </div>
+</section>
 

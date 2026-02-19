@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { Eventapi } from '../shared/eventapi';
 import { Organizationapi } from '../shared/organizationapi';
 import { Eventregistrationapi } from '../shared/eventregistrationapi';
+import { categoryImageFor } from '../shared/category-image';
 
 
 @Component({
@@ -18,6 +19,8 @@ export class Events implements OnInit {
   organizations: any = null;
   owneventregistrations: any[] = [];
   organizationNameById: Record<number, string> = {};
+  organizationCategoryById: Record<number, string> = {};
+  categoryImageFor = categoryImageFor;
   filteredEvents: any = null;
   searchForm: FormGroup;
 
@@ -63,9 +66,13 @@ export class Events implements OnInit {
       next: (result: any) => {
         this.organizations = result.data;
         this.organizationNameById = {};
+        this.organizationCategoryById = {};
         for (const org of this.organizations) {
           const id = org.id;
-          this.organizationNameById[id] = org.name
+          this.organizationNameById[id] = org.name;
+          if (org?.category) {
+            this.organizationCategoryById[id] = org.category;
+          }
         }
       },
       error: () => {},

@@ -302,10 +302,17 @@ html, body {
 /* Cards */
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
-  max-width: 1400px;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 2rem;
+  max-width: 1600px;
   margin: 0 auto;
+}
+
+@media (max-width: 720px) {
+  .cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+  }
 }
 
 .org-card,
@@ -320,6 +327,32 @@ html, body {
   text-decoration: none;
 }
 
+.card-image {
+  width: 100%;
+  height: 240px;
+  display: block;
+  object-fit: contain;
+}
+
+.card-media {
+  height: 240px;
+  background: rgba(118, 96, 202, 0.08);
+}
+
+@media (max-width: 720px) {
+  .card-image,
+  .card-media {
+    height: 200px;
+  }
+}
+
+.card-media img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
 .org-card:hover,
 .event-card:hover {
   transform: translateY(-4px);
@@ -331,7 +364,6 @@ html, body {
   align-items: center;
   gap: 1rem;
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .card-main {
@@ -363,7 +395,7 @@ html, body {
 .card-logo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .card-info-summary {

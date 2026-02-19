@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Organizationapi } from '../shared/organizationapi';
 import { RouterLink } from '@angular/router';
+import { categoryImageFor } from '../shared/category-image';
 
 
 
@@ -14,6 +15,7 @@ import { RouterLink } from '@angular/router';
 })
 export class Organizations implements OnInit {
   organizations: any = null;
+  categoryImageFor = categoryImageFor;
 
   constructor(
     private organizationapi: Organizationapi

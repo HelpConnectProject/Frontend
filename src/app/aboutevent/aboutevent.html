@@ -13,7 +13,7 @@
 				@if (event.image) {
 					<img [src]="event.image" [alt]="event.title" />
 				} @else {
-					<span class="logo-placeholder-modern">{{ (event.title || 'E').substring(0, 2).toUpperCase() }}</span>
+					<img [src]="categoryImageFor(organizationCategoryById[event.organization_id] || event.category)" [alt]="event.category || event.title || 'Esemény'" />
 				}
 			</div>
 

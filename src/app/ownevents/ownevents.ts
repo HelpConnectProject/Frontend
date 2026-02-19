@@ -6,6 +6,7 @@ import { Organizationapi } from '../shared/organizationapi';
 import { AuthService } from '../shared/auth-service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { scrollToSelector } from '../shared/dom';
+import { categoryImageFor } from '../shared/category-image';
 
 @Component({
   selector: 'app-ownevents',
@@ -14,6 +15,7 @@ import { scrollToSelector } from '../shared/dom';
   styleUrl: './ownevents.css',
 })
 export class Ownevents implements OnInit {
+  categoryImageFor = categoryImageFor;
   organizationEvents: any[] = [];
   selectedOrganization: any = null;
   selectedOrgEvents: any[] = [];
@@ -78,6 +80,7 @@ export class Ownevents implements OnInit {
               return {
                 organization_id: org.id,
                 organization_name: org.name,
+                organization_category: org.category,
                 events: orgWithEvents?.events || []
               };
             });

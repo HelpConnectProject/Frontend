@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Organizationapi } from '../shared/organizationapi';
 import { Eventapi } from '../shared/eventapi';
 import { bankAccountValidator, phoneValidator } from '../shared/form-validators';
+import { categoryImageFor } from '../shared/category-image';
 
 
 @Component({
@@ -14,6 +15,8 @@ import { bankAccountValidator, phoneValidator } from '../shared/form-validators'
   styleUrl: './aboutorganization.css',
 })
 export class Aboutorganization implements OnInit {
+  categoryImageFor = categoryImageFor;
+
   getStars(count: number): number[] {
     return Array(count).fill(0).map((_, i) => i + 1);
   }

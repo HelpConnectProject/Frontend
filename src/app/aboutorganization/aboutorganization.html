@@ -13,7 +13,7 @@
 				@if (org.logo) {
 					<img [src]="org.logo" [alt]="org.name" />
 				} @else {
-					<span class="logo-placeholder-modern">{{ org.name.substring(0, 2).toUpperCase() }}</span>
+					<img [src]="categoryImageFor(org.category)" [alt]="org.category || org.name" />
 				}
 			</div>
 			<div class="about-org-info-modern">
@@ -26,7 +26,18 @@
 							}
 						} @else {
 							<input class="about-edit-input title" type="text" [formControl]="$any(orgForm.get('name'))" placeholder="Név" />
-							<input class="about-edit-input category" type="text" [formControl]="$any(orgForm.get('category'))" placeholder="Kategória" />
+							<select class="about-edit-input category" [formControl]="$any(orgForm.get('category'))">
+								<option value="">Válassz kategóriát…</option>
+								<option>Szociális és humanitárius szervezetek</option>
+								<option>Egészségügyi szervezetek</option>
+								<option>Oktatási és tudományos szervezetek</option>
+								<option>Környezetvédelmi szervezetek</option>
+								<option>Emberi jogi és jogvédő szervezetek</option>
+								<option>Kulturális és művészeti szervezetek</option>
+								<option>Sport és szabadidős szervezetek</option>
+								<option>Ifjúsági és közösségfejlesztő szervezetek</option>
+								<option>Érdekvédelmi és szakmai szervezetek</option>
+							</select>
 						}
 					</div>
 					@if (isOwnView) {

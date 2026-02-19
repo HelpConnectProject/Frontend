@@ -6,16 +6,10 @@
   <div class="cards-grid">
     @for (org of organizations; track org.id) {
       <div class="org-card">
+        <div class="card-media">
+          <img [src]="categoryImageFor(org.category)" [alt]="org.category || org.name" />
+        </div>
         <div class="card-header">
-          <div class="card-logo-section">
-            <div class="card-logo">
-              @if (org.logo) {
-                <img [src]="org.logo" [alt]="org.name" />
-              } @else {
-                <span class="logo-placeholder">{{ org.name.substring(0, 2).toUpperCase() }}</span>
-              }
-            </div>
-          </div>
           <div class="card-info-summary">
             <h3 class="card-title">
               <a [routerLink]="['/aboutorganization', org.id]">{{ org.name }}</a>

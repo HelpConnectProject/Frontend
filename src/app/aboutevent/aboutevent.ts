@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Eventapi } from '../shared/eventapi';
 import { Eventregistrationapi } from '../shared/eventregistrationapi';
 import { Organizationapi } from '../shared/organizationapi';
+import { categoryImageFor } from '../shared/category-image';
 
 @Component({
   selector: 'app-aboutevent',
@@ -13,6 +14,8 @@ import { Organizationapi } from '../shared/organizationapi';
   styleUrl: './aboutevent.css',
 })
 export class Aboutevent implements OnInit {
+  categoryImageFor = categoryImageFor;
+
   event: any = null;
   loading = true;
   isOwnView = false;
@@ -24,6 +27,7 @@ export class Aboutevent implements OnInit {
 
   owneventregistrations: any[] = [];
   organizationNameById: Record<number, string> = {};
+  organizationCategoryById: Record<number, string> = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -112,9 +116,11 @@ export class Aboutevent implements OnInit {
       next: (result: any) => {
         const organizations = result?.data ?? [];
         this.organizationNameById = {};
+        this.organizationCategoryById = {};
         for (const org of organizations) {
           if (typeof org?.id === 'number') {
             this.organizationNameById[org.id] = org?.name ?? '';
+            this.organizationCategoryById[org.id] = org?.category ?? '';
           }
         }
       },

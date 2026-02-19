@@ -80,16 +80,13 @@
   <div class="cards-grid">
     @for (event of filteredEvents; track event.id) {
       <a class="event-card" [class.registered]="isRegistered(event.id)" [routerLink]="['/aboutevent', event.id]">
+        <div class="card-media">
+          <img
+            [src]="categoryImageFor(organizationCategoryById[event.organization_id])"
+            [alt]="organizationCategoryById[event.organization_id] || (event.title || 'Esemény')"
+          />
+        </div>
         <div class="card-header">
-          <div class="card-logo-section">
-            <div class="card-logo">
-              @if (event.image) {
-                <img [src]="event.image" [alt]="event.title || 'Event'" />
-              } @else {
-                <span class="logo-placeholder">{{ (event.title || 'E').substring(0, 2).toUpperCase() }}</span>
-              }
-            </div>
-          </div>
           <div class="card-info-summary">
             <h3 class="card-title">{{ event.title || 'Esemény' }}</h3>
             @if (event.date) {

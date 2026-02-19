@@ -26,7 +26,18 @@
                 </label>
                 <label>
                     Kategória
-                    <input formControlName="category" />
+                    <select formControlName="category">
+                        <option value="">Válassz kategóriát…</option>
+                        <option>Szociális és humanitárius szervezetek</option>
+                        <option>Egészségügyi szervezetek</option>
+                        <option>Oktatási és tudományos szervezetek</option>
+                        <option>Környezetvédelmi szervezetek</option>
+                        <option>Emberi jogi és jogvédő szervezetek</option>
+                        <option>Kulturális és művészeti szervezetek</option>
+                        <option>Sport és szabadidős szervezetek</option>
+                        <option>Ifjúsági és közösségfejlesztő szervezetek</option>
+                        <option>Érdekvédelmi és szakmai szervezetek</option>
+                    </select>
                 </label>
                 <label>
                     Telefonszám
@@ -70,15 +81,18 @@
     <div class="cards-grid">
         @for (org of organizations; track org.id) {
             <div class="org-card">
+                <div class="card-media">
+                    <img [src]="categoryImageFor(org.category)" [alt]="org.category || org.name" />
+                </div>
                 <div class="card-header">
-					<a class="card-main" [routerLink]="['/aboutorganization', org.id]" [queryParams]="{ own: 1 }">
+                    <a class="card-main" [routerLink]="['/aboutorganization', org.id]" [queryParams]="{ own: 1 }">
                         <div class="card-info-summary">
                             <h3 class="card-title">{{ org.name }}</h3>
                             @if (org.category) {
                                 <p class="card-category">{{ org.category }}</p>
                             }
                         </div>
-					</a>
+                    </a>
                 </div>
             </div>
         }

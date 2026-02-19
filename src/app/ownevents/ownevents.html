@@ -100,21 +100,22 @@
       <div class="cards-grid">
         @if (filteredEvents && filteredEvents.length > 0) {
           @for (event of filteredEvents; track event.id) {
-        <div class="event-card">
+            <div class="event-card">
+              <div class="card-media">
+                <img
+                  [src]="categoryImageFor(selectedOrganization.organization_category)"
+                  [alt]="selectedOrganization.organization_category || selectedOrganization.organization_name"
+                />
+              </div>
               <div class="card-header">
-          <a class="card-main" [routerLink]="['/aboutevent', event.id]" [queryParams]="{ own: 1 }">
-                  <div class="card-logo-section">
-                    <div class="card-logo">
-                      <span class="logo-placeholder">{{ (event.title || 'E').substring(0, 2).toUpperCase() }}</span>
-                    </div>
-                  </div>
+                <a class="card-main" [routerLink]="['/aboutevent', event.id]" [queryParams]="{ own: 1 }">
                   <div class="card-info-summary">
                     <h3 class="card-title">{{ event.title || 'Esemény' }}</h3>
                     @if (event.date) {
                       <p class="card-date">{{ event.date | date:'yyyy.MM.dd.' }}</p>
                     }
                   </div>
-          </a>
+                </a>
               </div>
             </div>
           }

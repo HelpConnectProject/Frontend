@@ -6,6 +6,7 @@ import { Organizationapi } from '../shared/organizationapi';
 import { AuthService } from '../shared/auth-service';
 import { bankAccountValidator, phoneValidator } from '../shared/form-validators';
 import { scrollToSelector } from '../shared/dom';
+import { categoryImageFor } from '../shared/category-image';
 
 @Component({
   selector: 'app-ownorganizations',
@@ -14,6 +15,7 @@ import { scrollToSelector } from '../shared/dom';
   styleUrl: './ownorganizations.css',
 })
 export class Ownorganizations implements OnInit {
+  categoryImageFor = categoryImageFor;
   private scrollToForm() {
     scrollToSelector('.form-wrapper');
   }
