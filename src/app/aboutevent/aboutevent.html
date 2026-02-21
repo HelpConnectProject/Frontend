@@ -49,7 +49,12 @@
 						@if (isRegistered(event.id)) {
 							<button type="button" class="btn-unregister" (click)="deleteEventRegistration(event.id)">Lemondom a jelentkezést</button>
 						} @else {
-							<button type="button" class="btn-register" (click)="registerToEvent(event.id)">Jelentkezem</button>
+							@if(event.capacity > countRegistrations()) {
+								<button type="button" class="btn-register" (click)="registerToEvent(event.id)">Jelentkezem</button>
+							}@else{
+								<p>Sajnos ez az esemény már elérte a maximális kapacitását.</p>
+							}
+							
 						}
 					</div>
 				}
@@ -104,7 +109,7 @@
 						<span class="detail-label">Kapacitás:</span>
 						<span class="detail-value">
 							@if (!editMode) {
-								{{ event.capacity }} fő
+								{{ event.capacity }}/{{countRegistrations()}} fő
 							} @else {
 								<input class="about-edit-input" type="number" [formControl]="$any(eventForm.get('capacity'))" placeholder="Kapacitás" />
 							}
@@ -151,6 +156,31 @@
 						</span>
 					</div>
 				}
+					<section class="registration-section">
+						<h2 class="past-events-title">Jelentkezett felhasználók</h2>
+						@if (registrations && registrations.length > 0) {
+							<div class="past-events-list">
+								@for(reg of registrations; track reg.id) {
+									<div class="feedback-item">
+										<span class="feedback-comment">{{ reg.name }}</span>
+										<button type="button" class="feedback-submit-btn" style="padding:0.3rem 0.7rem;" (click)="toggleRegistrationExpand(reg.id)">
+											<span style="font-size:1.2em;">&#9660;</span>
+										</button>
+									</div>
+									@if (registrationExpanded[reg.id]) {
+										<div class="about-org-detail-row" style="margin-bottom:0.5rem;">
+											<div><b>Email:</b> {{ reg.email }}</div>
+											<div><b>Város:</b> {{ reg.city }}</div>
+											<div><b>Leírás:</b> {{ reg.about }}</div>
+											<div><b>Jelentkezett:</b> {{ reg.registered_at | date:'yyyy.MM.dd. HH:mm' }}</div>
+										</div>
+									}
+								}
+							</div>
+						} @else {
+							<p class="past-events-empty">Nincs jelentkezett felhasználó.</p>
+						}
+					</section>
 			</div>
 		</section>
 	</div>

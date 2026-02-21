@@ -43,4 +43,9 @@ export class Eventregistrationapi {
       }
     );
   }
+
+  getRegistrationByOrg$(eventId: number) {
+    const url = this.host + `getregistrationbyorg/${eventId}`;
+    return this.http.get(url);
+  }
 }

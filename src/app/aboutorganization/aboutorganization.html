@@ -24,6 +24,7 @@
 							@if (org.category) {
 								<span class="about-org-category-modern">{{ org.category }}</span>
 							}
+	                        
 						} @else {
 							<input class="about-edit-input title" type="text" [formControl]="$any(orgForm.get('name'))" placeholder="Név" />
 							<select class="about-edit-input category" [formControl]="$any(orgForm.get('category'))">
@@ -127,6 +128,12 @@
 						</span>
 					</div>
 				}
+
+
+				<button type="button" class="feedback-submit-btn" (click)="searchEventsForOrg()">Események keresése ennél a szervezetnél</button>
+
+
+
 
 				<section class="past-events-section">
 					<h2 class="past-events-title">Múltbéli események</h2>

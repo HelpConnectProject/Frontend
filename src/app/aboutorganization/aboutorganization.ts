@@ -30,6 +30,12 @@ export class Aboutorganization implements OnInit {
   editError: string | null = null;
   orgForm: FormGroup;
 
+    searchEventsForOrg() {
+    if (this.org?.name) {
+      this.router.navigate(['/events'], { queryParams: { organizationName: this.org.name } });
+    }
+  }
+
   private getCurrentUserId(): string | null {
     const id = localStorage.getItem('id');
     return id ? String(id) : null;

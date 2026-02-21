@@ -39,10 +39,14 @@ export class Events implements OnInit {
   }
   
   ngOnInit() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const orgName = urlParams.get('organizationName');
+    if (orgName) {
+      this.searchForm.patchValue({ organizationName: orgName });
+    }
     this.getEvents();
     this.getOrganizations();
     this.getOwnEventRegistrations();
-    
     this.searchForm.valueChanges.subscribe(() => {
       this.filterEvents();
     });

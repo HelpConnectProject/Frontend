@@ -1,3 +1,58 @@
+.registration-section .feedback-submit-btn {
+	background: #ececf6;
+	color: var(--color-primary);
+	border: none;
+	border-radius: 50%;
+	width: 28px;
+	height: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.1em;
+	box-shadow: 0 1px 3px rgba(118,96,202,0.08);
+	transition: background 0.15s, color 0.15s;
+	padding: 0;
+}
+.registration-section .feedback-submit-btn:hover {
+	background: var(--color-primary);
+	color: #fff;
+}
+.registration-section .feedback-submit-btn span {
+	font-size: 1.1em;
+	line-height: 1;
+}
+.registration-section {
+	max-width: 700px;
+	margin: 32px auto 0;
+	background: #f8f9fb;
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(118,96,202,0.07);
+	padding: 1.2rem 1.5rem;
+}
+.registration-section .past-events-title {
+	font-size: 1.2rem;
+	font-weight: 700;
+	color: var(--color-primary);
+	margin-bottom: 0.7rem;
+}
+.registration-section .feedback-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.5rem 0;
+	border-bottom: 1px solid #e0e0ef;
+}
+.registration-section .feedback-item:last-child {
+	border-bottom: none;
+}
+.registration-section .about-org-detail-row {
+	background: #fff;
+	border-radius: 8px;
+	margin: 0.3rem 0 0.7rem 0;
+	padding: 0.7rem 1rem;
+	font-size: 0.97rem;
+	color: #333;
+}
 
 .about-event-modern {
 	min-height: 100vh;

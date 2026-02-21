@@ -20,14 +20,17 @@ export class Aboutevent implements OnInit {
   loading = true;
   isOwnView = false;
 
-	editMode = false;
-	saving = false;
-	editError: string | null = null;
-	eventForm: FormGroup;
+  editMode = false;
+  saving = false;
+  editError: string | null = null;
+  eventForm: FormGroup;
 
   owneventregistrations: any[] = [];
   organizationNameById: Record<number, string> = {};
   organizationCategoryById: Record<number, string> = {};
+
+  registrations: any[] = [];
+  registrationExpanded: { [id: number]: boolean } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -49,7 +52,10 @@ export class Aboutevent implements OnInit {
   }
 
   ngOnInit() {
-    this.isOwnView = this.route.snapshot.queryParamMap.get('own') === '1' || this.route.snapshot.queryParamMap.get('own') === 'true';
+    this.isOwnView =
+      this.route.snapshot.queryParamMap.get('own') === '1' ||
+      this.route.snapshot.queryParamMap.get('own') === 'true';
+
     this.loadOrganizations();
 
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -57,17 +63,41 @@ export class Aboutevent implements OnInit {
       this.loading = false;
       return;
     }
+
     const eventId = Number(idParam);
+
     if (Number.isNaN(eventId)) {
       this.loading = false;
       return;
     }
+
+    this.getRegistrationsForEvent(eventId);
 
     if (!this.isOwnView && this.hasToken()) {
       this.getOwnEventRegistrations();
     }
 
     this.loadEvent(eventId);
+  }
+
+  getRegistrationsForEvent(eventId: number) {
+    this.eventregistrationapi.getRegistrationByOrg$(eventId).subscribe({
+      next: (result: any) => {
+        this.registrations = result.data || [];
+        this.registrationExpanded = {};
+      },
+      error: () => {
+        this.registrations = [];
+      },
+    });
+  }
+
+  countRegistrations() : number {
+    return this.registrations.length;
+  }
+
+  toggleRegistrationExpand(id: number) {
+    this.registrationExpanded[id] = !this.registrationExpanded[id];
   }
 
   startEdit() {
@@ -94,17 +124,23 @@ export class Aboutevent implements OnInit {
     const payload = this.buildPayloadFromForm();
     this.saving = true;
     this.editError = null;
-    this.eventapi.updateEvent$(this.event.id, this.event.organization_id, payload).subscribe({
-      next: () => {
-        this.event = { ...this.event, ...payload };
-        this.editMode = false;
-        this.saving = false;
-      },
-      error: (err) => {
-        this.editError = this.parseErrorMessage(err, 'Nem sikerült menteni az eseményt.');
-        this.saving = false;
-      },
-    });
+
+    this.eventapi
+      .updateEvent$(this.event.id, this.event.organization_id, payload)
+      .subscribe({
+        next: () => {
+          this.event = { ...this.event, ...payload };
+          this.editMode = false;
+          this.saving = false;
+        },
+        error: (err) => {
+          this.editError = this.parseErrorMessage(
+            err,
+            'Nem sikerült menteni az eseményt.'
+          );
+          this.saving = false;
+        },
+      });
   }
 
   private hasToken(): boolean {
@@ -117,6 +153,7 @@ export class Aboutevent implements OnInit {
         const organizations = result?.data ?? [];
         this.organizationNameById = {};
         this.organizationCategoryById = {};
+
         for (const org of organizations) {
           if (typeof org?.id === 'number') {
             this.organizationNameById[org.id] = org?.name ?? '';
@@ -130,16 +167,19 @@ export class Aboutevent implements OnInit {
 
   private loadEvent(eventId: number) {
     this.loading = true;
+
     this.eventapi.getEvents$().subscribe({
       next: (result: any) => {
         const events = result?.data ?? [];
         const found = events.find((e: any) => e?.id === eventId);
+
         if (found) {
           this.event = found;
           this.editMode = false;
           this.loading = false;
           return;
         }
+
         this.tryLoadOwnEvent(eventId);
       },
       error: () => {
@@ -159,6 +199,7 @@ export class Aboutevent implements OnInit {
       next: (result: any) => {
         const groups = result?.data ?? [];
         let found: any = null;
+
         for (const g of groups) {
           const events = g?.events ?? [];
           const match = events.find((e: any) => e?.id === eventId);
@@ -167,6 +208,7 @@ export class Aboutevent implements OnInit {
             break;
           }
         }
+
         this.event = found;
         this.editMode = false;
         this.loading = false;
@@ -208,33 +250,43 @@ export class Aboutevent implements OnInit {
 
   deleteEventRegistration(eventId: number) {
     let registrationId = eventId;
+
     for (const reg of this.owneventregistrations) {
       if (reg?.event_id === eventId) {
         registrationId = reg.id;
         break;
       }
     }
-    this.eventregistrationapi.deleteEventRegistration$(registrationId).subscribe({
-      next: () => this.getOwnEventRegistrations(),
-      error: () => {},
-    });
+
+    this.eventregistrationapi
+      .deleteEventRegistration$(registrationId)
+      .subscribe({
+        next: () => this.getOwnEventRegistrations(),
+        error: () => {},
+      });
   }
 
   deleteEvent() {
     if (!this.event) return;
-    const confirmed = window.confirm('Biztosan törlöd ezt az eseményt?');
+
+    const confirmed = window.confirm(
+      'Biztosan törlöd ezt az eseményt?'
+    );
     if (!confirmed) return;
 
-    this.eventapi.deleteEvent$(this.event.id, this.event.organization_id).subscribe({
-      next: () => {
-        this.router.navigate(['/ownevents']);
-      },
-      error: () => {},
-    });
+    this.eventapi
+      .deleteEvent$(this.event.id, this.event.organization_id)
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/ownevents']);
+        },
+        error: () => {},
+      });
   }
 
   private patchFormFromEvent() {
     if (!this.event) return;
+
     this.eventForm.patchValue({
       title: this.event?.title ?? '',
       date: this.toDatetimeLocal(this.event?.date),
@@ -248,17 +300,24 @@ export class Aboutevent implements OnInit {
 
   private toDatetimeLocal(value: any): string {
     if (!value) return '';
+
     const d = new Date(value);
     if (Number.isNaN(d.getTime())) {
       return String(value);
     }
+
     const pad = (n: number) => String(n).padStart(2, '0');
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(
+      d.getDate()
+    )}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
   }
+
 
   private buildPayloadFromForm() {
     const raw = this.eventForm.value;
     const payload: any = {};
+
     Object.entries(raw).forEach(([key, value]) => {
       if (value === null || value === undefined) {
         payload[key] = null;
@@ -269,6 +328,7 @@ export class Aboutevent implements OnInit {
         payload[key] = value;
       }
     });
+
     return payload;
   }
 
