@@ -92,6 +92,10 @@
             @if (event.date) {
               <p class="card-date">{{ event.date | date:'yyyy.MM.dd.' }}</p>
             }
+            @if (event.organization_id) {
+              <p class="card-date">{{ organizationNameById[event.organization_id] }} </p>
+
+            }
           </div>
         </div>
       </a>

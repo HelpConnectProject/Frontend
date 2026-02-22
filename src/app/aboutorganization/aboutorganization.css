@@ -176,3 +176,34 @@
 	text-align: center;
 	color: var(--color-text-muted);
 }
+
+.manager-inline {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6rem;
+	align-items: center;
+}
+
+.manager-inline .about-edit-input {
+	min-width: 220px;
+	flex: 1 1 240px;
+}
+
+.manager-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.45rem;
+	align-items: center;
+}
+
+.manager-chip {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.35rem 0.7rem;
+	border-radius: 999px;
+	background: #fff;
+	border: 1px solid rgba(118, 96, 202, 0.22);
+	color: var(--color-text-main);
+	font-weight: 700;
+	font-size: 0.92rem;
+}

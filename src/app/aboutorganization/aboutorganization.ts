@@ -6,6 +6,7 @@ import { Organizationapi } from '../shared/organizationapi';
 import { Eventapi } from '../shared/eventapi';
 import { bankAccountValidator, phoneValidator } from '../shared/form-validators';
 import { categoryImageFor } from '../shared/category-image';
+import { Memberapi } from '../shared/memberapi';
 
 
 @Component({
@@ -24,6 +25,16 @@ export class Aboutorganization implements OnInit {
   events: any = null;
   loading = true;
 	isOwnView = false;
+
+  membersLoading = false;
+  membersError: string | null = null;
+  members: any[] = [];
+
+  showAddManager = false;
+  addingManager = false;
+  managerError: string | null = null;
+  managerSuccess: string | null = null;
+  managerForm: FormGroup;
 
   editMode = false;
   saving = false;
@@ -94,7 +105,8 @@ export class Aboutorganization implements OnInit {
     private router: Router,
     private organizationapi: Organizationapi,
     private eventapi: Eventapi,
-    private builder: FormBuilder
+    private builder: FormBuilder,
+    private memberapi: Memberapi
   ) {
     this.orgForm = this.builder.group({
       name: ['', Validators.required],
@@ -105,6 +117,88 @@ export class Aboutorganization implements OnInit {
       email: ['', [Validators.email]],
       website: ['', [Validators.pattern('^(https?:\\/\\/)?([\\w-]+\\.)+[\\w-]+(\\/\\S*)?$')]],
       bank_account: ['', [bankAccountValidator()]],
+    });
+
+    this.managerForm = this.builder.group({
+      email: ['', [Validators.required, Validators.email]],
+    });
+  }
+
+  openAddManager() {
+    this.managerError = null;
+    this.managerSuccess = null;
+    this.showAddManager = true;
+    this.managerForm.reset({ email: '' });
+  }
+
+  cancelAddManager() {
+    if (this.addingManager) return;
+    this.showAddManager = false;
+    this.managerError = null;
+    this.managerSuccess = null;
+    this.managerForm.reset({ email: '' });
+  }
+
+  addManagerByEmail() {
+    if (!this.isOwnView || !this.org?.id || this.addingManager) return;
+
+    if (this.managerForm.invalid) {
+      this.managerForm.markAllAsTouched();
+      return;
+    }
+
+    const email = String(this.managerForm.value.email ?? '').trim();
+    if (!email) return;
+
+    this.addingManager = true;
+    this.managerError = null;
+    this.managerSuccess = null;
+
+    this.memberapi.getUserByEmail$(email).subscribe({
+      next: (result: any) => {
+        const payload = result?.data ?? result;
+
+        if (payload === false || payload === null || payload === undefined) {
+          this.managerError = 'Nem található felhasználó ezzel az email címmel.';
+          this.addingManager = false;
+          return;
+        }
+
+        const user = Array.isArray(payload) ? payload[0] : payload;
+        const userIdRaw = user?.id ?? user?.user_id ?? user?.userId;
+        const userId = userIdRaw !== undefined && userIdRaw !== null ? Number(userIdRaw) : NaN;
+
+        if (!Number.isFinite(userId)) {
+          this.managerError = 'Nincs ilyen felhasználó ezzel az email címmel.';
+          this.addingManager = false;
+          return;
+        }
+
+        this.memberapi.addMember$(Number(this.org.id), userId).subscribe({
+          next: (addResult: any) => {
+            const addPayload = addResult?.data ?? addResult;
+            if (addPayload === false) {
+              this.managerError = 'Nem sikerült hozzáadni a managert.';
+              this.addingManager = false;
+              return;
+            }
+
+            this.managerSuccess = `Manager hozzáadva: ${email}`;
+            this.addingManager = false;
+            this.showAddManager = false;
+            this.managerForm.reset({ email: '' });
+            this.getMembers();
+          },
+          error: (err) => {
+            this.managerError = this.parseErrorMessage(err, 'Nem sikerült hozzáadni a managert.');
+            this.addingManager = false;
+          },
+        });
+      },
+      error: (err) => {
+        this.managerError = this.parseErrorMessage(err, 'Nem található felhasználó ezzel az email címmel.');
+        this.addingManager = false;
+      },
     });
   }
 
@@ -214,6 +308,7 @@ export class Aboutorganization implements OnInit {
   ngOnInit() {
 	this.isOwnView = this.route.snapshot.queryParamMap.get('own') === '1' || this.route.snapshot.queryParamMap.get('own') === 'true';
     const id = this.route.snapshot.paramMap.get('id');
+    
     if (id) {
       this.organizationapi.getOrganizations$().subscribe({
         next: (result: any) => {
@@ -221,6 +316,10 @@ export class Aboutorganization implements OnInit {
           this.org = orgs.find((o: any) => o.id == id);
           this.loading = false;
 				this.editMode = false;
+
+          if (this.org?.id) {
+            this.getMembers();
+          }
           if (this.org && this.org.id) {
             this.eventapi.getInactiveEvents$(this.org.id).subscribe({
               next: (result: any) => {
@@ -254,6 +353,37 @@ export class Aboutorganization implements OnInit {
   reset() {
     this.org = null;
     this.events = null;
+  }
+
+  getMembers() {
+    if (!this.org?.id) return;
+    this.membersLoading = true;
+    this.membersError = null;
+
+    this.memberapi.getMembers$(this.org.id).subscribe({
+      next: (result: any) => {
+        const data = result?.data ?? result;
+        const list = Array.isArray(data) ? data : [];
+        const members = list.filter((m: any) => String(m?.organization_id ?? '') === String(this.org?.id ?? ''));
+
+        this.members = members;
+        if (this.org) {
+          this.org.members = members;
+        }
+        this.membersLoading = false;
+      },
+      error: (err) => {
+        this.membersError = this.parseErrorMessage(err, 'Nem sikerült betölteni az adminokat.');
+        this.membersLoading = false;
+      }
+    });
+  }
+
+  memberDisplay(member: any): string {
+    const email = member?.email ?? member?.user_email ?? member?.user?.email;
+    const name = member?.name ?? member?.username ?? member?.user_name ?? member?.user?.name;
+    if (email && name) return `${name} (${email})`;
+    return String(email ?? name ?? member?.id ?? member?.user_id ?? '');
   }
 
 }

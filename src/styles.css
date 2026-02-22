@@ -612,3 +612,17 @@ html, body {
   background: rgba(220, 53, 69, 0.12);
   color: #c62828;
 }
+
+.action-btn.success {
+  background: rgba(46, 125, 50, 0.12);
+  color: #1b5e20;
+}
+
+.hc-success {
+  background: rgba(46, 125, 50, 0.1);
+  border: 1px solid rgba(46, 125, 50, 0.35);
+  color: #1b5e20;
+  padding: 0.9rem 1.1rem;
+  border-radius: 10px;
+  font-weight: 700;
+}

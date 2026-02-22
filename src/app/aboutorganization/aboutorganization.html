@@ -49,6 +49,9 @@
 								<button type="button" class="action-btn edit" (click)="saveOrganization()" [disabled]="saving">Mentés</button>
 								<button type="button" class="action-btn" (click)="cancelEdit()" [disabled]="saving">Mégse</button>
 							}
+							@if (!showAddManager) {
+								<button type="button" class="action-btn success" (click)="openAddManager()" [disabled]="saving">Manager hozzáadása</button>
+							}
 							<button type="button" class="action-btn delete" (click)="deleteOrganization()" [disabled]="saving">Törlés</button>
 						</div>
 					}
@@ -124,6 +127,57 @@
 								<a [href]="org.website" target="_blank" rel="noopener noreferrer">{{ org.website }}</a>
 							} @else {
 								<input class="about-edit-input" type="text" [formControl]="$any(orgForm.get('website'))" placeholder="Weboldal" />
+							}
+						</span>
+					</div>
+				}
+
+				@if (managerError) {
+					<div class="about-edit-error">{{ managerError }}</div>
+				}
+				@if (managerSuccess) {
+					<div class="hc-success">{{ managerSuccess }}</div>
+				}
+
+				<div class="about-org-detail-row">
+					<span class="detail-label">Adminok:</span>
+					<span class="detail-value">
+						@if (membersLoading) {
+							<span class="detail-muted">Betöltés...</span>
+						} @else if (membersError) {
+							<span class="about-edit-error">{{ membersError }}</span>
+						} @else if (members && members.length > 0) {
+							<div class="manager-list">
+								@for (m of members; track $index) {
+									<span class="manager-chip">{{ memberDisplay(m) }}</span>
+								}
+							</div>
+						} @else {
+							<span class="detail-muted">Nincs még admin.</span>
+						}
+					</span>
+				</div>
+
+				@if (isOwnView && showAddManager) {
+					<div class="about-org-detail-row">
+						<span class="detail-label">Új manager:</span>
+						<span class="detail-value">
+							<div class="manager-inline">
+								<input
+									class="about-edit-input"
+									type="email"
+									placeholder="Email cím"
+									[formControl]="$any(managerForm.get('email'))"
+								/>
+								<button type="button" class="action-btn success" (click)="addManagerByEmail()" [disabled]="addingManager">
+									Hozzáadás
+								</button>
+								<button type="button" class="action-btn" (click)="cancelAddManager()" [disabled]="addingManager">
+									Mégse
+								</button>
+							</div>
+							@if (managerForm.get('email')?.touched && managerForm.get('email')?.invalid) {
+								<div class="input-error">Adj meg egy érvényes email címet.</div>
 							}
 						</span>
 					</div>
