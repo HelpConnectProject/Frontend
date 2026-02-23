@@ -143,7 +143,7 @@ export class Aboutevent implements OnInit {
       });
   }
 
-  private hasToken(): boolean {
+  hasToken(): boolean {
     return Boolean(localStorage.getItem('token'));
   }
 

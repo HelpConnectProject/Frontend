@@ -4,6 +4,7 @@ import { AuthApi } from '../shared/auth-api';
 import { AuthService } from '../shared/auth-service';
 import { RouterLink } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
+import { phoneValidator } from '../shared/form-validators';
 
 @Component({
   selector: 'app-auth',
@@ -14,6 +15,8 @@ import { AsyncPipe } from '@angular/common';
 export class Auth {
   loginForm: any;
   updateForm: any;
+
+  showPassword = false;
 
   loading = false;
   errorMessage = '';
@@ -39,7 +42,7 @@ export class Auth {
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       city: [''],
-      phone: [''],
+      phone: ['', [phoneValidator()]],
       about: [''],
     });
     this.updateForm.disable();
@@ -126,12 +129,14 @@ export class Auth {
         }
         this.loading = false;
         this.loginForm.reset();
+        this.showPassword = false;
         this.getOwnProfile();
       },
       error: (err) => {
         this.loading = false;
         this.errorMessage = err.error?.message ?? 'Sikertelen bejelentkezés';
         this.authService.setLoggedIn(false);
+        this.showPassword = false;
       }
     });
   }

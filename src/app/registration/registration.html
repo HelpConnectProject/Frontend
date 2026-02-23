@@ -23,7 +23,17 @@
 				</div>
 				<div class="form-field">
 					<label for="password">Jelszó</label>
-					<input id="password" type="password" formControlName="password">
+					<div class="password-input">
+						<input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password">
+						<button
+							type="button"
+							class="password-toggle"
+							(click)="showPassword = !showPassword"
+							[attr.aria-label]="showPassword ? 'Jelszó elrejtése' : 'Jelszó megjelenítése'"
+						>
+							👁
+						</button>
+					</div>
 					@if (registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']) {
 						<div class="input-error">Jelszó megadása kötelező</div>
 					}
@@ -33,7 +43,17 @@
 				</div>
 				<div class="form-field">
 					<label for="password_confirmation">Jelszó megerősítése</label>
-					<input id="password_confirmation" type="password" formControlName="password_confirmation">
+					<div class="password-input">
+						<input id="password_confirmation" [type]="showPasswordConfirmation ? 'text' : 'password'" formControlName="password_confirmation">
+						<button
+							type="button"
+							class="password-toggle"
+							(click)="showPasswordConfirmation = !showPasswordConfirmation"
+							[attr.aria-label]="showPasswordConfirmation ? 'Jelszó elrejtése' : 'Jelszó megjelenítése'"
+						>
+							👁
+						</button>
+					</div>
 					@if (registerForm.get('password_confirmation')?.touched && registerForm.get('password_confirmation')?.errors?.['required']) {
 						<div class="input-error">Jelszó megerősítése kötelező</div>
 					}

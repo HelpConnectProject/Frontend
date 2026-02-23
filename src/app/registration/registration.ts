@@ -14,6 +14,9 @@ import { matchControls, phoneValidator } from '../shared/form-validators';
 })
 export class Registration {
 
+  showPassword = false;
+  showPasswordConfirmation = false;
+
   constructor(
     private auth: AuthApi,
     private builder: FormBuilder,

@@ -44,7 +44,7 @@
 					}
 				</div>
 
-				@if (!isOwnView && event.id) {
+				@if (!isOwnView && event.id && hasToken()) {
 					<div class="about-event-cta">
 						@if (isRegistered(event.id)) {
 							<button type="button" class="btn-unregister" (click)="deleteEventRegistration(event.id)">Lemondom a jelentkezést</button>
@@ -67,13 +67,11 @@
 				@if (editMode || event.description) {
 					<div class="about-event-detail-row">
 						<span class="detail-label">Leírás:</span>
-						<span class="detail-value">
-							@if (!editMode) {
-								{{ event.description }}
-							} @else {
-								<textarea class="about-edit-textarea" rows="3" [formControl]="$any(eventForm.get('description'))" placeholder="Leírás"></textarea>
-							}
-						</span>
+						@if (!editMode) {
+							<span class="detail-value">{{ event.description }}</span>
+						} @else {
+							<textarea class="about-edit-textarea about-edit-textarea--large" rows="12" [formControl]="$any(eventForm.get('description'))" placeholder="Leírás"></textarea>
+						}
 					</div>
 				}
 

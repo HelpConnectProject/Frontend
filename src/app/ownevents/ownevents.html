@@ -2,6 +2,7 @@
   <div class="page-header">
     <h1 class="page-title">Saját Események</h1>
     <div class="header-actions">
+      <a class="link-btn" routerLink="/events">Összes esemény</a>
       @if (!showForm) {
         <button class="primary-btn create-btn" type="button" (click)="startCreate()">
           Új esemény hozzáadása
@@ -46,7 +47,7 @@
         </div>
         <label class="full-width">
           Leírás
-          <textarea formControlName="description" rows="3"></textarea>
+          <textarea class="about-edit-textarea about-edit-textarea--large" formControlName="description" rows="12"></textarea>
         </label>
         <div class="form-actions">
           <button class="primary-btn" type="submit" [disabled]="submitting">

@@ -46,6 +46,9 @@
                     <div class="form-field">
                         <label for="phone">Telefon</label>
                         <input id="phone" type="text" formControlName="phone" autocomplete="tel">
+						@if (updateForm.get('phone')?.touched && (updateForm.get('phone')?.errors?.['phoneInvalidChars'] || updateForm.get('phone')?.errors?.['phoneDigits'])) {
+							<div class="field-hint">Hibás telefonszám formátum</div>
+						}
                     </div>
 
                     <div class="form-field">
@@ -89,7 +92,17 @@
                 @if(!forgotPassword){
                     <div class="form-field">
                         <label for="password">Jelszó</label>
-                        <input id="password" type="password" formControlName="password">
+                        <div class="password-input">
+                            <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password">
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                (click)="showPassword = !showPassword"
+                                [attr.aria-label]="showPassword ? 'Jelszó elrejtése' : 'Jelszó megjelenítése'"
+                            >
+                                👁
+                            </button>
+                        </div>
                     </div>
                 }
 

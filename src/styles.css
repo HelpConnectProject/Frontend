@@ -253,6 +253,13 @@ html, body {
   resize: vertical;
 }
 
+.about-edit-textarea--large {
+  display: block;
+  width: 100%;
+  min-height: 260px;
+  flex: 1 1 100%;
+}
+
 .form-grid input:focus,
 .form-grid select:focus,
 .form-grid textarea:focus,
