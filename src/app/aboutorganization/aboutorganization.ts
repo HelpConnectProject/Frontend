@@ -7,6 +7,7 @@ import { Eventapi } from '../shared/eventapi';
 import { bankAccountValidator, phoneValidator } from '../shared/form-validators';
 import { categoryImageFor } from '../shared/category-image';
 import { Memberapi } from '../shared/memberapi';
+import { AuthService } from '../shared/auth-service';
 
 
 @Component({
@@ -106,7 +107,10 @@ export class Aboutorganization implements OnInit {
     private organizationapi: Organizationapi,
     private eventapi: Eventapi,
     private builder: FormBuilder,
-    private memberapi: Memberapi
+    private memberapi: Memberapi,
+    public authService: AuthService
+  
+
   ) {
     this.orgForm = this.builder.group({
       name: ['', Validators.required],
@@ -317,7 +321,7 @@ export class Aboutorganization implements OnInit {
           this.loading = false;
 				this.editMode = false;
 
-          if (this.org?.id) {
+          if (this.org?.id && this.isOwnView) {
             this.getMembers();
           }
           if (this.org && this.org.id) {

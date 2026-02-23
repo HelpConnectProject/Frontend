@@ -6,15 +6,17 @@ import { Eventapi } from '../shared/eventapi';
 import { Organizationapi } from '../shared/organizationapi';
 import { Eventregistrationapi } from '../shared/eventregistrationapi';
 import { categoryImageFor } from '../shared/category-image';
-
+import { AuthService } from '../shared/auth-service';
 
 @Component({
   selector: 'app-events',
+  standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './events.html',
   styleUrl: './events.css',
 })
 export class Events implements OnInit {
+
   events: any = null;
   organizations: any = null;
   owneventregistrations: any[] = [];
@@ -28,7 +30,8 @@ export class Events implements OnInit {
     private eventapi: Eventapi,
     private build: FormBuilder,
     private organizationapi: Organizationapi,
-    private eventregistrationapi: Eventregistrationapi
+    private eventregistrationapi: Eventregistrationapi,
+    public authService: AuthService   // ✅ PUBLIC
   ) {
     this.searchForm = this.build.group({
       eventName: [''],
@@ -37,21 +40,30 @@ export class Events implements OnInit {
       onlyRegistered: [false],
     });
   }
-  
+
   ngOnInit() {
     const urlParams = new URLSearchParams(window.location.search);
     const orgName = urlParams.get('organizationName');
     if (orgName) {
       this.searchForm.patchValue({ organizationName: orgName });
     }
+
     this.getEvents();
     this.getOrganizations();
-    this.getOwnEventRegistrations();
+
+    this.authService.isLoggedIn$.subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.getOwnEventRegistrations();
+      } else {
+        this.owneventregistrations = [];
+        this.filterEvents();
+      }
+    });
+
     this.searchForm.valueChanges.subscribe(() => {
       this.filterEvents();
     });
   }
-
 
   getEvents() {
     this.eventapi.getEvents$().subscribe({
@@ -64,13 +76,13 @@ export class Events implements OnInit {
     });
   }
 
-
   getOrganizations() {
     this.organizationapi.getOrganizations$().subscribe({
       next: (result: any) => {
         this.organizations = result.data;
         this.organizationNameById = {};
         this.organizationCategoryById = {};
+
         for (const org of this.organizations) {
           const id = org.id;
           this.organizationNameById[id] = org.name;
@@ -82,33 +94,16 @@ export class Events implements OnInit {
       error: () => {},
     });
   }
+
   getOwnEventRegistrations() {
     this.eventregistrationapi.getOwnEventRegistrations$().subscribe({
       next: (result: any) => {
         this.owneventregistrations = result.data;
         this.filterEvents();
       },
-      error: (error) => {
-        console.error('Error fetching own event registrations:', error);
+      error: () => {
         this.owneventregistrations = [];
         this.filterEvents();
-      }
-    });
-  }
-
-  deleteEventRegistration(eventRegistrationId: number) {
-    for (const reg of this.owneventregistrations) {
-      if (reg.event_id === eventRegistrationId) {
-        eventRegistrationId = reg.id;
-        break;
-      }
-    }
-    this.eventregistrationapi.deleteEventRegistration$(eventRegistrationId).subscribe({
-      next: () => {
-        this.getOwnEventRegistrations();
-      },
-      error: (error) => {
-        console.error('Error deleting event registration:', error);
       }
     });
   }
@@ -122,21 +117,8 @@ export class Events implements OnInit {
     return false;
   }
 
-  registerToEvent(eventId: number) {
-    this.eventregistrationapi.registerEvent$(eventId).subscribe({
-      next: () => {
-        this.getOwnEventRegistrations();
-      },
-      error: (error) => {
-        console.error('Error registering for event:', error);
-      }
-    });
-  }
-
   filterEvents() {
-    if (!this.events) {
-      return;
-    }
+    if (!this.events) return;
 
     const nameFilter = this.searchForm.get('eventName')?.value?.toLowerCase().trim() || '';
     const locationFilter = this.searchForm.get('location')?.value?.toLowerCase().trim() || '';
@@ -168,5 +150,4 @@ export class Events implements OnInit {
     this.searchForm.reset();
     this.filteredEvents = this.events;
   }
-
 }

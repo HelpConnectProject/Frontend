@@ -1,8 +1,12 @@
 <div class="events-container hc-page">
   <h1 class="page-title">Események</h1>
-  <div class="ownev">
-    <a routerLink="/ownevents" class="ownev-btn">Saját események</a>
-  </div>
+
+  @if (authService.isLoggedIn$ | async) {
+    <div class="ownev">
+      <a routerLink="/ownevents" class="ownev-btn">Saját események</a>
+    </div>
+  }
+
   <div class="search-section">
     <div class="search-header">
       <h2 class="search-title">Keress eseményeket</h2>
@@ -12,6 +16,7 @@
     <div class="search-container">
       <form [formGroup]="searchForm" class="search-form">
         <div class="search-input-wrapper">
+
           <div class="search-input-group">
             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <circle cx="11" cy="11" r="8"></circle>
@@ -54,13 +59,16 @@
             />
             <div class="input-highlight"></div>
           </div>
+
         </div>
 
-        <label class="only-registered-toggle">
-          <input type="checkbox" formControlName="onlyRegistered" class="only-registered-checkbox" />
-          <span class="toggle-slider" aria-hidden="true"></span>
-          <span class="toggle-text">Csak a jelentkezett események</span>
-        </label>
+        @if (authService.isLoggedIn$ | async) {
+          <label class="only-registered-toggle">
+            <input type="checkbox" formControlName="onlyRegistered" class="only-registered-checkbox" />
+            <span class="toggle-slider" aria-hidden="true"></span>
+            <span class="toggle-text">Csak a jelentkezett események</span>
+          </label>
+        }
 
         <button 
           type="button" 
@@ -73,31 +81,41 @@
           </svg>
           Szűrők törlése
         </button>
+
       </form>
     </div>
   </div>
 
   <div class="cards-grid">
     @for (event of filteredEvents; track event.id) {
-      <a class="event-card" [class.registered]="isRegistered(event.id)" [routerLink]="['/aboutevent', event.id]">
+      <a class="event-card"
+         [class.registered]="isRegistered(event.id)"
+         [routerLink]="['/aboutevent', event.id]">
+
         <div class="card-media">
           <img
             [src]="categoryImageFor(organizationCategoryById[event.organization_id])"
             [alt]="organizationCategoryById[event.organization_id] || (event.title || 'Esemény')"
           />
         </div>
+
         <div class="card-header">
           <div class="card-info-summary">
             <h3 class="card-title">{{ event.title || 'Esemény' }}</h3>
+
             @if (event.date) {
               <p class="card-date">{{ event.date | date:'yyyy.MM.dd.' }}</p>
             }
-            @if (event.organization_id) {
-              <p class="card-date">{{ organizationNameById[event.organization_id] }} </p>
 
+            @if (event.organization_id) {
+              <p class="card-date">
+                {{ organizationNameById[event.organization_id] }}
+              </p>
             }
+
           </div>
         </div>
+
       </a>
     }
   </div>
@@ -107,4 +125,5 @@
       <p>Nincs megjeleníthető esemény a keresési feltételeknek megfelelően.</p>
     </div>
   }
+
 </div>

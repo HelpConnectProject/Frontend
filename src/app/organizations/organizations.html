@@ -1,22 +1,36 @@
 <div class="organizations-container hc-page">
   <h1 class="page-title">Szervezetek</h1>
-  <div class="ownorg">
-    <a routerLink="/ownorganizations" class="ownorg-btn">Saját szervezetek</a>
-  </div>
+
+  @if (authService.isLoggedIn$ | async) {
+    <div class="ownorg">
+      <a routerLink="/ownorganizations" class="ownorg-btn">
+        Saját szervezetek
+      </a>
+    </div>
+  }
+
   <div class="cards-grid">
     @for (org of organizations; track org.id) {
       <div class="org-card">
         <div class="card-media">
-          <img [src]="categoryImageFor(org.category)" [alt]="org.category || org.name" />
+          <img
+            [src]="categoryImageFor(org.category)"
+            [alt]="org.category || org.name"
+          />
         </div>
+
         <div class="card-header">
           <div class="card-info-summary">
             <h3 class="card-title">
-              <a [routerLink]="['/aboutorganization', org.id]">{{ org.name }}</a>
+              <a [routerLink]="['/aboutorganization', org.id]">
+                {{ org.name }}
+              </a>
             </h3>
+
             @if (org.category) {
               <p class="card-category">{{ org.category }}</p>
             }
+
           </div>
         </div>
       </div>
