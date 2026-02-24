@@ -7,7 +7,8 @@
         <button class="primary-btn create-btn" type="button" (click)="startCreate()">
           Új esemény hozzáadása
         </button>
-      }@else{
+      }
+      @if (!showForm && (!organizationEvents || organizationEvents.length === 0)) {
         <p class="empty-state">Hozz létre szervezetet az események hozzáadásához</p>
       }
     </div>
@@ -39,6 +40,7 @@
             <input type="number" formControlName="capacity" />
             <span *ngIf="eventForm.get('capacity')?.invalid && eventForm.get('capacity')?.touched" class="input-error">Szükséges és 1-nél nagyobbnak kell lennie</span>
           </label>
+          <!--
           <label>
             Státusz
             <select formControlName="status">
@@ -46,6 +48,7 @@
               <option value="Inaktív">Inaktív</option>
             </select>
           </label>
+          -->
         </div>
         <label class="full-width">
           Leírás
@@ -61,27 +64,28 @@
     </section>
   }
  
-  <div class="dropdown-wrapper" (click)="$event.stopPropagation()">
-    <button class="dropdown-toggle" (click)="toggleDropdown()" [class.open]="isDropdownOpen">
-      <span class="dropdown-text">{{ selectedOrganization?.organization_name || 'Szervezet kiválasztása' }}</span>
-      <span class="dropdown-arrow">{{ isDropdownOpen ? '▲' : '▼' }}</span>
-    </button>
-    
-    @if (isDropdownOpen) {
-      <div class="dropdown-menu">
-        @for (org of organizationEvents; track org.organization_id) {
-          <button 
-            class="dropdown-item" 
-            [class.active]="selectedOrganization?.organization_id === org.organization_id"
-            (click)="selectOrganization(org)"
-          >
-            <span class="org-name">{{ org.organization_name }}</span>
-            <span class="event-count">({{ org.events?.length || 0 }} esemény)</span>
-          </button>
-        }
-      </div>
-    }
-  </div>
+  @if (organizationEvents && organizationEvents.length > 0) {
+    <div class="dropdown-wrapper" (click)="$event.stopPropagation()">
+      <button class="dropdown-toggle" (click)="toggleDropdown()" [class.open]="isDropdownOpen">
+        <span class="dropdown-text">{{ selectedOrganization?.organization_name || 'Szervezet kiválasztása' }}</span>
+        <span class="dropdown-arrow">{{ isDropdownOpen ? '▲' : '▼' }}</span>
+      </button>
+      @if (isDropdownOpen) {
+        <div class="dropdown-menu">
+          @for (org of organizationEvents; track org.organization_id) {
+            <button 
+              class="dropdown-item" 
+              [class.active]="selectedOrganization?.organization_id === org.organization_id"
+              (click)="selectOrganization(org)"
+            >
+              <span class="org-name">{{ org.organization_name }}</span>
+              <span class="event-count">({{ org.events?.length || 0 }} esemény)</span>
+            </button>
+          }
+        </div>
+      }
+    </div>
+  }
 
  
   @if (selectedOrganization) {

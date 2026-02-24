@@ -45,7 +45,6 @@ export class Aboutevent implements OnInit {
       date: ['', Validators.required],
       location: [''],
       capacity: [null, [Validators.required, Validators.min(1)]],
-      status: ['Aktív'],
       description: [''],
     });
   }
@@ -291,7 +290,6 @@ export class Aboutevent implements OnInit {
       date: this.toDatetimeLocal(this.event?.date),
       location: this.event?.location ?? '',
       capacity: this.event?.capacity ?? null,
-      status: this.event?.status ?? 'Aktív',
       description: this.event?.description ?? '',
     });
   }
@@ -314,9 +312,9 @@ export class Aboutevent implements OnInit {
 
   private buildPayloadFromForm() {
     const raw = this.eventForm.value;
+    const { status, ...rest } = raw; // status kiszedve
     const payload: any = {};
-
-    Object.entries(raw).forEach(([key, value]) => {
+    Object.entries(rest).forEach(([key, value]) => {
       if (value === null || value === undefined) {
         payload[key] = null;
       } else if (typeof value === 'string') {
@@ -326,7 +324,6 @@ export class Aboutevent implements OnInit {
         payload[key] = value;
       }
     });
-
     return payload;
   }
 

@@ -115,21 +115,21 @@
 					</div>
 				}
 
-				@if (editMode || event.status) {
+				<!-- @if (editMode || event.status) {
 					<div class="about-event-detail-row">
 						<span class="detail-label">Státusz:</span>
 						<span class="detail-value">
 							@if (!editMode) {
 								{{ event.status }}
 							} @else {
-								<select class="about-edit-input" [formControl]="$any(eventForm.get('status'))">
-									<option value="Aktív">Aktív</option>
+								<select readonly class="about-edit-input" [formControl]="$any(eventForm.get('status'))">
+									 <option value="Aktív">Aktív</option>
 									<option value="Inaktív">Inaktív</option>
 								</select>
 							}
 						</span>
 					</div>
-				}
+				} -->
 
 
 				@if (event.organization_id) {

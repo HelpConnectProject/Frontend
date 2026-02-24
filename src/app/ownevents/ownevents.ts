@@ -42,7 +42,7 @@ export class Ownevents implements OnInit {
       location: [''],
       date: ['', Validators.required],
       capacity: ['', [Validators.required, Validators.min(1)]],
-      status: ['Aktív']
+      // status: ['Aktív'] // ideiglenesen elrejtve
     });
   }
 
@@ -188,7 +188,7 @@ export class Ownevents implements OnInit {
 
   private buildPayload() {
     const raw = this.eventForm.value;
-    const { category, ...rest } = raw;
+    const { category, status, ...rest } = raw; // status kiszedve, ne kerüljön a payloadba
     const payload: any = {};
     Object.entries(rest).forEach(([key, value]) => {
       if (value === null || value === undefined) {
@@ -210,7 +210,7 @@ export class Ownevents implements OnInit {
       location: '',
       date: '',
       capacity: '',
-      status: 'Aktív'
+      // status: 'Aktív' // ideiglenesen elrejtve
     });
   }
 }
