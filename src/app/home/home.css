@@ -201,6 +201,9 @@
 }
 
 @media (max-width: 900px) {
+	.hero {
+		background-image: url("/openingtextmid.png");
+	}
 	.split-grid,
 	.volunteer-image-container {
 		grid-template-columns: 1fr;
@@ -210,5 +213,11 @@
 @media (max-width: 720px) {
 	.home-section {
 		padding: 56px 0;
+	}
+}
+
+@media (max-width: 460px) {
+	.hero {
+		background-image: url("/openingtextsmall.png");
 	}
 }
