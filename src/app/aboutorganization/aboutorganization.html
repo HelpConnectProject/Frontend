@@ -230,13 +230,11 @@
 														<span class="feedback-date" style="margin-left: 8px; color: #888; font-size: 0.95em; white-space: nowrap;">{{ feedback.updated_at | date:'yyyy.MM.dd. HH:mm' }}</span>
 													}
 												</div>
-												@if (authService.isLoggedIn$ | async) {
-													<span class="star-rating-static feedback-stars">
-														@for(star of getStars(5); track star) {
-															<span class="star" [class.filled]="star <= feedback.rating">&#9733;</span>
-														}
-													</span>
-												}
+												<span class="star-rating-static feedback-stars">
+													@for(star of getStars(5); track star) {
+														<span class="star" [class.filled]="star <= feedback.rating">&#9733;</span>
+													}
+												</span>
 											</div>
 											@if (canDeleteFeedback(feedback)) {
 												<div class="feedback-right">
