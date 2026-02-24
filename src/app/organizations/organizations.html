@@ -9,8 +9,72 @@
     </div>
   }
 
+  <div class="search-section">
+    <div class="search-header">
+      <h2 class="search-title">Keress szervezeteket</h2>
+      <p class="search-subtitle">Írd be a szervezet nevét, kategóriáját vagy címét</p>
+    </div>
+    <div class="search-container">
+      <form [formGroup]="searchForm" class="search-form">
+        <div class="search-input-wrapper">
+          <div class="search-input-group">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <input 
+              type="text" 
+              formControlName="name" 
+              placeholder="Szervezet neve..." 
+              class="search-input"
+            />
+            <div class="input-highlight"></div>
+          </div>
+          <div class="search-input-group">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M3 21h18"></path>
+              <path d="M5 21V7l7-4 7 4v14"></path>
+              <path d="M9 21v-6h6v6"></path>
+            </svg>
+            <select formControlName="category" class="search-input">
+              <option value="">Kategória...</option>
+              @for (cat of categories; track cat) {
+                <option [value]="cat">{{ cat }}</option>
+              }
+            </select>
+            <div class="input-highlight"></div>
+          </div>
+          <div class="search-input-group">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <input 
+              type="text" 
+              formControlName="address" 
+              placeholder="Cím..." 
+              class="search-input"
+            />
+            <div class="input-highlight"></div>
+          </div>
+        </div>
+        <button 
+          type="button" 
+          (click)="searchForm.reset(); filterOrganizations();" 
+          class="clear-btn"
+        >
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="1"></circle>
+            <path d="M12 6v6M12 12v6"></path>
+          </svg>
+          Szűrők törlése
+        </button>
+      </form>
+    </div>
+  </div>
+
   <div class="cards-grid">
-    @for (org of organizations; track org.id) {
+    @for (org of filteredOrganizations; track org.id) {
       <div class="org-card">
         <div class="card-media">
           <img
