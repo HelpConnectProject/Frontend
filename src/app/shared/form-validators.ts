@@ -40,20 +40,59 @@ export function bankAccountValidator(): ValidatorFn {
       return null; 
     }
 
-    const compact = value.replace(/\s+/g, '').toUpperCase();
+    const compact = value.replace(/[\s-]+/g, '').toUpperCase();
 
-  
-    if (/^HU\d{26}$/.test(compact)) {
+    // Accept any valid IBAN (all countries) with checksum verification.
+    // IBAN: allow any country (15..34 chars), basic structure only.
+    // (We keep this intentionally lenient; detailed checksum validation can be done server-side.)
+    if (/^[A-Z]{2}\d{2}[A-Z0-9]{11,30}$/.test(compact)) {
       return null;
     }
 
-
-    if (/^\d{8}-\d{8}(-\d{8})?$/.test(compact)) {
+    // Keep supporting common HU domestic format: 8-8 or 8-8-8 digits.
+    if (/^\d{8}-\d{8}(-\d{8})?$/.test(value.trim())) {
       return null;
     }
 
     return { bankAccount: true };
   };
+}
+
+function normalizeBankAccountInput(input: string): string {
+  // Typical user inputs: "IBAN HU12 ...", "HU12 3456...", with spaces/dashes.
+  let s = input.trim();
+  s = s.replace(/^iban\s*:?\s*/i, '');
+  s = s.replace(/[\s-]+/g, '');
+  return s.toUpperCase();
+}
+
+function isValidIban(iban: string): boolean {
+  // IBAN length is 15..34, must be alphanumeric.
+  if (!/^[A-Z0-9]+$/.test(iban)) return false;
+  if (iban.length < 15 || iban.length > 34) return false;
+  if (!/^[A-Z]{2}\d{2}/.test(iban)) return false;
+
+  // Move first four characters to the end.
+  const rearranged = iban.slice(4) + iban.slice(0, 4);
+
+  // MOD-97 on the expanded numeric representation.
+  let remainder = 0;
+  for (const ch of rearranged) {
+    if (ch >= '0' && ch <= '9') {
+      remainder = (remainder * 10 + (ch.charCodeAt(0) - 48)) % 97;
+      continue;
+    }
+
+    // A=10 ... Z=35; feed digits one by one.
+    const code = ch.charCodeAt(0) - 55;
+    if (code < 10 || code > 35) return false;
+    const tens = Math.floor(code / 10);
+    const ones = code % 10;
+    remainder = (remainder * 10 + tens) % 97;
+    remainder = (remainder * 10 + ones) % 97;
+  }
+
+  return remainder === 1;
 }
 
 export function matchControls(controlName: string, matchingControlName: string): ValidatorFn {

@@ -26,7 +26,10 @@
 							}
 	                        
 						} @else {
-							<input class="about-edit-input title" type="text" [formControl]="$any(orgForm.get('name'))" placeholder="Név" />
+								<input class="about-edit-input title" type="text" [formControl]="$any(orgForm.get('name'))" placeholder="Név" />
+								@if (orgForm.get('name')?.touched && orgForm.get('name')?.hasError('required')) {
+									<div class="input-error">A név megadása kötelező.</div>
+								}
 							<select class="about-edit-input category" [formControl]="$any(orgForm.get('category'))">
 								<option value="">Válassz kategóriát…</option>
 								<option>Szociális és humanitárius szervezetek</option>
@@ -91,7 +94,10 @@
 												@if (!editMode) {
 														{{ org.email }}
 												} @else {
-														<input class="about-edit-input" type="email" [formControl]="$any(orgForm.get('email'))" placeholder="Email" />
+																<input class="about-edit-input" type="email" [formControl]="$any(orgForm.get('email'))" placeholder="Email" />
+																@if (orgForm.get('email')?.touched && orgForm.get('email')?.hasError('email')) {
+																	<div class="input-error">Adj meg egy érvényes email címet.</div>
+																}
 												}
 										</span>
 								</div>
@@ -102,7 +108,7 @@
 							@if (!editMode) {
 								{{ org.description }}
 							} @else {
-								<textarea class="about-edit-textarea" rows="3" [formControl]="$any(orgForm.get('description'))" placeholder="Leírás"></textarea>
+									<textarea class="about-edit-textarea about-edit-textarea--large" rows="12" [formControl]="$any(orgForm.get('description'))" placeholder="Leírás"></textarea>
 							}
 						</span>
 					</div>
@@ -115,6 +121,11 @@
 								{{ org.phone }}
 							} @else {
 								<input class="about-edit-input" type="tel" [formControl]="$any(orgForm.get('phone'))" placeholder="Telefonszám" />
+								@if (orgForm.get('phone')?.touched && orgForm.get('phone')?.hasError('phoneInvalidChars')) {
+									<div class="input-error">Csak számok, szóköz, +, -, () karakterek engedélyezettek.</div>
+								} @else if (orgForm.get('phone')?.touched && orgForm.get('phone')?.hasError('phoneDigits')) {
+									<div class="input-error">A telefonszám hossza 9–15 számjegy legyen.</div>
+								}
 							}
 						</span>
 					</div>
@@ -139,6 +150,9 @@
 								{{ org.bank_account }}
 							} @else {
 								<input class="about-edit-input" type="text" [formControl]="$any(orgForm.get('bank_account'))" placeholder="Bankszámla" />
+								@if (orgForm.get('bank_account')?.touched && orgForm.get('bank_account')?.hasError('bankAccount')) {
+									<div class="input-error">Adj meg érvényes bankszámlaszámot (pl. HU + 26 számjegy, vagy 8-8(-8) formátum).</div>
+								}
 							}
 						</span>
 					</div>
@@ -151,6 +165,9 @@
 								<a [href]="org.website" target="_blank" rel="noopener noreferrer">{{ org.website }}</a>
 							} @else {
 								<input class="about-edit-input" type="text" [formControl]="$any(orgForm.get('website'))" placeholder="Weboldal" />
+								@if (orgForm.get('website')?.touched && orgForm.get('website')?.hasError('pattern')) {
+									<div class="input-error">Adj meg érvényes weboldal címet (pl. https://pelda.hu).</div>
+								}
 							}
 						</span>
 					</div>

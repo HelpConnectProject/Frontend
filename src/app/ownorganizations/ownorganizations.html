@@ -60,13 +60,13 @@
                 </label>
                 <label>
                     Bankszámla
-                    <input formControlName="bank_account" placeholder="pl:xxxx-xxxx" />
+                    <input formControlName="bank_account" placeholder="pl:11112222-33334444" />
                     <span *ngIf="organizationForm.get('bank_account')?.touched && organizationForm.get('bank_account')?.errors?.['bankAccount']" class="input-error">Hibás bankszámla formátum</span>
                 </label>
             </div>
             <label class="full-width">
                 Leírás
-                <textarea formControlName="description" rows="3"></textarea>
+                <textarea class="about-edit-textarea about-edit-textarea--large" formControlName="description" rows="12"></textarea>
             </label>
             <div class="form-actions">
                 <button class="primary-btn" type="submit" [disabled]="submitting">

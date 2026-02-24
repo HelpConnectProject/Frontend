@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -12,7 +12,7 @@ import { AuthService } from '../shared/auth-service';
 
 @Component({
   selector: 'app-aboutorganization',
-  imports: [CommonModule, RouterLink, DatePipe, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule],
   templateUrl: './aboutorganization.html',
   styleUrl: './aboutorganization.css',
 })
@@ -20,10 +20,10 @@ export class Aboutorganization implements OnInit {
   categoryImageFor = categoryImageFor;
 
   getStars(count: number): number[] {
-    return Array(count).fill(0).map((_, i) => i + 1);
+    return Array.from({ length: count }, (_, i) => i + 1);
   }
   org: any = null;
-  events: any = null;
+  events: any[] = [];
   loading = true;
 	isOwnView = false;
 
@@ -42,7 +42,7 @@ export class Aboutorganization implements OnInit {
   editError: string | null = null;
   orgForm: FormGroup;
 
-    searchEventsForOrg() {
+  searchEventsForOrg() {
     if (this.org?.name) {
       this.router.navigate(['/events'], { queryParams: { organizationName: this.org.name } });
     }
@@ -50,7 +50,7 @@ export class Aboutorganization implements OnInit {
 
   private getCurrentUserId(): string | null {
     const id = localStorage.getItem('id');
-    return id ? String(id) : null;
+    return id ? id.toString() : null;
   }
 
   private getFeedbackOwnerId(feedback: any): string | null {
@@ -233,6 +233,7 @@ export class Aboutorganization implements OnInit {
     if (!this.org?.id || this.saving) return;
     if (this.orgForm.invalid) {
       this.orgForm.markAllAsTouched();
+      this.editError = 'Kérlek javítsd a hibás mezőket (pl. email/telefon/weboldal/bankszámla).';
       return;
     }
 
@@ -284,79 +285,101 @@ export class Aboutorganization implements OnInit {
   }
 
   private parseErrorMessage(err: any, fallback: string): string {
-    if (err?.error) {
-      if (typeof err.error === 'string') return err.error;
-      if (err.error?.message) return err.error.message;
-      if (typeof err.error === 'object') {
-        const firstKey = Object.keys(err.error)[0];
-        return firstKey ? String(err.error[firstKey]) : fallback;
+    const payload = err?.error;
+    if (!payload) return fallback;
+
+    if (typeof payload === 'string') return payload;
+    if (Array.isArray(payload)) {
+      const first = payload.find((v) => v !== null && v !== undefined);
+      return first !== undefined ? String(first) : fallback;
+    }
+
+    if (typeof payload === 'object') {
+      const message = (payload as any).message;
+      const errors = (payload as any).errors;
+
+      if (errors && typeof errors === 'object') {
+        const firstField = Object.keys(errors)[0];
+        if (firstField) {
+          const fieldError = (errors as any)[firstField];
+          if (Array.isArray(fieldError) && fieldError.length > 0) return String(fieldError[0]);
+          if (typeof fieldError === 'string') return fieldError;
+        }
+      }
+
+      if (typeof message === 'string' && message.trim().length > 0) return message;
+
+      const firstKey = Object.keys(payload)[0];
+      if (firstKey) {
+        const value = (payload as any)[firstKey];
+        if (typeof value === 'string') return value;
+        if (Array.isArray(value) && value.length > 0) return String(value[0]);
       }
     }
+
     return fallback;
   }
 
   deleteFeedback(id:number){
       this.organizationapi.deleteFeedback$(id).subscribe({
         next: () => {
-			if (this.events && Array.isArray(this.events)) {
-				for (const event of this.events) {
-					if (event?.feedbacks && Array.isArray(event.feedbacks)) {
-						event.feedbacks = event.feedbacks.filter((f: any) => f?.id !== id);
-					}
-				}
-			}
+      for (const event of this.events) {
+        if (event?.feedbacks && Array.isArray(event.feedbacks)) {
+          event.feedbacks = event.feedbacks.filter((f: any) => f?.id !== id);
+        }
+      }
     },error: () => {}
       })
   }
 
   ngOnInit() {
-	this.isOwnView = this.route.snapshot.queryParamMap.get('own') === '1' || this.route.snapshot.queryParamMap.get('own') === 'true';
-    const id = this.route.snapshot.paramMap.get('id');
-    
-    if (id) {
-      this.organizationapi.getOrganizations$().subscribe({
-        next: (result: any) => {
-          const orgs = result.data;
-          this.org = orgs.find((o: any) => o.id == id);
-          this.loading = false;
-				this.editMode = false;
+  this.isOwnView = this.route.snapshot.queryParamMap.get('own') === '1' || this.route.snapshot.queryParamMap.get('own') === 'true';
+  const id = this.route.snapshot.paramMap.get('id');
+  if (!id) {
+    this.loading = false;
+    this.events = [];
+    return;
+  }
 
-          if (this.org?.id && this.isOwnView) {
-            this.getMembers();
-          }
-          if (this.org && this.org.id) {
-            this.eventapi.getInactiveEvents$(this.org.id).subscribe({
-              next: (result: any) => {
+  this.organizationapi.getOrganizations$().subscribe({
+    next: (result: any) => {
+      const orgs = result?.data ?? [];
+      this.org = orgs.find((o: any) => o.id == id);
+      this.loading = false;
+      this.editMode = false;
 
-                this.events = result.data;
-                if (this.events && this.events.length > 0) {
-                    for (const event of this.events) {
-                      this.organizationapi.getEventFeedbacks$(event.id).subscribe({
-                        next: (result: any) => {
-                          event.feedbacks = result.data;
-                        },
-                        error: () => {}
-                      });
-                    }
-               
-                }
+      if (this.org?.id && this.isOwnView) {
+        this.getMembers();
+      }
+      if (!this.org?.id) return;
+
+      this.eventapi.getInactiveEvents$(this.org.id).subscribe({
+        next: (eventsResult: any) => {
+          this.events = Array.isArray(eventsResult?.data) ? eventsResult.data : [];
+          for (const event of this.events) {
+            this.organizationapi.getEventFeedbacks$(event.id).subscribe({
+              next: (feedbackResult: any) => {
+                event.feedbacks = feedbackResult?.data ?? [];
               },
-              error: () => {}
+              error: () => {},
             });
           }
         },
         error: () => {
-          this.loading = false;
-        }
+          this.events = [];
+        },
       });
-    } else {
+    },
+    error: () => {
       this.loading = false;
-    }
+      this.events = [];
+    },
+  });
   }
 
   reset() {
     this.org = null;
-    this.events = null;
+    this.events = [];
   }
 
   getMembers() {
