@@ -51,10 +51,9 @@ ngOnInit() {
     }
     this.auth.register$(this.registerForm.value).subscribe({
       next: (res: any) => {
-
         this.registerForm.reset();
-        alert('Sikeres regisztráció! Kérem, jelentkezzen be.');
-        this.router.navigate(['/auth']);
+			alert('Sikeres regisztráció! Küldtünk egy emailt, amiben meg kell erősítened a fiókodat. Ezután tudsz belépni.');
+			this.router.navigate(['/auth']);
       },
       error: () => {
         this.authService.setLoggedIn(false);
