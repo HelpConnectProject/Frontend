@@ -131,18 +131,6 @@
 					</div>
 				}
 
-				@if (editMode || event.category) {
-					<div class="about-event-detail-row">
-						<span class="detail-label">Kategória:</span>
-						<span class="detail-value">
-							@if (!editMode) {
-								{{ event.category }}
-							} @else {
-								<input class="about-edit-input" type="text" [formControl]="$any(eventForm.get('category'))" placeholder="Kategória" />
-							}
-						</span>
-					</div>
-				}
 
 				@if (event.organization_id) {
 					<div class="about-event-detail-row">

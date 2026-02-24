@@ -3,10 +3,12 @@
     <h1 class="page-title">Saját Események</h1>
     <div class="header-actions">
       <a class="link-btn" routerLink="/events">Összes esemény</a>
-      @if (!showForm) {
+      @if (!showForm && organizationEvents && organizationEvents.length > 0) {
         <button class="primary-btn create-btn" type="button" (click)="startCreate()">
           Új esemény hozzáadása
         </button>
+      }@else{
+        <p class="empty-state">Hozz létre szervezetet az események hozzáadásához</p>
       }
     </div>
   </div>

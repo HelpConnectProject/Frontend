@@ -188,9 +188,9 @@ export class Ownevents implements OnInit {
 
   private buildPayload() {
     const raw = this.eventForm.value;
+    const { category, ...rest } = raw;
     const payload: any = {};
-
-    Object.entries(raw).forEach(([key, value]) => {
+    Object.entries(rest).forEach(([key, value]) => {
       if (value === null || value === undefined) {
         payload[key] = null;
       } else if (typeof value === 'string') {
@@ -200,7 +200,6 @@ export class Ownevents implements OnInit {
         payload[key] = value;
       }
     });
-
     return payload;
   }
 

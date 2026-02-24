@@ -46,7 +46,6 @@ export class Aboutevent implements OnInit {
       location: [''],
       capacity: [null, [Validators.required, Validators.min(1)]],
       status: ['Aktív'],
-      category: [''],
       description: [''],
     });
   }
@@ -293,7 +292,6 @@ export class Aboutevent implements OnInit {
       location: this.event?.location ?? '',
       capacity: this.event?.capacity ?? null,
       status: this.event?.status ?? 'Aktív',
-      category: this.event?.category ?? '',
       description: this.event?.description ?? '',
     });
   }
