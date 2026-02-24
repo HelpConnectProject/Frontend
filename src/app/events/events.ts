@@ -90,6 +90,7 @@ export class Events implements OnInit {
             this.organizationCategoryById[id] = org.category;
           }
         }
+        this.filterEvents();
       },
       error: () => {},
     });
