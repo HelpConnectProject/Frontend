@@ -6,9 +6,11 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #eef2f7, #f8fbff);
+  align-items: flex-start;
+  /* background: linear-gradient(135deg, #eef2f7, #f8fbff); */
   padding: 20px;
+  background: url("/openingimage.png") center / cover no-repeat;
+  
 }
 
 .contact-card {
@@ -94,4 +96,19 @@ h1 {
   h1 {
     font-size: 1.5rem;
   }
+}
+
+
+@media (max-width: 900px) {
+	.contact-wrapper {
+		background-image: url("/openingtextmid.png");
+	}
+}
+
+
+
+@media (max-width: 460px) {
+	.contact-wrapper {
+		background-image: url("/openingtextsmall.png");
+	}
 }
