@@ -256,16 +256,25 @@ export class Aboutorganization implements OnInit {
 
   deleteOrganization() {
     if (!this.org?.id) return;
-    const confirmed = window.confirm('Biztosan törlöd ezt a szervezetet?');
-    if (!confirmed) return;
 
-    this.organizationapi.deleteOrganization$(this.org.id).subscribe({
-      next: () => {
-        this.router.navigate(['/ownorganizations']);
-      },
-      error: () => {
-        Swal.fire({ text: 'Nem sikerült törölni a szervezetet.' });
-      }
+    Swal.fire({
+      icon: 'warning',
+      title: 'Biztosan törlöd?',
+      text: 'A művelet nem visszavonható.',
+      showCancelButton: true,
+      confirmButtonText: 'Törlés',
+      cancelButtonText: 'Mégse',
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+
+      this.organizationapi.deleteOrganization$(this.org.id).subscribe({
+        next: () => {
+          this.router.navigate(['/ownorganizations']);
+        },
+        error: () => {
+          Swal.fire({ icon: 'error', title: 'Hiba', text: 'Nem sikerült törölni a szervezetet.' });
+        },
+      });
     });
   }
 

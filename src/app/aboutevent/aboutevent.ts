@@ -272,21 +272,27 @@ export class Aboutevent implements OnInit {
   deleteEvent() {
     if (!this.event) return;
 
-    const confirmed = window.confirm(
-      'Biztosan törlöd ezt az eseményt?'
-    );
-    if (!confirmed) return;
+    Swal.fire({
+      icon: 'warning',
+      title: 'Biztosan törlöd?',
+      text: 'A művelet nem visszavonható.',
+      showCancelButton: true,
+      confirmButtonText: 'Törlés',
+      cancelButtonText: 'Mégse',
+    }).then((result) => {
+      if (!result.isConfirmed) return;
 
-    this.eventapi
-      .deleteEvent$(this.event.id, this.event.organization_id)
-      .subscribe({
-        next: () => {
-          this.router.navigate(['/ownevents']);
-        },
-        error: () => {
-          Swal.fire({ icon: 'error', title: 'Hiba', text: 'Nem sikerült törölni az eseményt.' });
-        },
-      });
+      this.eventapi
+        .deleteEvent$(this.event.id, this.event.organization_id)
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/ownevents']);
+          },
+          error: () => {
+            Swal.fire({ icon: 'error', title: 'Hiba', text: 'Nem sikerült törölni az eseményt.' });
+          },
+        });
+    });
   }
 
   private patchFormFromEvent() {
