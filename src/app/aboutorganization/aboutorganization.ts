@@ -8,6 +8,7 @@ import { bankAccountValidator, phoneValidator } from '../shared/form-validators'
 import { categoryImageFor } from '../shared/category-image';
 import { Memberapi } from '../shared/memberapi';
 import { AuthService } from '../shared/auth-service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -97,7 +98,7 @@ export class Aboutorganization implements OnInit {
         target.reset();
       },
       error: () => {
-        alert('Nem sikerült elküldeni a visszajelzést.');
+        Swal.fire({ text: 'Nem sikerült elküldeni a visszajelzést.' });
       }
     });
   }
@@ -263,7 +264,7 @@ export class Aboutorganization implements OnInit {
         this.router.navigate(['/ownorganizations']);
       },
       error: () => {
-        alert('Nem sikerült törölni a szervezetet.');
+        Swal.fire({ text: 'Nem sikerült törölni a szervezetet.' });
       }
     });
   }
@@ -320,16 +321,19 @@ export class Aboutorganization implements OnInit {
     return fallback;
   }
 
-  deleteFeedback(id:number){
-      this.organizationapi.deleteFeedback$(id).subscribe({
-        next: () => {
-      for (const event of this.events) {
-        if (event?.feedbacks && Array.isArray(event.feedbacks)) {
-          event.feedbacks = event.feedbacks.filter((f: any) => f?.id !== id);
+  deleteFeedback(id: number) {
+    this.organizationapi.deleteFeedback$(id).subscribe({
+      next: () => {
+        for (const event of this.events) {
+          if (event?.feedbacks && Array.isArray(event.feedbacks)) {
+            event.feedbacks = event.feedbacks.filter((f: any) => f?.id !== id);
+          }
         }
-      }
-    },error: () => {}
-      })
+      },
+      error: () => {
+        Swal.fire({ icon: 'error', title: 'Hiba', text: 'Nem sikerült törölni a visszajelzést.' });
+      },
+    });
   }
 
   ngOnInit() {

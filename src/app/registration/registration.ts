@@ -4,6 +4,7 @@ import { AuthApi } from '../shared/auth-api';
 import { AuthService } from '../shared/auth-service';
 import { Router, RouterLink } from "@angular/router";
 import { matchControls, phoneValidator } from '../shared/form-validators';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -52,12 +53,12 @@ ngOnInit() {
     this.auth.register$(this.registerForm.value).subscribe({
       next: (res: any) => {
         this.registerForm.reset();
-			alert('Sikeres regisztráció! Küldtünk egy emailt, amiben meg kell erősítened a fiókodat. Ezután tudsz belépni.');
+			Swal.fire({ text: 'Sikeres regisztráció! Küldtünk egy emailt, amiben meg kell erősítened a fiókodat. Ezután tudsz belépni.' });
 			this.router.navigate(['/auth']);
       },
       error: () => {
         this.authService.setLoggedIn(false);
-        alert('Regisztráció sikertelen. Kérem, próbálja újra.');
+        Swal.fire({ text: 'Regisztráció sikertelen. Kérem, próbálja újra.' });
       }
     });
   }

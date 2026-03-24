@@ -6,6 +6,7 @@ import { Eventapi } from '../shared/eventapi';
 import { Eventregistrationapi } from '../shared/eventregistrationapi';
 import { Organizationapi } from '../shared/organizationapi';
 import { categoryImageFor } from '../shared/category-image';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-aboutevent',
@@ -242,7 +243,9 @@ export class Aboutevent implements OnInit {
   registerToEvent(eventId: number) {
     this.eventregistrationapi.registerEvent$(eventId).subscribe({
       next: () => this.getOwnEventRegistrations(),
-      error: () => {},
+      error: () => {
+        Swal.fire({ icon: 'error', title: 'Hiba', text: 'Nem sikerült jelentkezni az eseményre.' });
+      },
     });
   }
 
@@ -260,7 +263,9 @@ export class Aboutevent implements OnInit {
       .deleteEventRegistration$(registrationId)
       .subscribe({
         next: () => this.getOwnEventRegistrations(),
-        error: () => {},
+        error: () => {
+          Swal.fire({ icon: 'error', title: 'Hiba', text: 'Nem sikerült törölni a jelentkezést.' });
+        },
       });
   }
 
@@ -278,7 +283,9 @@ export class Aboutevent implements OnInit {
         next: () => {
           this.router.navigate(['/ownevents']);
         },
-        error: () => {},
+        error: () => {
+          Swal.fire({ icon: 'error', title: 'Hiba', text: 'Nem sikerült törölni az eseményt.' });
+        },
       });
   }
 
