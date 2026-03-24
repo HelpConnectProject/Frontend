@@ -68,8 +68,20 @@ export class Events implements OnInit {
   getEvents() {
     this.eventapi.getEvents$().subscribe({
       next: (result: any) => {
-        this.events = result.data;
-        this.filteredEvents = result.data;
+        const data = Array.isArray(result?.data) ? result.data : [];
+
+        const toTime = (value: any): number => {
+          if (!value) return 0;
+          if (value instanceof Date) return value.getTime();
+          if (typeof value === 'number') return value;
+          const parsed = Date.parse(value);
+          return Number.isFinite(parsed) ? parsed : 0;
+        };
+
+        data.sort((a: any, b: any) => toTime(b?.date) - toTime(a?.date));
+
+        this.events = data;
+        this.filteredEvents = data;
         this.filterEvents();
       },
       error: () => {},
