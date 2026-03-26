@@ -11,6 +11,9 @@
       <a class="navbar__link" routerLink="/organizations" routerLinkActive="is-active" (click)="closeMenu()">Szervezetek</a>
       @if(isLoggedIn()) {
         <a class="navbar__link" routerLink="/auth" routerLinkActive="is-active" (click)="closeMenu()">Profil</a>
+        @if (isSuperAdmin()) {
+          <a class="navbar__link" routerLink="/admin" routerLinkActive="is-active" (click)="closeMenu()">Admin</a>
+        }
       }@else{
         <a class="navbar__link" routerLink="/auth" routerLinkActive="is-active" (click)="closeMenu()">Belépés</a>
       }
@@ -49,6 +52,9 @@
       <a class="drawer__link" routerLink="/organizations" (click)="closeMenu()">Szervezetek</a>
       @if(isLoggedIn()){
         <a class="drawer__link" routerLink="/auth" (click)="closeMenu()">Profil</a>
+        @if (isSuperAdmin()) {
+          <a class="drawer__link" routerLink="/admin" (click)="closeMenu()">Admin</a>
+        }
       }@else(){
         <a class="drawer__link" routerLink="/auth" (click)="closeMenu()">Belépés</a>
       }

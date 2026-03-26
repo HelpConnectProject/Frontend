@@ -1,0 +1,145 @@
+<section class="hc-page">
+	<header class="page-header">
+		<h1 class="page-title">Admin - Felhasználók</h1>
+	</header>
+
+	@if (!isSuperAdmin) {
+		<div class="empty-state">
+			Ehhez a felülethez csak <strong>superadmin</strong> jogosultsággal férsz hozzá.
+		</div>
+	} @else {
+		@if (state$ | async; as state) {
+			@if (state.loading) {
+				<div class="empty-state">Betöltés…</div>
+			}
+
+			@if (!state.loading && state.error) {
+				<div class="empty-state">{{ state.error }}</div>
+			}
+
+			@if (!state.loading && !state.error && state.users.length === 0) {
+				<div class="empty-state">Nincs megjeleníthető felhasználó.</div>
+			}
+
+			@if (!state.loading && !state.error && state.users.length > 0) {
+				<div class="page-header admin-count-header">
+					<div class="admin-count-text">
+						Összes felhasználó: <strong>{{ state.users.length }}</strong>
+					</div>
+				</div>
+
+				@for (user of state.users; track trackByUserId($index, user)) {
+					<details class="form-wrapper admin-user-card">
+						<summary class="admin-summary">
+							<span class="admin-summary-line">
+								<span>#{{ user.id }}</span>
+								<span>{{ user.name }}</span>
+								<span class="admin-email">{{ user.email }}</span>
+								@if (user.role) {
+									<span class="admin-meta">• {{ user.role }}</span>
+								}
+								@if (user.status) {
+									<span class="admin-meta">• {{ user.status }}</span>
+								}
+							</span>
+						</summary>
+
+						<div class="form-grid admin-form-grid">
+							<div class="form-field">
+								<label>Email megerősítve</label>
+								<div>{{ user.email_verified_at ?? '—' }}</div>
+							</div>
+							<div class="form-field">
+								<label>Telefon</label>
+								<div>{{ user.phone ?? '—' }}</div>
+							</div>
+							<div class="form-field">
+								<label>Város</label>
+								<div>{{ user.city ?? '—' }}</div>
+							</div>
+							<div class="form-field">
+								<label>Profilkép</label>
+								<div>{{ user.profile_image ?? '—' }}</div>
+							</div>
+							<div class="form-field admin-grid-span-full">
+								<label>Bemutatkozás</label>
+								<div class="admin-prewrap">{{ user.about ?? '—' }}</div>
+							</div>
+							<div class="form-field">
+								<label>Létrehozva</label>
+								<div>{{ user.created_at ?? '—' }}</div>
+							</div>
+							<div class="form-field">
+								<label>Frissítve</label>
+								<div>{{ user.updated_at ?? '—' }}</div>
+							</div>
+						</div>
+
+						<div class="admin-section">
+							<div class="admin-section-title">Moderáció</div>
+							<div class="admin-actions">
+								<button type="button" class="primary-btn" disabled>
+									Aktívvá tétel
+								</button>
+								<button type="button" class="ghost-btn" disabled>
+									Inaktívvá tétel
+								</button>
+								<button type="button" class="clear-btn" disabled>
+									User törlése
+								</button>
+							</div>
+							
+						</div>
+
+						<div class="admin-section">
+							<div class="admin-section-title">Képesítések</div>
+							@if (user.qualifications?.length) {
+								<div class="admin-qual-list">
+									@for (q of user.qualifications; track q.id) {
+										<div class="admin-qual-item">
+											<div><strong>Érdeklődés:</strong> {{ q.interest ?? '—' }}</div>
+											<div><strong>Képesítés:</strong> {{ q.qualification ?? '—' }}</div>
+											<div><strong>Tapasztalat:</strong> {{ q.experience ?? '—' }}</div>
+										</div>
+									}
+								</div>
+							} @else {
+								<div class="admin-muted">—</div>
+							}
+						</div>
+
+						<div class="admin-section">
+							<div class="admin-section-title">Szervezeti tagságok</div>
+							@if (user.organization_memberships?.length) {
+								<div class="admin-memberships">
+									@for (m of user.organization_memberships; track $index) {
+										<div class="admin-membership-card">
+											<div class="admin-membership-grid">
+												@for (kv of ($any(m) | keyvalue); track kv.key) {
+													<div>
+														<div class="admin-kv-label">
+															{{ kv.key }}
+														</div>
+														<div class="admin-kv-value">
+															@if (kv.value === null || kv.value === undefined || kv.value === '') {
+																—
+															} @else {
+																{{ kv.value }}
+															}
+														</div>
+													</div>
+												}
+											</div>
+										</div>
+									}
+								</div>
+							} @else {
+								<div class="admin-muted">—</div>
+							}
+						</div>
+					</details>
+				}
+			}
+		}
+	}
+</section>

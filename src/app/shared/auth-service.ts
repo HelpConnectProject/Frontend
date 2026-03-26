@@ -12,6 +12,9 @@ export class AuthService {
   private id = new BehaviorSubject<string | null>(localStorage.getItem('id'));
   id$ = this.id.asObservable();
 
+  private role = new BehaviorSubject<string | null>(localStorage.getItem('role'));
+  role$ = this.role.asObservable();
+
 
   setLoggedIn(value: boolean, id?: any) {
     this.isLoggedInSubject.next(value);
@@ -26,7 +29,23 @@ export class AuthService {
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('token');
       localStorage.removeItem('id');
+      localStorage.removeItem('role');
       this.id.next(null);
+      this.role.next(null);
     }
+  }
+
+  setRole(role: string | null) {
+    if (!role) {
+      localStorage.removeItem('role');
+      this.role.next(null);
+      return;
+    }
+    localStorage.setItem('role', role);
+    this.role.next(role);
+  }
+
+  isSuperAdmin() {
+    return localStorage.getItem('role') === 'superadmin';
   }
 }

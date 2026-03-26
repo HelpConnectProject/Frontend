@@ -56,6 +56,7 @@ export class Auth {
     this.auth.getOwnProfile$({}).subscribe({
       next: (res: any) => {
         this.user = res.data;
+        this.authService.setRole(this.user?.role ?? null);
         this.updateForm.patchValue({
           name: this.user?.name ?? '',
           email: this.user?.email ?? '',
@@ -71,6 +72,7 @@ export class Auth {
       },
       error: () => {
         this.user = null;
+        this.authService.setRole(null);
         this.updateForm.reset({
           name: '',
           email: '',

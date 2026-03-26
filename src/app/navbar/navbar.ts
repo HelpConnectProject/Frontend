@@ -16,6 +16,10 @@ export class Navbar implements OnDestroy {
  protected isLoggedIn() {
     return localStorage.getItem('isLoggedIn') === 'true';
  }
+
+ protected isSuperAdmin() {
+   return localStorage.getItem('role') === 'superadmin';
+ }
   toggleMenu() {
     this.setMenuOpen(!this.isMenuOpen);
   }

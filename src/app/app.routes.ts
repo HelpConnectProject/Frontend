@@ -9,6 +9,7 @@ import { Ownevents } from './ownevents/ownevents';
 import { Aboutevent } from './aboutevent/aboutevent';
 import { Aboutorganization } from './aboutorganization/aboutorganization';
 import { ContactComponent } from './contact/contact.component';
+import { AdminComponent } from './admin/admin.component';
 
 
 export const routes: Routes = [
@@ -22,6 +23,8 @@ export const routes: Routes = [
     {path: "ownevents", component: Ownevents},
     {path: "aboutevent/:id", component: Aboutevent},
     {path: "aboutorganization/:id", component: Aboutorganization},
-    {path: "contact", component: ContactComponent}
+    {path: "contact", component: ContactComponent},
+    {path: "admin", component: AdminComponent},
+    
 
 ];

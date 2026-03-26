@@ -1,0 +1,109 @@
+.admin-count-header {
+	margin-bottom: 1.2rem;
+}
+
+.admin-count-text {
+	color: var(--color-text-muted);
+	font-weight: 600;
+}
+
+.admin-user-card {
+	margin-bottom: 1rem;
+}
+
+.admin-summary {
+	cursor: pointer;
+	font-weight: 700;
+	color: var(--color-text-main);
+}
+
+.admin-summary-line {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	align-items: baseline;
+}
+
+.admin-email {
+	color: var(--color-text-muted);
+	font-weight: 600;
+}
+
+.admin-meta {
+	color: var(--color-text-soft);
+	font-weight: 600;
+}
+
+.admin-form-grid {
+	margin-top: 1rem;
+}
+
+.admin-grid-span-full {
+	grid-column: 1 / -1;
+}
+
+.admin-prewrap {
+	white-space: pre-wrap;
+}
+
+.admin-section {
+	margin-top: 1rem;
+}
+
+.admin-section-title {
+	font-weight: 800;
+	margin-bottom: 0.5rem;
+}
+
+.admin-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6rem;
+}
+
+
+
+.admin-qual-list {
+	display: grid;
+	gap: 0.5rem;
+}
+
+.admin-qual-item {
+	padding: 0.7rem 0.9rem;
+	background: rgba(118, 96, 202, 0.06);
+	border-radius: var(--radius-md);
+}
+
+.admin-muted {
+	color: var(--color-text-muted);
+}
+
+.admin-memberships {
+	display: grid;
+	gap: 0.75rem;
+}
+
+.admin-membership-card {
+	padding: 0.9rem;
+	border-radius: var(--radius-lg);
+	background: rgba(255, 255, 255, 0.75);
+	border: 1px solid rgba(118, 96, 202, 0.16);
+}
+
+.admin-membership-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 0.6rem 1.2rem;
+}
+
+.admin-kv-label {
+	font-size: 0.82rem;
+	font-weight: 700;
+	color: var(--color-text-soft);
+	margin-bottom: 0.15rem;
+}
+
+.admin-kv-value {
+	color: var(--color-text-main);
+}
+
