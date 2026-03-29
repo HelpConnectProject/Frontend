@@ -17,4 +17,31 @@ export class AdminService {
       }
     });
   }
+
+  activateUser$(id: number) {
+    const url = this.host + `makeactive/${id}`;
+    return this.http.post(url, {}, {
+      headers:{
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+  }
+
+  inactivateUser$(id: number) {
+    const url = this.host + `makeinactive/${id}`;
+    return this.http.post(url, {}, {
+      headers:{
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+  }
+
+  deleteUser$(id: number) {
+    const url = this.host + `deleteuser/${id}`;
+    return this.http.delete(url,{
+      headers:{
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+}
 }

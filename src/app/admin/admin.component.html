@@ -78,64 +78,17 @@
 						<div class="admin-section">
 							<div class="admin-section-title">Moderáció</div>
 							<div class="admin-actions">
-								<button type="button" class="primary-btn" disabled>
+								<button type="button" class="primary-btn" (click)="activateUser(user)" [disabled]="isBusy(user.id)">
 									Aktívvá tétel
 								</button>
-								<button type="button" class="ghost-btn" disabled>
+								<button type="button" class="ghost-btn" (click)="inactivateUser(user)" [disabled]="isBusy(user.id)">
 									Inaktívvá tétel
 								</button>
-								<button type="button" class="clear-btn" disabled>
+								<button type="button" class="clear-btn" (click)="deleteUser(user)" [disabled]="isBusy(user.id)">
 									User törlése
 								</button>
 							</div>
 							
-						</div>
-
-						<div class="admin-section">
-							<div class="admin-section-title">Képesítések</div>
-							@if (user.qualifications?.length) {
-								<div class="admin-qual-list">
-									@for (q of user.qualifications; track q.id) {
-										<div class="admin-qual-item">
-											<div><strong>Érdeklődés:</strong> {{ q.interest ?? '—' }}</div>
-											<div><strong>Képesítés:</strong> {{ q.qualification ?? '—' }}</div>
-											<div><strong>Tapasztalat:</strong> {{ q.experience ?? '—' }}</div>
-										</div>
-									}
-								</div>
-							} @else {
-								<div class="admin-muted">—</div>
-							}
-						</div>
-
-						<div class="admin-section">
-							<div class="admin-section-title">Szervezeti tagságok</div>
-							@if (user.organization_memberships?.length) {
-								<div class="admin-memberships">
-									@for (m of user.organization_memberships; track $index) {
-										<div class="admin-membership-card">
-											<div class="admin-membership-grid">
-												@for (kv of ($any(m) | keyvalue); track kv.key) {
-													<div>
-														<div class="admin-kv-label">
-															{{ kv.key }}
-														</div>
-														<div class="admin-kv-value">
-															@if (kv.value === null || kv.value === undefined || kv.value === '') {
-																—
-															} @else {
-																{{ kv.value }}
-															}
-														</div>
-													</div>
-												}
-											</div>
-										</div>
-									}
-								</div>
-							} @else {
-								<div class="admin-muted">—</div>
-							}
 						</div>
 					</details>
 				}
