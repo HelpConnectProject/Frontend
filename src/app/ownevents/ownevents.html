@@ -98,6 +98,19 @@
         (input)="searchTerm = $any($event.target).value; onSearchChange()"
       />
       <span class="search-icon">🔍</span>
+
+      @if (isSuperAdmin) {
+        <label class="only-registered-toggle">
+          <input
+            type="checkbox"
+            class="only-registered-checkbox"
+            [checked]="onlyDeleted"
+            (change)="onlyDeleted = $any($event.target).checked; onSearchChange()"
+          />
+          <span class="toggle-slider" aria-hidden="true"></span>
+          <span class="toggle-text">Csak törölt események</span>
+        </label>
+      }
     </div>
 
     
@@ -107,7 +120,7 @@
       <div class="cards-grid">
         @if (filteredEvents && filteredEvents.length > 0) {
           @for (event of filteredEvents; track event.id) {
-            <div class="event-card">
+            <div class="event-card" [class.deleted-card]="isDeleted(event)">
               <div class="card-media">
                 <img
                   [src]="categoryImageFor(selectedOrganization.organization_category)"

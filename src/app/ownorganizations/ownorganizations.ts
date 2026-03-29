@@ -16,10 +16,14 @@ import { categoryImageFor } from '../shared/category-image';
 })
 export class Ownorganizations implements OnInit {
   categoryImageFor = categoryImageFor;
+  readonly isSuperAdmin = localStorage.getItem('role') === 'superadmin';
+
   private scrollToForm() {
     scrollToSelector('.form-wrapper');
   }
   organizations: any[] = [];
+  filteredOrganizations: any[] = [];
+  onlyDeleted = false;
   organizationForm: FormGroup;
   submitting = false;
   showForm = false;
@@ -58,9 +62,27 @@ export class Ownorganizations implements OnInit {
     this.api.getOwnOrganizations$().subscribe({
       next: (result: any) => {
         this.organizations = result.data ?? [];
+        this.applyDeletedFilter();
       },
       error: () => {},
     });
+  }
+
+  isDeleted(item: any): boolean {
+    const deletedAt = item?.deleted_at ?? item?.deletedAt ?? null;
+    return deletedAt !== null && deletedAt !== undefined && String(deletedAt).trim().length > 0;
+  }
+
+  applyDeletedFilter() {
+    const list = Array.isArray(this.organizations) ? this.organizations : [];
+    const deleted = (org: any) => this.isDeleted(org);
+
+    if (!this.isSuperAdmin) {
+      this.filteredOrganizations = list.filter((o: any) => !deleted(o));
+      return;
+    }
+
+    this.filteredOrganizations = this.onlyDeleted ? list.filter(deleted) : list.filter((o: any) => !deleted(o));
   }
 
   startCreate() {

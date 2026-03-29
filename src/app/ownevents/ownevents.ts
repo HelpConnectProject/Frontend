@@ -16,11 +16,14 @@ import { categoryImageFor } from '../shared/category-image';
 })
 export class Ownevents implements OnInit {
   categoryImageFor = categoryImageFor;
+  readonly isSuperAdmin = localStorage.getItem('role') === 'superadmin';
+
   organizationEvents: any[] = [];
   selectedOrganization: any = null;
   selectedOrgEvents: any[] = [];
   filteredEvents: any[] = [];
   searchTerm: string = '';
+  onlyDeleted = false;
   isDropdownOpen: boolean = false;
 	private pendingOrgId: number | null = null;
   
@@ -110,21 +113,46 @@ export class Ownevents implements OnInit {
   selectOrganization(org: any) {
     this.selectedOrganization = org;
     this.selectedOrgEvents = org.events || [];
-    this.filteredEvents = [...this.selectedOrgEvents];
     this.searchTerm = '';
+    this.applyFilters();
     this.closeDropdown();
   }
+
   onSearchChange() {
-    if (!this.searchTerm.trim()) {
-      this.filteredEvents = [...this.selectedOrgEvents];
-    } else {
-      const term = this.searchTerm.toLowerCase();
-      this.filteredEvents = this.selectedOrgEvents.filter(event =>
-        event.title.toLowerCase().includes(term) ||
-        (event.description && event.description.toLowerCase().includes(term)) ||
-        (event.location && event.location.toLowerCase().includes(term))
-      );
+    this.applyFilters();
+  }
+
+  isDeleted(item: any): boolean {
+    const deletedAt = item?.deleted_at ?? item?.deletedAt ?? null;
+    return deletedAt !== null && deletedAt !== undefined && String(deletedAt).trim().length > 0;
+  }
+
+  private matchesDeletedFilter(item: any): boolean {
+    const deleted = this.isDeleted(item);
+
+    if (!this.isSuperAdmin) {
+      return !deleted;
     }
+
+    return this.onlyDeleted ? deleted : !deleted;
+  }
+
+  private applyFilters() {
+    const base = Array.isArray(this.selectedOrgEvents) ? this.selectedOrgEvents : [];
+    const deletedFiltered = base.filter((event: any) => this.matchesDeletedFilter(event));
+
+    const term = this.searchTerm.trim().toLowerCase();
+    if (!term) {
+      this.filteredEvents = [...deletedFiltered];
+      return;
+    }
+
+    this.filteredEvents = deletedFiltered.filter((event: any) => {
+      const title = String(event?.title ?? '').toLowerCase();
+      const description = String(event?.description ?? '').toLowerCase();
+      const location = String(event?.location ?? '').toLowerCase();
+      return title.includes(term) || description.includes(term) || location.includes(term);
+    });
   }
 
   startCreate() {
