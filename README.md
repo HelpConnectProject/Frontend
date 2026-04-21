@@ -1,59 +1,36 @@
 # Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.12.
+### Ez az Angular-alapú frontend a HelpConnect alkalmazáshoz. Célja egyszerű, áttekinthető felület biztosítása események, szervezetek és regisztrációk kezeléséhez. A részletes technikai dokumentáció a projektben található; ez a README egy rövid összefoglaló.
 
-## Development server
+## Gyors indítás
 
-To start a local development server, run:
+- npm install
+- npm start
+- npm run build
+- npm test
 
-```bash
-ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Előfeltétel: Node.js (LTS) és npm
+Telepítés: futtasd a függőségek telepítéséhez
+Fejlesztés: helyi szerver indítása
+Építés és tesztelés: gyors parancsok
+Főbb funkciók
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Események: listázás, részletek megtekintése, regisztrációk kezelése
+Szervezetek: szervezetek böngészése és profilok
+Saját tartalom: saját események és regisztrációk menedzselése
+Admin: adminisztrációs felület jogosultságokkal
+API-integráció: REST API kliens a backendhez
+Projekt szerkezete
 
-```bash
-ng generate component component-name
-```
+src: alkalmazás forráskódja
+app: komponensek, szolgáltatások, route-ok
+shared: közös szolgáltatások és API-kliensek
+public: statikus fájlok
+environments: környezeti beállítások
+Dokumentáció
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Megjegyzés
+- A részletes technikai dokumentáció külön érhető el, ez a README csak egy rövid áttekintés a projektről.
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
