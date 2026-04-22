@@ -82,6 +82,7 @@ MySql szerver elindítása
 3.9 Backend szerver indítása→php artisan serve
 Ezután a backend itt fut: http://127.0.0.1:8000
 3.10 Kilépünk a backend mappából
+3.11 A Seederben lévő felhasználók és superadmin jelszava:  123
 
 4. Frontend beüzemelése (Angular)
 4.1 Belépés a frontend mappába →cd Frontend
